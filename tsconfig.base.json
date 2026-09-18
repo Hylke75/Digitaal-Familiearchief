@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+    "declaration": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@dla/shared": ["packages/shared/src"],
+      "@dla/i18n": ["packages/i18n/src"],
+      "@dla/database": ["packages/database/src"],
+      "@dla/storage": ["packages/storage/src"],
+      "@dla/connectors": ["packages/connectors/src"],
+      "@dla/archive": ["packages/archive/src"],
+      "@dla/security": ["packages/security/src"],
+      "@dla/ui": ["packages/ui/src"]
+    }
+  }
+}

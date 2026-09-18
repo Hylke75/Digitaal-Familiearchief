@@ -1,0 +1,28 @@
+{
+  "name": "digitaal-familiearchief",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Digital Life Archive — consumer-facing platform to collect, preserve, organise and pass on your digital life.",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @dla/web dev",
+    "build": "pnpm --filter @dla/web build",
+    "start": "pnpm --filter @dla/web start",
+    "lint": "pnpm -r --if-present run lint",
+    "typecheck": "tsc -p tsconfig.json --noEmit && pnpm --filter @dla/web typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,css}\""
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.8",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8"
+  }
+}
