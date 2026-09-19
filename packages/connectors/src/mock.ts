@@ -125,7 +125,7 @@ export class MockArchiveConnector implements ArchiveConnector {
       };
     }
     if (this.options.outage) {
-      return { status: 'temporary_problem', safeMessage: 'We proberen het later opnieuw.' };
+      return { status: 'temporary_error', safeMessage: 'We proberen het later opnieuw.' };
     }
     return { status: 'connected' };
   }

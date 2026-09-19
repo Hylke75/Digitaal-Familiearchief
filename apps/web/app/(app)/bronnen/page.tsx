@@ -1,5 +1,10 @@
 import { getTranslations } from 'next-intl/server';
-import { CONNECTOR_REGISTRY, onboardingAction } from '@dla/connectors';
+import {
+  connectorsByCategory,
+  onboardingAction,
+  type ConnectorCapability,
+  type OnboardingAction,
+} from '@dla/connectors';
 import { PageHeader } from '@/components/app-shell/PageHeader';
 import { Card, CardBody } from '@/components/ui/Card';
 import { Button, ButtonLink } from '@/components/ui/Button';
@@ -8,6 +13,11 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { createClient } from '@/lib/supabase/server';
 
 const DISPLAY_NAME: Record<string, string> = { mock: 'Testbron' };
+const CATEGORIES = [
+  { key: 'photo_video', label: 'categoryPhotoVideo' },
+  { key: 'social', label: 'categorySocial' },
+  { key: 'documents', label: 'categoryDocuments' },
+] as const;
 
 export default async function SourcesPage() {
   const t = await getTranslations('sources');
@@ -21,21 +31,49 @@ export default async function SourcesPage() {
     .order('created_at', { ascending: true });
 
   const connectedKeys = new Set((accounts ?? []).map((a) => a.connector_key));
-  const available = CONNECTOR_REGISTRY.filter(
-    (c) => c.connectorKey !== 'mock' && !connectedKeys.has(c.connectorKey),
-  );
 
-  const actionLabel = (action: string) =>
-    action === 'connect'
-      ? tActions('connect')
-      : action === 'import'
-        ? tActions('import')
-        : tActions('comingSoon');
+  const label = (action: OnboardingAction) => {
+    switch (action) {
+      case 'connect':
+        return tActions('connect');
+      case 'import':
+        return tActions('import');
+      case 'select':
+        return t('select');
+      case 'reconnect':
+        return tActions('reconnect');
+      default:
+        return tActions('comingSoon');
+    }
+  };
+
+  const renderSource = (c: ConnectorCapability) => {
+    const action = onboardingAction(c);
+    return (
+      <li key={c.connectorKey} className="flex items-center gap-3 py-3">
+        <SourceLogo name={c.displayName} />
+        <div className="min-w-0 flex-1">
+          <p className="text-ink truncate font-semibold">{c.displayName}</p>
+          {c.description ? (
+            <p className="text-small text-ink-soft truncate">{c.description}</p>
+          ) : null}
+        </div>
+        <Button
+          variant={action === 'coming_soon' ? 'ghost' : 'secondary'}
+          size="sm"
+          disabled={action === 'coming_soon'}
+        >
+          {label(action)}
+        </Button>
+      </li>
+    );
+  };
 
   return (
     <div>
       <PageHeader title={t('title')} subtitle={t('subtitle')} />
 
+      {/* Connected sources (includes the internal test source). */}
       <section className="mb-8">
         <h2 className="text-h3 text-ink mb-3">{t('connected')}</h2>
         {accounts && accounts.length > 0 ? (
@@ -61,38 +99,28 @@ export default async function SourcesPage() {
           <EmptyState
             title={t('subtitle')}
             description={t('notConnected')}
-            action={<ButtonLink href="/onboarding">{t('connect')}</ButtonLink>}
+            action={<ButtonLink href="/onboarding">{tActions('connect')}</ButtonLink>}
           />
         )}
       </section>
 
-      <section>
-        <h2 className="text-h3 text-ink mb-3">{t('notConnected')}</h2>
-        <Card>
-          <CardBody className="py-2">
-            <ul className="divide-border divide-y">
-              {available.map((c) => {
-                const action = onboardingAction(c);
-                return (
-                  <li key={c.connectorKey} className="flex items-center gap-3 py-3">
-                    <SourceLogo name={c.displayName} />
-                    <span className="text-ink min-w-0 flex-1 truncate font-semibold">
-                      {c.displayName}
-                    </span>
-                    <Button
-                      variant={action === 'coming_soon' ? 'ghost' : 'secondary'}
-                      size="sm"
-                      disabled={action === 'coming_soon'}
-                    >
-                      {actionLabel(action)}
-                    </Button>
-                  </li>
-                );
-              })}
-            </ul>
-          </CardBody>
-        </Card>
-      </section>
+      {/* Available sources grouped by category (§4), registry-driven actions. */}
+      {CATEGORIES.map((cat) => {
+        const sources = connectorsByCategory(cat.key).filter(
+          (c) => !connectedKeys.has(c.connectorKey),
+        );
+        if (sources.length === 0) return null;
+        return (
+          <section key={cat.key} className="mb-6">
+            <h2 className="text-h3 text-ink mb-3">{t(cat.label)}</h2>
+            <Card>
+              <CardBody className="py-2">
+                <ul className="divide-border divide-y">{sources.map(renderSource)}</ul>
+              </CardBody>
+            </Card>
+          </section>
+        );
+      })}
     </div>
   );
 }

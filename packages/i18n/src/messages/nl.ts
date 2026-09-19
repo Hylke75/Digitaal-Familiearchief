@@ -104,6 +104,10 @@ const nl = {
     reconnect: 'Opnieuw verbinden',
     disconnect: 'Verbinding verbreken',
     disconnectNote: 'Verbinding verbreken verwijdert niets wat al is veiliggesteld.',
+    categoryPhotoVideo: "Foto's en video's",
+    categorySocial: 'Sociale media',
+    categoryDocuments: 'Documenten',
+    select: 'Foto’s selecteren',
   },
   auth: {
     loginTitle: 'Welkom terug',

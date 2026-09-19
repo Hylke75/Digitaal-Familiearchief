@@ -104,6 +104,10 @@ const en: AppMessages = {
     reconnect: 'Reconnect',
     disconnect: 'Disconnect',
     disconnectNote: 'Disconnecting does not delete anything already preserved.',
+    categoryPhotoVideo: 'Photos and videos',
+    categorySocial: 'Social media',
+    categoryDocuments: 'Documents',
+    select: 'Select photos',
   },
   auth: {
     loginTitle: 'Welcome back',

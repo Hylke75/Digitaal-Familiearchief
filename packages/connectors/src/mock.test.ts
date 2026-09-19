@@ -30,7 +30,7 @@ describe('MockArchiveConnector', () => {
   it('surfaces an outage as a temporary problem, never as deletion', async () => {
     const c = new MockArchiveConnector({ outage: true });
     expect(await c.validateConnection()).toBe(false);
-    expect((await c.getStatus()).status).toBe('temporary_problem');
+    expect((await c.getStatus()).status).toBe('temporary_error');
     await expect(c.discover()).rejects.toThrow();
   });
 });
