@@ -1,69 +1,57 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { ButtonLink } from '@/components/ui/Button';
 import { Card, CardBody } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { LoginForm } from '@/components/auth/LoginForm';
 
 export const metadata: Metadata = { title: 'Inloggen' };
 
 /**
- * Login screen (docs/DESIGN.md §8) — extremely simple, confidential, no
- * marketing. Static in this phase; real email + Apple/Google authentication is
- * wired in the auth phase (CLAUDE.md §13).
+ * Login screen (docs/DESIGN.md §8) — simple, confidential, no marketing.
+ * Email + password (CLAUDE.md §13). Apple/Google are shown as "coming soon"
+ * until their providers are configured (honest capability — no fake OAuth).
  */
-export default async function LoginPage() {
+export default async function LoginPage({ searchParams }: { searchParams: { next?: string } }) {
+  const t = await getTranslations('auth');
   const tApp = await getTranslations('app');
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center px-6 py-12">
       <div className="mb-8 text-center">
-        <p className="text-h3 text-forest font-semibold">{tApp('name')}</p>
+        <Link href="/" className="text-h3 text-forest font-semibold">
+          {tApp('name')}
+        </Link>
       </div>
       <Card>
         <CardBody className="space-y-5 sm:p-8">
           <div className="text-center">
-            <h1 className="text-h3 text-ink">Welkom terug</h1>
-            <p className="text-body text-ink-soft mt-1">
-              Log in om bij je digitale archief te komen.
-            </p>
+            <h1 className="text-h3 text-ink">{t('loginTitle')}</h1>
+            <p className="text-body text-ink-soft mt-1">{t('loginSubtitle')}</p>
           </div>
 
           <div className="space-y-3">
-            <ButtonLink href="/vandaag" variant="secondary" size="lg" className="w-full">
-              Doorgaan met Apple
-            </ButtonLink>
-            <ButtonLink href="/vandaag" variant="secondary" size="lg" className="w-full">
-              Doorgaan met Google
-            </ButtonLink>
+            <Button variant="secondary" size="lg" className="w-full" disabled>
+              {t('withApple')} · {t('comingSoon')}
+            </Button>
+            <Button variant="secondary" size="lg" className="w-full" disabled>
+              {t('withGoogle')} · {t('comingSoon')}
+            </Button>
           </div>
 
           <div className="text-caption text-ink-soft flex items-center gap-3">
             <span className="bg-border h-px flex-1" />
-            of
+            {t('or')}
             <span className="bg-border h-px flex-1" />
           </div>
 
-          <form action="/vandaag" className="space-y-3">
-            <label className="text-small text-ink block font-semibold" htmlFor="email">
-              E-mailadres
-            </label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              autoComplete="email"
-              className="rounded-input border-border bg-surface text-body focus-visible:border-forest w-full border px-4 py-3 outline-none"
-              placeholder="jij@voorbeeld.nl"
-            />
-            <ButtonLink href="/vandaag" size="lg" className="w-full">
-              Doorgaan
-            </ButtonLink>
-          </form>
+          <LoginForm next={searchParams.next} />
 
           <p className="text-small text-ink-soft text-center">
-            Nog geen account?{' '}
-            <a href="/registreren" className="text-forest font-semibold hover:underline">
-              Account aanmaken
-            </a>
+            {t('noAccount')}{' '}
+            <Link href="/registreren" className="text-forest font-semibold hover:underline">
+              {t('createAccount')}
+            </Link>
           </p>
         </CardBody>
       </Card>

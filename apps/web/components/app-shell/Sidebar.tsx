@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { NAV_GROUPS } from '@/lib/navigation';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, LogOut } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
+import { signOutAction } from '@/lib/auth/actions';
 import { cn } from '@/lib/cn';
 
 /** Fixed desktop sidebar (docs/DESIGN.md §6). */
@@ -14,6 +15,7 @@ export function Sidebar({ userName }: { userName: string }) {
   const t = useTranslations('nav');
   const tHealth = useTranslations('health');
   const tApp = useTranslations('app');
+  const tAuth = useTranslations('auth');
 
   return (
     <aside className="border-border bg-surface hidden w-64 shrink-0 flex-col border-r lg:flex">
@@ -55,13 +57,23 @@ export function Sidebar({ userName }: { userName: string }) {
 
       <div className="border-border flex items-center gap-3 border-t px-4 py-4">
         <Avatar name={userName} />
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="text-small text-ink truncate font-semibold">{userName}</p>
           <p className="text-caption text-success mt-0.5 flex items-center gap-1 font-semibold">
             <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
             {tHealth('safe')}
           </p>
         </div>
+        <form action={signOutAction}>
+          <button
+            type="submit"
+            aria-label={tAuth('signOut')}
+            title={tAuth('signOut')}
+            className="rounded-button text-ink-soft hover:bg-warm hover:text-ink p-2 transition-colors"
+          >
+            <LogOut className="h-5 w-5" aria-hidden="true" />
+          </button>
+        </form>
       </div>
     </aside>
   );

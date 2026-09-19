@@ -4,12 +4,8 @@ import { Card, CardBody } from '@/components/ui/Card';
 import { HealthPill } from '@/components/ui/StatusBanner';
 import { ButtonLink } from '@/components/ui/Button';
 import { ConnectedSourceRow } from '@/components/ui/SourceCard';
-import {
-  MOCK_NEW_SINCE_LAST_VISIT,
-  MOCK_SOURCES,
-  MOCK_TOTALS,
-  MOCK_USER,
-} from '@/lib/mock-dashboard';
+import { createClient } from '@/lib/supabase/server';
+import { MOCK_NEW_SINCE_LAST_VISIT, MOCK_SOURCES, MOCK_TOTALS } from '@/lib/mock-dashboard';
 
 export default async function TodayPage() {
   const t = await getTranslations('dashboard');
@@ -17,15 +13,22 @@ export default async function TodayPage() {
   const tSources = await getTranslations('sources');
   const f = await getFormatter();
 
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const { data: profile } = user
+    ? await supabase.from('profiles').select('first_name').eq('id', user.id).maybeSingle()
+    : { data: null };
+  const name = profile?.first_name?.trim() || user?.email?.split('@')[0] || 'Jij';
+
   const n = (value: number) => f.number(value);
 
   return (
     <div className="space-y-8">
       {/* Greeting + trust indicator */}
       <div>
-        <p className="text-body-lg text-ink-soft">
-          {t('greetingMorning', { name: MOCK_USER.name })}
-        </p>
+        <p className="text-body-lg text-ink-soft">{t('greetingMorning', { name })}</p>
         <div className="mt-2">
           <HealthPill status="safe" label={tHealth('safe')} />
         </div>
