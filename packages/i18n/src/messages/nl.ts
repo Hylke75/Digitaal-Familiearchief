@@ -133,6 +133,33 @@ const nl = {
   onboarding: {
     welcome: 'Welkom',
     question: 'Waar staat jouw digitale leven?',
+    welcomeTitle: 'Welkom, {name}',
+    welcomeBody:
+      'Laten we veiligstellen wat je niet kwijt wilt. Koppel de plekken waar je foto’s, video’s en belangrijke bestanden staan. Wij zorgen daarna voor de rest.',
+    welcomeDuration: 'Duurt ongeveer 5 minuten',
+    start: 'Start',
+    next: 'Verder',
+    preserveTitle: 'Wat wil je veiligstellen?',
+    preservePhotos: 'Mijn foto’s en video’s',
+    preserveSocial: 'Mijn sociale media',
+    preserveDocuments: 'Mijn belangrijke documenten',
+    preserveNote: 'Je kunt dit later altijd aanpassen.',
+    sourcesTitle: 'Koppel een bron',
+    sourcesBody:
+      'In deze eerste versie kun je de testbron koppelen om te zien hoe je archief wordt opgebouwd. Echte bronnen volgen zodra ze geverifieerd zijn.',
+    connectTestSource: 'Testbron koppelen',
+    connectedTitle: 'Testbron is gekoppeld',
+    connectedBody: 'We kijken nu welke bestanden we voor je kunnen veiligstellen.',
+    importTitle: 'Je archief opbouwen',
+    importBody: 'We stellen je bestanden nu veilig. Dit gaat op de achtergrond door.',
+    importStart: 'Start veiligstellen',
+    importing: 'Bezig met veiligstellen…',
+    successTitle: 'Je eerste archief is veiliggesteld',
+    successBody:
+      '{count} herinneringen staan nu onafhankelijk van je gekoppelde diensten bewaard. Vanaf nu controleren we automatisch op nieuwe herinneringen.',
+    successDeduped: '{count} identieke bestanden overgeslagen.',
+    viewArchive: 'Bekijk mijn archief',
+    importError: 'Er ging iets mis tijdens het veiligstellen. Probeer het opnieuw.',
   },
   actions: {
     connect: 'Koppelen',

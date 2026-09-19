@@ -102,6 +102,9 @@ importers:
 
   packages/archive:
     dependencies:
+      '@dla/connectors':
+        specifier: workspace:*
+        version: link:../connectors
       '@dla/shared':
         specifier: workspace:*
         version: link:../shared

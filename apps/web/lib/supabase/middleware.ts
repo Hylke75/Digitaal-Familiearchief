@@ -4,6 +4,7 @@ import { clientEnv } from '@/lib/env';
 
 /** Route prefixes that require an authenticated session (the app area). */
 const PROTECTED_PREFIXES = [
+  '/onboarding',
   '/vandaag',
   '/mijn-leven',
   '/fotos',

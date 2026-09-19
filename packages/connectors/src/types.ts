@@ -99,6 +99,30 @@ export interface ArchiveConnector {
   initialImport(): AsyncIterable<DiscoveredItem>;
   getChanges(cursor?: string): Promise<ChangeSet>;
   importChanges(changes: ChangeSet): AsyncIterable<DiscoveredItem>;
+  /**
+   * Fetch the raw bytes for a discovered item. Kept separate from discovery so
+   * the Archive Engine controls when originals are downloaded (§20, §31).
+   */
+  fetchContent(item: DiscoveredItem): Promise<Uint8Array>;
   refreshAuthorization(): Promise<void>;
   getStatus(): Promise<ConnectorStatus>;
+}
+
+/** Map an archive item type from a mime type (best-effort). */
+export function archiveTypeFromMime(
+  mimeType: string,
+): 'photo' | 'video' | 'document' | 'audio' | 'other' {
+  if (mimeType.startsWith('image/')) return 'photo';
+  if (mimeType.startsWith('video/')) return 'video';
+  if (mimeType.startsWith('audio/')) return 'audio';
+  if (
+    mimeType === 'application/pdf' ||
+    mimeType.startsWith('text/') ||
+    mimeType.includes('word') ||
+    mimeType.includes('document') ||
+    mimeType.includes('spreadsheet')
+  ) {
+    return 'document';
+  }
+  return 'other';
 }

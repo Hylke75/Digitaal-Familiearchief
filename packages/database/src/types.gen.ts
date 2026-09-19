@@ -306,7 +306,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      archive_ingest_item: {
+        Args: {
+          p_checksum_sha256: string
+          p_connector_account_id: string
+          p_created_at_source?: string
+          p_file_size: number
+          p_mime_type: string
+          p_modified_at_source?: string
+          p_original_filename: string
+          p_source_item_id: string
+          p_source_url?: string
+          p_storage_key: string
+          p_storage_provider: string
+          p_type: Database["public"]["Enums"]["archive_item_type"]
+        }
+        Returns: Json
+      }
+      archive_summary: { Args: never; Returns: Json }
     }
     Enums: {
       archive_frequency: "daily" | "weekly" | "monthly"

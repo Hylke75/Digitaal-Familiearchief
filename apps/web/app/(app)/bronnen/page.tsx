@@ -1,20 +1,26 @@
-import { getFormatter, getTranslations } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { CONNECTOR_REGISTRY, onboardingAction } from '@dla/connectors';
 import { PageHeader } from '@/components/app-shell/PageHeader';
 import { Card, CardBody } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
+import { Button, ButtonLink } from '@/components/ui/Button';
 import { ConnectedSourceRow, SourceLogo } from '@/components/ui/SourceCard';
-import { MOCK_SOURCES } from '@/lib/mock-dashboard';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { createClient } from '@/lib/supabase/server';
+
+const DISPLAY_NAME: Record<string, string> = { mock: 'Testbron' };
 
 export default async function SourcesPage() {
   const t = await getTranslations('sources');
   const tActions = await getTranslations('actions');
-  const f = await getFormatter();
+  const tHealth = await getTranslations('health');
 
-  // "Not connected yet" is generated from the honest capability registry.
-  // Actions map from declared capability, so an unverified provider never shows
-  // a real "Koppelen" (docs/DESIGN.md §12, CLAUDE.md §15).
-  const connectedKeys = new Set(MOCK_SOURCES.map((s) => s.connectorKey));
+  const supabase = createClient();
+  const { data: accounts } = await supabase
+    .from('connector_accounts')
+    .select('id, connector_key, display_name, last_successful_archive_at')
+    .order('created_at', { ascending: true });
+
+  const connectedKeys = new Set((accounts ?? []).map((a) => a.connector_key));
   const available = CONNECTOR_REGISTRY.filter(
     (c) => c.connectorKey !== 'mock' && !connectedKeys.has(c.connectorKey),
   );
@@ -32,22 +38,32 @@ export default async function SourcesPage() {
 
       <section className="mb-8">
         <h2 className="text-h3 text-ink mb-3">{t('connected')}</h2>
-        <Card>
-          <CardBody className="py-2">
-            <ul className="divide-border divide-y">
-              {MOCK_SOURCES.map((s) => (
-                <li key={s.connectorKey}>
-                  <ConnectedSourceRow
-                    name={s.displayName}
-                    statusLabel={t('allSafe')}
-                    updatedLabel={s.updated === 'today' ? t('updatedToday') : t('updatedYesterday')}
-                    itemsLabel={t('items', { count: f.number(s.items) })}
-                  />
-                </li>
-              ))}
-            </ul>
-          </CardBody>
-        </Card>
+        {accounts && accounts.length > 0 ? (
+          <Card>
+            <CardBody className="py-2">
+              <ul className="divide-border divide-y">
+                {accounts.map((a) => (
+                  <li key={a.id}>
+                    <ConnectedSourceRow
+                      name={a.display_name || DISPLAY_NAME[a.connector_key] || a.connector_key}
+                      statusLabel={t('allSafe')}
+                      updatedLabel={
+                        a.last_successful_archive_at ? t('updatedToday') : tHealth('archiving')
+                      }
+                      itemsLabel=""
+                    />
+                  </li>
+                ))}
+              </ul>
+            </CardBody>
+          </Card>
+        ) : (
+          <EmptyState
+            title={t('subtitle')}
+            description={t('notConnected')}
+            action={<ButtonLink href="/onboarding">{t('connect')}</ButtonLink>}
+          />
+        )}
       </section>
 
       <section>

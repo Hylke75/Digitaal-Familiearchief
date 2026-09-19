@@ -132,6 +132,33 @@ const en: AppMessages = {
   onboarding: {
     welcome: 'Welcome',
     question: 'Where does your digital life live?',
+    welcomeTitle: 'Welcome, {name}',
+    welcomeBody:
+      "Let's secure what you don't want to lose. Connect the places where your photos, videos and important files live. We take care of the rest.",
+    welcomeDuration: 'Takes about 5 minutes',
+    start: 'Start',
+    next: 'Continue',
+    preserveTitle: 'What would you like to preserve?',
+    preservePhotos: 'My photos and videos',
+    preserveSocial: 'My social media',
+    preserveDocuments: 'My important documents',
+    preserveNote: 'You can always change this later.',
+    sourcesTitle: 'Connect a source',
+    sourcesBody:
+      'In this first version you can connect the test source to see how your archive is built. Real sources follow once verified.',
+    connectTestSource: 'Connect test source',
+    connectedTitle: 'Test source connected',
+    connectedBody: 'We are now checking which files we can preserve for you.',
+    importTitle: 'Building your archive',
+    importBody: 'We are securing your files now. This continues in the background.',
+    importStart: 'Start preserving',
+    importing: 'Preserving…',
+    successTitle: 'Your first archive is preserved',
+    successBody:
+      '{count} memories are now stored independently of your connected services. From now on we automatically check for new memories.',
+    successDeduped: '{count} identical files skipped.',
+    viewArchive: 'View my archive',
+    importError: 'Something went wrong while preserving. Please try again.',
   },
   actions: {
     connect: 'Connect',
