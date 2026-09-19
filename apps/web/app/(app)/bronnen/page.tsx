@@ -91,15 +91,20 @@ export default async function SourcesPage() {
             <CardBody className="py-2">
               <ul className="divide-border divide-y">
                 {accounts.map((a) => (
-                  <li key={a.id}>
-                    <ConnectedSourceRow
-                      name={a.display_name || DISPLAY_NAME[a.connector_key] || a.connector_key}
-                      statusLabel={t('allSafe')}
-                      updatedLabel={
-                        a.last_successful_archive_at ? t('updatedToday') : tHealth('archiving')
-                      }
-                      itemsLabel=""
-                    />
+                  <li key={a.id} className="flex items-center gap-2">
+                    <div className="min-w-0 flex-1">
+                      <ConnectedSourceRow
+                        name={a.display_name || DISPLAY_NAME[a.connector_key] || a.connector_key}
+                        statusLabel={t('allSafe')}
+                        updatedLabel={
+                          a.last_successful_archive_at ? t('updatedToday') : tHealth('archiving')
+                        }
+                        itemsLabel=""
+                      />
+                    </div>
+                    <ButtonLink href={`/bronnen/${a.id}`} variant="ghost" size="sm">
+                      {t('manage')}
+                    </ButtonLink>
                   </li>
                 ))}
               </ul>
