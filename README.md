@@ -1,14 +1,17 @@
-# Digitaal Familiearchief — Digital Life Archive
+# Bewora
 
-Preserve your digital life. Connect the places where it already lives once; we
-archive your existing history and keep preserving new content automatically. Your
-archive stays yours — independent of the original platforms — and can eventually
-be passed to people you choose.
+**"Alles wat je niet kwijt wilt. Op één veilige plek."** · _Keep what matters._
 
-> **Status: Phase 0 (foundation).** Repository structure, tooling, CI and
-> documentation are in place; product features are not built yet. See
-> [`CLAUDE.md`](./CLAUDE.md) for the full specification and phase plan, and
-> [`docs/architecture.md`](./docs/architecture.md) for the architecture.
+Bewora is a consumer digital-life archive: connect the places where your digital
+life already lives once; Bewora imports your existing history and keeps preserving
+new content automatically where provider APIs allow it. Your archive stays yours —
+independent of the original platforms — and can eventually be passed to people you
+choose.
+
+> See [`CLAUDE.md`](./CLAUDE.md) for the product + engineering spec,
+> [`docs/DESIGN.md`](./docs/DESIGN.md) for the UX/UI system,
+> [`docs/CONNECTORS_BUILD.md`](./docs/CONNECTORS_BUILD.md) for the connector spec,
+> and [`docs/PROVIDER_SETUP.md`](./docs/PROVIDER_SETUP.md) for owner setup steps.
 
 ## Tech stack
 

@@ -3,8 +3,8 @@ import type { AppMessages } from './shape';
 
 const en: AppMessages = {
   app: {
-    name: 'Digital Family Archive',
-    tagline: 'Preserve your digital life. Forever, for whoever you choose.',
+    name: 'Bewora',
+    tagline: 'Keep what matters.',
   },
   common: {
     back: 'Back',

@@ -130,9 +130,22 @@ export default async function HomePage() {
       </section>
 
       <footer className="border-border border-t py-8">
-        <p className="max-w-content text-small text-ink-soft mx-auto px-6">
-          {tApp('name')} — {tApp('tagline')}
-        </p>
+        <div className="max-w-content text-small text-ink-soft mx-auto flex flex-col gap-2 px-6 sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            {tApp('name')} — {tApp('tagline')}
+          </p>
+          <nav className="flex gap-4">
+            <a href="/privacy" className="hover:text-ink">
+              Privacy
+            </a>
+            <a href="/terms" className="hover:text-ink">
+              Voorwaarden
+            </a>
+            <a href="/security" className="hover:text-ink">
+              Beveiliging
+            </a>
+          </nav>
+        </div>
       </footer>
     </div>
   );

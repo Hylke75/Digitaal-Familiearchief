@@ -3,6 +3,8 @@
  * No runtime dependencies. Safe to import from any layer (client or server).
  */
 
+export * from './brand';
+
 /** Exhaustiveness helper: forces a compile error if a union is not fully handled. */
 export function assertNever(value: never, message = 'Unexpected value'): never {
   throw new Error(`${message}: ${JSON.stringify(value)}`);

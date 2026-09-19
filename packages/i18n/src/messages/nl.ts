@@ -1,8 +1,8 @@
 /** Dutch (nl-NL) — the product default language. Reassuring, non-technical tone. */
 const nl = {
   app: {
-    name: 'Digitaal Familiearchief',
-    tagline: 'Bewaar je digitale leven. Voor altijd, voor wie je kiest.',
+    name: 'Bewora',
+    tagline: 'Alles wat je niet kwijt wilt. Op één veilige plek.',
   },
   common: {
     back: 'Terug',

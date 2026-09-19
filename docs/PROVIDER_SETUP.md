@@ -16,18 +16,26 @@ its flag is `true` AND its code + approval are complete.
 - [ ] Configure the **OAuth consent screen** (External), app name, logo, support
       email, developer contact, **privacy policy URL**, terms URL.
 - [ ] Enable **Google Drive API** (and **Photos Picker API** if using Photos).
-- [ ] Add authorized redirect URI: `https://<your-domain>/auth/google/callback`.
-- [ ] Choose scopes deliberately:
-  - `drive.file` (per-file, **no CASA**) — simplest, but only files the user picks.
-  - `drive.readonly` (**restricted**) — full read, requires **OAuth verification +
-    yearly CASA security assessment** (paid, via an approved lab).
-- [ ] If using a restricted scope: submit for **restricted scope verification** and
-      budget for the **CASA** assessment (annual revalidation).
+- [ ] Set the app **homepage URL** = `${NEXT_PUBLIC_APP_URL}`, **privacy URL** =
+      `${NEXT_PUBLIC_APP_URL}/privacy`, **terms URL** = `${NEXT_PUBLIC_APP_URL}/terms`.
+- [ ] Add **authorized domain** (the Bewora production domain).
+- [ ] Add authorized redirect URI: `${NEXT_PUBLIC_APP_URL}/auth/google/callback`.
+- [ ] Add test users during development.
+- [ ] **Scope decision — important.** Bewora's product goal is **full Drive archival**.
+  - `drive.readonly` (**restricted scope**) is required for full-library archival. It
+    needs **OAuth production verification + restricted-scope review + a yearly CASA
+    security assessment** (paid, via a Google-approved lab).
+  - `drive.file` is **NOT equivalent** to full Drive access — it only sees files the
+    user explicitly picks/opens with the app. It avoids CASA but does **not** meet the
+    full-archival goal. Only use it as an interim/limited mode, clearly labelled.
+- [ ] Submit for **restricted scope verification** and budget for **CASA** (annual
+      revalidation) before enabling full Drive archival in production.
 - [ ] Add production **client ID + client secret** to secrets:
       `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`.
 - [ ] Set `GOOGLE_DRIVE_ENABLED=true` (and/or `GOOGLE_PHOTOS_ENABLED=true`) once approved.
 - Note: **Google Photos full history** is only available via **Takeout** (import),
-  not an API — no owner action, it's a guided import.
+  not an API. The Library API (since 2025-03-31) only returns app-created media; the
+  **Picker API** covers user-selected media.
 
 ## Microsoft (OneDrive)
 
