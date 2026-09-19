@@ -171,6 +171,19 @@ const en: AppMessages = {
     reconnect: 'Reconnect',
     addSource: 'Add a source',
   },
+  imports: {
+    title: 'Import',
+    intro:
+      'Drop an export file (ZIP) from Instagram, Facebook, Snapchat, X or Google Takeout here — or pick individual photos and files. We automatically recognise where it came from.',
+    chooseFile: 'Choose file',
+    upload: 'Preserve',
+    importing: 'Preserving…',
+    resultTitle: 'Preserved',
+    resultBody: '{provider}: {archived} newly preserved, {deduped} already present.',
+    nothingFound: 'We could not find any media or files in this file.',
+    error: 'Something went wrong while importing. Try a different file.',
+    viewArchive: 'View my archive',
+  },
   emptyStates: {
     photosTitle: 'No photos yet',
     photosBody: 'The photos you preserve will appear here.',

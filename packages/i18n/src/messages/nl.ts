@@ -172,6 +172,19 @@ const nl = {
     reconnect: 'Opnieuw verbinden',
     addSource: 'Bron koppelen',
   },
+  imports: {
+    title: 'Importeren',
+    intro:
+      'Sleep een export-bestand (ZIP) van Instagram, Facebook, Snapchat, X of Google Takeout hierheen — of kies losse foto’s en bestanden. We herkennen automatisch waar het vandaan komt.',
+    chooseFile: 'Bestand kiezen',
+    upload: 'Veiligstellen',
+    importing: 'Bezig met veiligstellen…',
+    resultTitle: 'Veiliggesteld',
+    resultBody: '{provider}: {archived} nieuw veiliggesteld, {deduped} al aanwezig.',
+    nothingFound: 'We konden geen media of bestanden in dit bestand vinden.',
+    error: 'Er ging iets mis bij het importeren. Probeer een ander bestand.',
+    viewArchive: 'Bekijk mijn archief',
+  },
   emptyStates: {
     photosTitle: 'Nog geen foto’s',
     photosBody: 'Hier verschijnen de foto’s die je veiligstelt.',

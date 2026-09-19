@@ -199,7 +199,7 @@ export const CONNECTOR_REGISTRY: readonly ConnectorCapability[] = [
     originalMediaAvailable: true,
     metadataAvailable: true,
     archiveImportSupported: true,
-    implementationStatus: 'research',
+    implementationStatus: 'beta',
   }),
 
   // --- Social ----------------------------------------------------------------
@@ -215,6 +215,7 @@ export const CONNECTOR_REGISTRY: readonly ConnectorCapability[] = [
     originalMediaAvailable: true,
     metadataAvailable: true,
     archiveImportSupported: true,
+    implementationStatus: 'beta',
   }),
   def({
     connectorKey: 'facebook',
@@ -228,6 +229,7 @@ export const CONNECTOR_REGISTRY: readonly ConnectorCapability[] = [
     originalMediaAvailable: true,
     metadataAvailable: true,
     archiveImportSupported: true,
+    implementationStatus: 'beta',
   }),
   def({
     connectorKey: 'tiktok',
@@ -259,6 +261,7 @@ export const CONNECTOR_REGISTRY: readonly ConnectorCapability[] = [
     originalMediaAvailable: true,
     metadataAvailable: true,
     archiveImportSupported: true,
+    implementationStatus: 'beta',
   }),
   def({
     connectorKey: 'x',
@@ -272,6 +275,7 @@ export const CONNECTOR_REGISTRY: readonly ConnectorCapability[] = [
     originalMediaAvailable: true,
     metadataAvailable: true,
     archiveImportSupported: true,
+    implementationStatus: 'beta',
   }),
 ];
 

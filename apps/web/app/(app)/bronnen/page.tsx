@@ -58,13 +58,23 @@ export default async function SourcesPage() {
             <p className="text-small text-ink-soft truncate">{c.description}</p>
           ) : null}
         </div>
-        <Button
-          variant={action === 'coming_soon' ? 'ghost' : 'secondary'}
-          size="sm"
-          disabled={action === 'coming_soon'}
-        >
-          {label(action)}
-        </Button>
+        {action === 'import' ? (
+          <ButtonLink
+            href={`/importeren?connector=${c.connectorKey}`}
+            variant="secondary"
+            size="sm"
+          >
+            {label(action)}
+          </ButtonLink>
+        ) : (
+          <Button
+            variant={action === 'coming_soon' ? 'ghost' : 'secondary'}
+            size="sm"
+            disabled={action === 'coming_soon'}
+          >
+            {label(action)}
+          </Button>
+        )}
       </li>
     );
   };

@@ -24,6 +24,7 @@ const nextConfig = {
   transpilePackages: [
     '@dla/shared',
     '@dla/i18n',
+    '@dla/import',
     '@dla/database',
     '@dla/storage',
     '@dla/connectors',
