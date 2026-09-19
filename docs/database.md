@@ -1,6 +1,13 @@
 # Database
 
-_Status: Phase 0 — schema is designed here but NOT yet migrated. Built in Phase 1._
+_Status: Phase 1 — schema APPLIED to the Supabase project (eu-central-1). RLS is
+default-deny and security advisors are clean. Migrations live in
+`supabase/migrations/`; types are generated into `packages/database`._
+
+> Note: full RLS integration tests (proving cross-user access is impossible
+> against a live database) require a dedicated test database and seeded users;
+> they are wired up alongside auth. Phase 1 verifies RLS via Supabase security
+> advisors (0 findings) and an enum contract test.
 
 All tables use UUID primary keys, `created_at`/`updated_at` timestamps, and
 **Row Level Security enabled with default-deny** (CLAUDE.md §43). Every

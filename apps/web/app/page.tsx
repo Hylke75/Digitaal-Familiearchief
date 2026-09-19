@@ -10,6 +10,7 @@ import { Card, CardBody } from '@/components/ui/Card';
 export default async function HomePage() {
   const t = await getTranslations('landing');
   const tApp = await getTranslations('app');
+  const tAuth = await getTranslations('auth');
 
   return (
     <div className="bg-warm min-h-dvh">
@@ -18,9 +19,9 @@ export default async function HomePage() {
         <span className="text-h3 text-forest font-semibold">{tApp('name')}</span>
         <nav className="flex items-center gap-2">
           <ButtonLink href="/inloggen" variant="ghost" size="sm">
-            {t('ctaSecondary')}
+            {tAuth('login')}
           </ButtonLink>
-          <ButtonLink href="/vandaag" size="sm">
+          <ButtonLink href="/registreren" size="sm">
             {t('ctaPrimary')}
           </ButtonLink>
         </nav>
@@ -37,7 +38,7 @@ export default async function HomePage() {
             </h1>
             <p className="text-body-lg text-ink-soft text-balance">{t('heroIntro')}</p>
             <div className="flex flex-wrap gap-3">
-              <ButtonLink href="/vandaag" size="lg">
+              <ButtonLink href="/registreren" size="lg">
                 {t('ctaPrimary')}
               </ButtonLink>
               <ButtonLink href="#hoe" variant="secondary" size="lg">
@@ -120,7 +121,7 @@ export default async function HomePage() {
             <p className="text-h3 text-ink text-balance font-semibold">{t('familyTitle')}</p>
             <p className="text-body text-ink-soft mt-3 max-w-2xl">{t('familyBody')}</p>
             <div className="mt-6">
-              <ButtonLink href="/vandaag" size="lg">
+              <ButtonLink href="/registreren" size="lg">
                 {t('ctaPrimary')}
               </ButtonLink>
             </div>
@@ -129,9 +130,22 @@ export default async function HomePage() {
       </section>
 
       <footer className="border-border border-t py-8">
-        <p className="max-w-content text-small text-ink-soft mx-auto px-6">
-          {tApp('name')} — {tApp('tagline')}
-        </p>
+        <div className="max-w-content text-small text-ink-soft mx-auto flex flex-col gap-2 px-6 sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            {tApp('name')} — {tApp('tagline')}
+          </p>
+          <nav className="flex gap-4">
+            <a href="/privacy" className="hover:text-ink">
+              Privacy
+            </a>
+            <a href="/terms" className="hover:text-ink">
+              Voorwaarden
+            </a>
+            <a href="/security" className="hover:text-ink">
+              Beveiliging
+            </a>
+          </nav>
+        </div>
       </footer>
     </div>
   );

@@ -11,16 +11,31 @@ const clientSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url({ message: 'NEXT_PUBLIC_SUPABASE_URL must be a URL' }),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1, 'NEXT_PUBLIC_SUPABASE_ANON_KEY is required'),
   NEXT_PUBLIC_DEFAULT_LOCALE: z.string().default('nl-NL'),
-  NEXT_PUBLIC_SITE_URL: z.string().url().default('http://localhost:3000'),
+  // Canonical public app URL, used to build callback + application URLs.
+  NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
+  NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
 });
 
 /** Public config — safe for the browser. Reads only NEXT_PUBLIC_* variables. */
-export const clientEnv = clientSchema.parse({
+const parsedClient = clientSchema.parse({
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   NEXT_PUBLIC_DEFAULT_LOCALE: process.env.NEXT_PUBLIC_DEFAULT_LOCALE,
+  NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL ?? process.env.NEXT_PUBLIC_SITE_URL,
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
 });
+
+export const clientEnv = {
+  ...parsedClient,
+  // Back-compat: SITE_URL mirrors APP_URL when not separately set.
+  NEXT_PUBLIC_SITE_URL: parsedClient.NEXT_PUBLIC_SITE_URL ?? parsedClient.NEXT_PUBLIC_APP_URL,
+};
+
+/** Build a fully-qualified application URL from a path. */
+export function appUrl(path = '/'): string {
+  const base = clientEnv.NEXT_PUBLIC_APP_URL.replace(/\/$/, '');
+  return `${base}${path.startsWith('/') ? path : `/${path}`}`;
+}
 
 const serverSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),

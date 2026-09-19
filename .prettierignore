@@ -5,4 +5,5 @@ build
 coverage
 pnpm-lock.yaml
 supabase/migrations
+packages/database/src/types.gen.ts
 *.md

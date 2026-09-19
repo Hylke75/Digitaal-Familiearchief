@@ -59,3 +59,6 @@ export function redactSecrets<T extends Record<string, unknown>>(input: T): T {
   }
   return out;
 }
+
+export * from './token-encryption';
+export * from './credential-store';

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@dla/shared": "workspace:*",
-    "@dla/storage": "workspace:*"
+    "@dla/storage": "workspace:*",
+    "@dla/connectors": "workspace:*"
   }
 }

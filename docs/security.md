@@ -22,6 +22,18 @@ Security is a P0 concern, not a later feature (CLAUDE.md §42).
   `@dla/security#redactSecrets` keeps tokens/passwords/authorization/cookies out
   of structured logs (§49). CI runs `pnpm audit` (high/critical fails the build).
 
+## Archive write path (intentional SECURITY DEFINER)
+
+Authenticated users cannot `INSERT` into `archive_items` directly (no write
+policy). The only write path is the vetted `archive_ingest_item` RPC — a
+`SECURITY DEFINER` function that (a) requires `auth.uid()`, (b) verifies the
+target `connector_account` belongs to the caller, and (c) dedups on checksum.
+This keeps arbitrary-row fabrication impossible (§44 intent) while avoiding a
+service-role key in the app. Supabase's linter flags it as an authenticated-
+executable definer function; that is **expected and reviewed** here. Storage
+originals live in a private bucket with per-user folder RLS; downloads use
+short-lived signed URLs.
+
 ## Provider token security (§45)
 
 Provider OAuth/refresh tokens are extremely sensitive. They are:
