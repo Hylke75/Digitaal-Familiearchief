@@ -10,8 +10,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
@@ -54,22 +52,7 @@ export type Database = {
           source_modified_at?: string | null
           source_url_if_safe?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "archive_item_sources_archive_item_id_fkey"
-            columns: ["archive_item_id"]
-            isOneToOne: false
-            referencedRelation: "archive_items"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "archive_item_sources_connector_account_id_fkey"
-            columns: ["connector_account_id"]
-            isOneToOne: false
-            referencedRelation: "connector_accounts"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       archive_items: {
         Row: {
@@ -128,12 +111,79 @@ export type Database = {
         }
         Relationships: []
       }
+      archive_job_items: {
+        Row: {
+          attempts: number
+          claimed_at: string | null
+          claimed_by: string | null
+          connector_account_id: string | null
+          created_at: string
+          filename: string | null
+          id: string
+          job_id: string
+          last_error: string | null
+          mime_type: string | null
+          next_attempt_at: string
+          size_bytes: number | null
+          source_etag: string | null
+          source_item_id: string
+          status: string
+          storage_key: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attempts?: number
+          claimed_at?: string | null
+          claimed_by?: string | null
+          connector_account_id?: string | null
+          created_at?: string
+          filename?: string | null
+          id?: string
+          job_id: string
+          last_error?: string | null
+          mime_type?: string | null
+          next_attempt_at?: string
+          size_bytes?: number | null
+          source_etag?: string | null
+          source_item_id: string
+          status?: string
+          storage_key?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attempts?: number
+          claimed_at?: string | null
+          claimed_by?: string | null
+          connector_account_id?: string | null
+          created_at?: string
+          filename?: string | null
+          id?: string
+          job_id?: string
+          last_error?: string | null
+          mime_type?: string | null
+          next_attempt_at?: string
+          size_bytes?: number | null
+          source_etag?: string | null
+          source_item_id?: string
+          status?: string
+          storage_key?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       archive_jobs: {
         Row: {
+          attempts: number
           bytes_processed: number
+          claimed_at: string | null
+          claimed_by: string | null
           completed_at: string | null
           connector_account_id: string | null
           created_at: string
+          cursor: Json | null
           error_code: string | null
           id: string
           items_archived: number
@@ -142,7 +192,10 @@ export type Database = {
           items_processed: number
           items_skipped: number
           job_type: Database["public"]["Enums"]["job_type"]
+          last_error: string | null
+          next_archive_at: string | null
           retry_count: number
+          run_at: string
           safe_error_message: string | null
           scheduled_at: string | null
           started_at: string | null
@@ -151,10 +204,14 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          attempts?: number
           bytes_processed?: number
+          claimed_at?: string | null
+          claimed_by?: string | null
           completed_at?: string | null
           connector_account_id?: string | null
           created_at?: string
+          cursor?: Json | null
           error_code?: string | null
           id?: string
           items_archived?: number
@@ -163,7 +220,10 @@ export type Database = {
           items_processed?: number
           items_skipped?: number
           job_type: Database["public"]["Enums"]["job_type"]
+          last_error?: string | null
+          next_archive_at?: string | null
           retry_count?: number
+          run_at?: string
           safe_error_message?: string | null
           scheduled_at?: string | null
           started_at?: string | null
@@ -172,10 +232,14 @@ export type Database = {
           user_id: string
         }
         Update: {
+          attempts?: number
           bytes_processed?: number
+          claimed_at?: string | null
+          claimed_by?: string | null
           completed_at?: string | null
           connector_account_id?: string | null
           created_at?: string
+          cursor?: Json | null
           error_code?: string | null
           id?: string
           items_archived?: number
@@ -184,7 +248,10 @@ export type Database = {
           items_processed?: number
           items_skipped?: number
           job_type?: Database["public"]["Enums"]["job_type"]
+          last_error?: string | null
+          next_archive_at?: string | null
           retry_count?: number
+          run_at?: string
           safe_error_message?: string | null
           scheduled_at?: string | null
           started_at?: string | null
@@ -192,15 +259,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "archive_jobs_connector_account_id_fkey"
-            columns: ["connector_account_id"]
-            isOneToOne: false
-            referencedRelation: "connector_accounts"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       connector_accounts: {
         Row: {
@@ -250,6 +309,36 @@ export type Database = {
           status?: Database["public"]["Enums"]["connector_account_status"]
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      connector_credentials: {
+        Row: {
+          ciphertext: string
+          connector_account_id: string
+          created_at: string
+          id: string
+          kind: string
+          scheme: string
+          updated_at: string
+        }
+        Insert: {
+          ciphertext: string
+          connector_account_id: string
+          created_at?: string
+          id?: string
+          kind: string
+          scheme: string
+          updated_at?: string
+        }
+        Update: {
+          ciphertext?: string
+          connector_account_id?: string
+          created_at?: string
+          id?: string
+          kind?: string
+          scheme?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -324,6 +413,23 @@ export type Database = {
         Returns: Json
       }
       archive_summary: { Args: never; Returns: Json }
+      claim_due_jobs: {
+        Args: { p_limit: number; p_worker: string }
+        Returns: Database["public"]["Tables"]["archive_jobs"]["Row"][]
+      }
+      claim_job_items: {
+        Args: { p_job: string; p_limit: number; p_worker: string }
+        Returns: Database["public"]["Tables"]["archive_job_items"]["Row"][]
+      }
+      store_connector_credential: {
+        Args: {
+          p_ciphertext: string
+          p_connector_account_id: string
+          p_kind: string
+          p_scheme: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       archive_frequency: "daily" | "weekly" | "monthly"

@@ -122,6 +122,8 @@ export interface DiscoveredItem {
   sizeBytes: number;
   createdAtSource?: string;
   modifiedAtSource?: string;
+  /** Provider content/version hash for change detection (e.g. Dropbox content_hash). */
+  etag?: string;
 }
 
 export interface ConnectorStatus {

@@ -25,6 +25,7 @@ const nextConfig = {
     '@dla/shared',
     '@dla/i18n',
     '@dla/import',
+    '@dla/oauth',
     '@dla/database',
     '@dla/storage',
     '@dla/connectors',
