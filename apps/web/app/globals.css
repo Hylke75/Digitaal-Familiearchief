@@ -17,7 +17,7 @@
 
   /* Visible, calm focus ring for keyboard users (docs/DESIGN.md §52, WCAG 2.2). */
   :focus-visible {
-    outline: 2px solid #18392f;
+    outline: 2px solid #1d3d2a;
     outline-offset: 2px;
     border-radius: 4px;
   }
