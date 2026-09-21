@@ -107,6 +107,10 @@ const nl = {
     categoryPhotoVideo: "Foto's en video's",
     categorySocial: 'Sociale media',
     categoryDocuments: 'Documenten',
+    iphoneTitle: 'iPhone-foto’s veiligstellen',
+    iphoneBody:
+      'Kies nu foto’s en video’s van je iPhone om ze veilig te stellen. Automatisch en doorlopend meearchiveren komt binnenkort met onze iPhone-app.',
+    iphoneCta: 'Foto’s kiezen',
     select: 'Foto’s selecteren',
     itemsCount: '{count} bestanden',
     filesLabel: 'Bestanden',

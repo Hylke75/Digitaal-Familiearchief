@@ -107,6 +107,10 @@ const en: AppMessages = {
     categoryPhotoVideo: 'Photos and videos',
     categorySocial: 'Social media',
     categoryDocuments: 'Documents',
+    iphoneTitle: 'Safeguard your iPhone photos',
+    iphoneBody:
+      'Pick photos and videos from your iPhone to safeguard them now. Automatic, continuous archiving is coming soon with our iPhone app.',
+    iphoneCta: 'Choose photos',
     select: 'Select photos',
     itemsCount: '{count} files',
     filesLabel: 'Files',

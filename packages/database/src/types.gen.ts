@@ -10,8 +10,35 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "14.5"
+  }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
   public: {
     Tables: {
@@ -52,7 +79,22 @@ export type Database = {
           source_modified_at?: string | null
           source_url_if_safe?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "archive_item_sources_archive_item_id_fkey"
+            columns: ["archive_item_id"]
+            isOneToOne: false
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "archive_item_sources_connector_account_id_fkey"
+            columns: ["connector_account_id"]
+            isOneToOne: false
+            referencedRelation: "connector_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       archive_items: {
         Row: {
@@ -172,7 +214,22 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "archive_job_items_connector_account_id_fkey"
+            columns: ["connector_account_id"]
+            isOneToOne: false
+            referencedRelation: "connector_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "archive_job_items_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "archive_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       archive_jobs: {
         Row: {
@@ -259,7 +316,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "archive_jobs_connector_account_id_fkey"
+            columns: ["connector_account_id"]
+            isOneToOne: false
+            referencedRelation: "connector_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       connector_accounts: {
         Row: {
@@ -340,7 +405,15 @@ export type Database = {
           scheme?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "connector_credentials_connector_account_id_fkey"
+            columns: ["connector_account_id"]
+            isOneToOne: false
+            referencedRelation: "connector_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -412,14 +485,79 @@ export type Database = {
         }
         Returns: Json
       }
+      archive_reconcile_sources: {
+        Args: {
+          p_connector_account_id: string
+          p_present_source_item_ids: string[]
+        }
+        Returns: number
+      }
       archive_summary: { Args: never; Returns: Json }
       claim_due_jobs: {
         Args: { p_limit: number; p_worker: string }
-        Returns: Database["public"]["Tables"]["archive_jobs"]["Row"][]
+        Returns: {
+          attempts: number
+          bytes_processed: number
+          claimed_at: string | null
+          claimed_by: string | null
+          completed_at: string | null
+          connector_account_id: string | null
+          created_at: string
+          cursor: Json | null
+          error_code: string | null
+          id: string
+          items_archived: number
+          items_discovered: number
+          items_failed: number
+          items_processed: number
+          items_skipped: number
+          job_type: Database["public"]["Enums"]["job_type"]
+          last_error: string | null
+          next_archive_at: string | null
+          retry_count: number
+          run_at: string
+          safe_error_message: string | null
+          scheduled_at: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["job_status"]
+          updated_at: string
+          user_id: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "archive_jobs"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       claim_job_items: {
         Args: { p_job: string; p_limit: number; p_worker: string }
-        Returns: Database["public"]["Tables"]["archive_job_items"]["Row"][]
+        Returns: {
+          attempts: number
+          claimed_at: string | null
+          claimed_by: string | null
+          connector_account_id: string | null
+          created_at: string
+          filename: string | null
+          id: string
+          job_id: string
+          last_error: string | null
+          mime_type: string | null
+          next_attempt_at: string
+          size_bytes: number | null
+          source_etag: string | null
+          source_item_id: string
+          status: string
+          storage_key: string | null
+          updated_at: string
+          user_id: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "archive_job_items"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       store_connector_credential: {
         Args: {
@@ -596,6 +734,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       archive_frequency: ["daily", "weekly", "monthly"],

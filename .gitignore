@@ -43,3 +43,7 @@ Thumbs.db
 
 # Synthetic archive fixtures may be large binaries — keep only generators
 tests/fixtures/**/*.bin
+
+# Local env files (never commit secrets); the checked-in example stays tracked
+.env*
+!.env.example
