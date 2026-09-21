@@ -73,5 +73,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       # High/critical advisories fail the job; lower severities are reported only.
+      # Overrides and the documented exception list live in the root
+      # package.json (pnpm.overrides / pnpm.auditConfig.ignoreGhsas) and are
+      # justified per advisory in docs/security.md#dependency-policy-pnpm-audit.
       - name: Audit (high & critical)
         run: pnpm audit --audit-level high
+
+      # Visibility only: moderate/low advisories must not silently accumulate.
+      - name: Audit report (all severities, non-blocking)
+        if: always()
+        run: pnpm audit || true
