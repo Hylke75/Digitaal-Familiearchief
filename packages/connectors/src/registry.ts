@@ -213,7 +213,7 @@ export const CONNECTOR_REGISTRY: readonly ConnectorCapability[] = [
     featureFlag: 'INSTAGRAM_ENABLED',
     type: 'archive_importer',
     connectionType: 'archive_import',
-    description: 'Neem je Instagram-herinneringen mee via een export.',
+    description: "Voeg je Instagram-foto's toe via Dropbox.",
     historicalImport: true,
     originalMediaAvailable: true,
     metadataAvailable: true,
@@ -227,7 +227,7 @@ export const CONNECTOR_REGISTRY: readonly ConnectorCapability[] = [
     featureFlag: 'FACEBOOK_ENABLED',
     type: 'archive_importer',
     connectionType: 'archive_import',
-    description: 'Neem je Facebook-herinneringen mee via een export.',
+    description: "Voeg je Facebook-foto's toe via Dropbox.",
     historicalImport: true,
     originalMediaAvailable: true,
     metadataAvailable: true,
@@ -319,6 +319,11 @@ export function liveConnectors(
 export type OnboardingAction = 'connect' | 'import' | 'select' | 'reconnect' | 'coming_soon';
 
 export function onboardingAction(c: ConnectorCapability): OnboardingAction {
+  // An archive import (a user-provided export) needs no provider approval and no
+  // live API, so it can always be offered — regardless of implementation status.
+  if (c.connectionType === 'archive_import' || c.connectionType === 'guided_export') {
+    return 'import';
+  }
   if (c.implementationStatus === 'production') {
     switch (c.connectionType) {
       case 'live_api':
@@ -326,19 +331,9 @@ export function onboardingAction(c: ConnectorCapability): OnboardingAction {
         return 'connect';
       case 'user_picker':
         return 'select';
-      case 'archive_import':
-      case 'guided_export':
-        return 'import';
       default:
         return 'coming_soon';
     }
-  }
-  // Archive-import fallbacks can be offered in beta even before a live API exists.
-  if (
-    c.implementationStatus === 'beta' &&
-    (c.connectionType === 'archive_import' || c.connectionType === 'guided_export')
-  ) {
-    return 'import';
   }
   return 'coming_soon';
 }

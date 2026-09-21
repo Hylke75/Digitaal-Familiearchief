@@ -14,6 +14,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { StatusBanner } from '@/components/ui/StatusBanner';
 import { createClient } from '@/lib/supabase/server';
 import { isConnectProviderConfigured } from '@/lib/connectors/connect-registry';
+import { getAssistedGuide } from '@/lib/connectors/assisted';
 
 const DISPLAY_NAME: Record<string, string> = { mock: 'Testbron' };
 const CATEGORIES = [
@@ -66,18 +67,23 @@ export default async function SourcesPage({
     // A live OAuth connector that is fully implemented AND configured (client
     // credentials present) can be connected now, regardless of registry status.
     const liveConnectable = isConnectProviderConfigured(c.connectorKey);
+    // Assisted transfer (Instagram/Facebook via Meta → Dropbox).
+    const assisted = getAssistedGuide(c.connectorKey);
+    const description = assisted?.description ?? c.description;
     return (
       <li key={c.connectorKey} className="flex items-center gap-3 py-3">
         <SourceLogo name={c.displayName} />
         <div className="min-w-0 flex-1">
           <p className="text-ink truncate font-semibold">{c.displayName}</p>
-          {c.description ? (
-            <p className="text-small text-ink-soft truncate">{c.description}</p>
-          ) : null}
+          {description ? <p className="text-small text-ink-soft truncate">{description}</p> : null}
         </div>
         {liveConnectable ? (
           <ButtonLink href={`/auth/${c.connectorKey}/start`} size="sm">
             {tActions('connect')}
+          </ButtonLink>
+        ) : assisted ? (
+          <ButtonLink href={assisted.href} size="sm">
+            {assisted.label}
           </ButtonLink>
         ) : action === 'import' ? (
           <ButtonLink

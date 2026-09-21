@@ -8,6 +8,7 @@ import { Logo } from '@/components/brand/Logo';
 import { SiteHeader } from '@/components/marketing/SiteHeader';
 import { SiteFooter } from '@/components/marketing/SiteFooter';
 import { ProductPreview } from '@/components/marketing/ProductPreview';
+import { getAssistedGuide } from '@/lib/connectors/assisted';
 import { marketingNl as m } from '@/content/marketing.nl';
 import { PRICING_DECIDED, PRICING_PLANS } from '@/config/pricing';
 import { TRUST_FACTS } from '@/config/trust';
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
 
 /** Consumer-friendly capability label, derived from the connector registry (§16). */
 function capabilityLabel(c: ConnectorCapability): string {
+  if (getAssistedGuide(c.connectorKey)) return 'Koppelen';
   switch (c.connectionType) {
     case 'device_native':
       return 'Binnenkort';
