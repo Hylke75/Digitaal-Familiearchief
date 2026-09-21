@@ -10,7 +10,9 @@ import { Card, CardBody } from '@/components/ui/Card';
 import { Button, ButtonLink } from '@/components/ui/Button';
 import { ConnectedSourceRow, SourceLogo } from '@/components/ui/SourceCard';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { StatusBanner } from '@/components/ui/StatusBanner';
 import { createClient } from '@/lib/supabase/server';
+import { isConnectProviderConfigured } from '@/lib/connectors/connect-registry';
 
 const DISPLAY_NAME: Record<string, string> = { mock: 'Testbron' };
 const CATEGORIES = [
@@ -19,7 +21,11 @@ const CATEGORIES = [
   { key: 'documents', label: 'categoryDocuments' },
 ] as const;
 
-export default async function SourcesPage() {
+export default async function SourcesPage({
+  searchParams,
+}: {
+  searchParams: { verbinden?: string };
+}) {
   const t = await getTranslations('sources');
   const tActions = await getTranslations('actions');
   const tHealth = await getTranslations('health');
@@ -49,6 +55,9 @@ export default async function SourcesPage() {
 
   const renderSource = (c: ConnectorCapability) => {
     const action = onboardingAction(c);
+    // A live OAuth connector that is fully implemented AND configured (client
+    // credentials present) can be connected now, regardless of registry status.
+    const liveConnectable = isConnectProviderConfigured(c.connectorKey);
     return (
       <li key={c.connectorKey} className="flex items-center gap-3 py-3">
         <SourceLogo name={c.displayName} />
@@ -58,7 +67,11 @@ export default async function SourcesPage() {
             <p className="text-small text-ink-soft truncate">{c.description}</p>
           ) : null}
         </div>
-        {action === 'import' ? (
+        {liveConnectable ? (
+          <ButtonLink href={`/auth/${c.connectorKey}/start`} size="sm">
+            {tActions('connect')}
+          </ButtonLink>
+        ) : action === 'import' ? (
           <ButtonLink
             href={`/importeren?connector=${c.connectorKey}`}
             variant="secondary"
@@ -82,6 +95,24 @@ export default async function SourcesPage() {
   return (
     <div>
       <PageHeader title={t('title')} subtitle={t('subtitle')} />
+
+      {searchParams.verbinden === 'gelukt' ? (
+        <div className="mb-6">
+          <StatusBanner
+            status="archiving"
+            title={t('allSafe')}
+            description={tHealth('archiving')}
+          />
+        </div>
+      ) : searchParams.verbinden === 'mislukt' ? (
+        <div className="mb-6">
+          <StatusBanner
+            status="action_required"
+            title={tActions('reconnect')}
+            description={t('reconnect')}
+          />
+        </div>
+      ) : null}
 
       {/* Connected sources (includes the internal test source). */}
       <section className="mb-8">

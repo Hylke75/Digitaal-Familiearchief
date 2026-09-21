@@ -22,6 +22,7 @@
       "@dla/shared": ["packages/shared/src"],
       "@dla/i18n": ["packages/i18n/src"],
       "@dla/import": ["packages/import/src"],
+      "@dla/oauth": ["packages/oauth/src"],
       "@dla/database": ["packages/database/src"],
       "@dla/storage": ["packages/storage/src"],
       "@dla/connectors": ["packages/connectors/src"],

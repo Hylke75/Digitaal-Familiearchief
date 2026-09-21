@@ -15,6 +15,7 @@
     "@dla/database": "workspace:*",
     "@dla/i18n": "workspace:*",
     "@dla/import": "workspace:*",
+    "@dla/oauth": "workspace:*",
     "@dla/security": "workspace:*",
     "@dla/shared": "workspace:*",
     "@dla/storage": "workspace:*",
