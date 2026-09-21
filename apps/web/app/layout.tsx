@@ -12,12 +12,26 @@ const inter = Inter({
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('app');
+  const description =
+    "Koppel je foto's, sociale media en documenten. Bewora brengt je digitale leven samen in een onafhankelijk archief dat van jou blijft.";
   return {
+    metadataBase: new URL('https://bewora.nl'),
     title: {
-      default: t('name'),
+      default: `${t('name')} — Bewaar je digitale leven onafhankelijk`,
       template: `%s · ${t('name')}`,
     },
-    description: t('tagline'),
+    description,
+    icons: {
+      icon: [{ url: '/brand/bewora-favicon.svg', type: 'image/svg+xml' }],
+    },
+    openGraph: {
+      type: 'website',
+      locale: 'nl_NL',
+      siteName: t('name'),
+      title: `${t('name')} — Bewaar wat van jou is`,
+      description,
+    },
+    twitter: { card: 'summary_large_image' },
   };
 }
 

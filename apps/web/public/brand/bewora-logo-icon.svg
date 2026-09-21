@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="Bewora">
+  <!-- Bewora mark: a spine with two stacked page/archive layers — reads as a
+       "B", two pages and an open archive. Uses currentColor for theming. -->
+  <g fill="currentColor">
+    <rect x="16" y="14" width="8" height="36" rx="4" />
+    <path d="M24 14h11a8.5 8.5 0 0 1 0 17H24z" />
+    <path d="M24 33h14a8.5 8.5 0 0 1 0 17H24z" />
+  </g>
+</svg>

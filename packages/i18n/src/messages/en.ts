@@ -4,7 +4,7 @@ import type { AppMessages } from './shape';
 const en: AppMessages = {
   app: {
     name: 'Bewora',
-    tagline: 'Keep what matters.',
+    tagline: 'Keep what’s yours.',
   },
   common: {
     back: 'Back',

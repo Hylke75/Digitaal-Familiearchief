@@ -2,7 +2,7 @@
 const nl = {
   app: {
     name: 'Bewora',
-    tagline: 'Alles wat je niet kwijt wilt. Op één veilige plek.',
+    tagline: 'Bewaar wat van jou is.',
   },
   common: {
     back: 'Terug',

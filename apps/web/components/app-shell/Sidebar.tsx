@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { NAV_GROUPS } from '@/lib/navigation';
 import { CheckCircle2, LogOut } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
+import { Logo } from '@/components/brand/Logo';
 import { signOutAction } from '@/lib/auth/actions';
 import { cn } from '@/lib/cn';
 
@@ -14,15 +15,12 @@ export function Sidebar({ userName }: { userName: string }) {
   const pathname = usePathname();
   const t = useTranslations('nav');
   const tHealth = useTranslations('health');
-  const tApp = useTranslations('app');
   const tAuth = useTranslations('auth');
 
   return (
     <aside className="border-border bg-surface hidden w-64 shrink-0 flex-col border-r lg:flex">
       <div className="px-5 py-6">
-        <Link href="/vandaag" className="text-h3 text-forest font-semibold">
-          {tApp('name')}
-        </Link>
+        <Logo href="/vandaag" size="md" />
       </div>
 
       <nav className="flex-1 space-y-4 overflow-y-auto px-3 py-2">

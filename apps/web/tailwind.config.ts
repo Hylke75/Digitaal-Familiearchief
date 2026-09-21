@@ -15,27 +15,33 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Brand
+        // Brand — Archive Green (docs/BRAND.md). Token names are kept stable so
+        // existing `forest`/`warm`/`ink` classes adopt the refreshed palette.
         forest: {
-          DEFAULT: '#18392F', // Primary — Deep Forest
-          hover: '#102B24', // Primary hover
+          DEFAULT: '#1D3D2A', // Primary — Archive Green
+          hover: '#142C1E', // Archive Green Dark (hover/darker panels)
         },
+        archive: '#1D3D2A', // semantic alias
         // Surfaces
-        warm: '#F7F6F2', // warm background (no hard white)
+        warm: '#FAF6F1', // Warm Paper background
         surface: '#FFFFFF',
-        border: '#E5E7E3',
+        border: '#E5E7E3', // decorative card borders (not interactive controls)
+        'border-strong': '#7F8981', // interactive control boundaries (≥3:1)
         // Text
         ink: {
-          DEFAULT: '#17201D', // text primary
-          soft: '#66706C', // text secondary
+          DEFAULT: '#1B211D', // Charcoal Green — text primary
+          soft: '#59635C', // Secondary text
         },
+        // Accent — use sparingly (timeline, ownership/export, premium detail)
+        brass: '#9B5B19',
+        sage: '#A8B4A9',
         // Status
         success: '#237A57',
-        warning: '#C67A19',
+        warning: '#8A4B12', // accessible warning text (was #C67A19)
         danger: '#B64343',
         // Soft status fills
         'soft-green': '#E8F2ED',
-        'soft-amber': '#FFF3DC',
+        'soft-amber': '#F6ECDD',
         'soft-red': '#FAEAEA',
       },
       fontFamily: {
