@@ -44,5 +44,9 @@ export function metaConnectState(platform: MetaPlatform): MetaConnectState {
 /** The deep-link that starts the transfer at Meta, or null if not ready. */
 export function metaConnectDeepLink(platform: MetaPlatform, redirectUri: string): string | null {
   if (metaConnectState(platform) !== 'approved' || !metaEyiConfig.importService) return null;
-  return buildMetaEyiDeepLink({ platform, importService: metaEyiConfig.importService, redirectUri });
+  return buildMetaEyiDeepLink({
+    platform,
+    importService: metaEyiConfig.importService,
+    redirectUri,
+  });
 }

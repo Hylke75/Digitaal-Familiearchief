@@ -44,7 +44,13 @@ export async function findClient(admin: Admin, clientId: string): Promise<MetaCl
 /** Issue a short-lived, single-use authorization code (returns the RAW code). */
 export async function issueAuthCode(
   admin: Admin,
-  input: { clientId: string; userId: string; connectorAccountId: string; redirectUri: string; scope?: string },
+  input: {
+    clientId: string;
+    userId: string;
+    connectorAccountId: string;
+    redirectUri: string;
+    scope?: string;
+  },
 ): Promise<string> {
   const code = generateToken();
   await admin.from('meta_oauth_codes').insert({
@@ -67,7 +73,12 @@ export interface IssuedTokens {
 
 async function mintTokens(
   admin: Admin,
-  base: { clientId: string; userId: string; connectorAccountId: string | null; scope: string | null },
+  base: {
+    clientId: string;
+    userId: string;
+    connectorAccountId: string | null;
+    scope: string | null;
+  },
 ): Promise<IssuedTokens> {
   const accessToken = generateToken();
   const refreshToken = generateToken();
@@ -118,7 +129,8 @@ export async function refreshTokens(
     .eq('refresh_token_hash', hashToken(input.refreshToken))
     .maybeSingle();
   if (!row || row.revoked || row.client_id !== input.clientId) return { error: 'invalid_grant' };
-  if (row.refresh_expires_at && isExpired(row.refresh_expires_at)) return { error: 'invalid_grant' };
+  if (row.refresh_expires_at && isExpired(row.refresh_expires_at))
+    return { error: 'invalid_grant' };
   await admin.from('meta_oauth_tokens').update({ revoked: true }).eq('id', row.id); // rotation
   return mintTokens(admin, {
     clientId: row.client_id,
@@ -164,7 +176,12 @@ export async function ensureConnectorAccount(
   if (existing) return existing.id;
   const { data, error } = await admin
     .from('connector_accounts')
-    .insert({ user_id: userId, connector_key: connectorKey, status: 'connected', connected_at: new Date().toISOString() })
+    .insert({
+      user_id: userId,
+      connector_key: connectorKey,
+      status: 'connected',
+      connected_at: new Date().toISOString(),
+    })
     .select('id')
     .single();
   if (error || !data) throw error ?? new Error('connector account insert failed');
@@ -214,7 +231,10 @@ export function adminIngestPort(admin: Admin, userId: string): MetaIngestPort {
             connector_account_id: input.connectorAccountId,
             source_item_id: input.sourceItemId,
           },
-          { onConflict: 'archive_item_id,connector_account_id,source_item_id', ignoreDuplicates: true },
+          {
+            onConflict: 'archive_item_id,connector_account_id,source_item_id',
+            ignoreDuplicates: true,
+          },
         );
       }
       return { deduped: Boolean(existing) };

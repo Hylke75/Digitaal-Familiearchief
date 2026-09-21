@@ -37,9 +37,9 @@ export default async function MetaAssistedPage() {
           subtitle="Meta zet je foto's en video's rechtstreeks in je archief"
         />
         <p className="text-body text-ink-soft mb-8">
-          Kies je account en bevestig bij Meta. Meta stuurt je bestaande foto&apos;s en
-          video&apos;s daarna automatisch naar Bewora — en blijft dat de komende jaren dagelijks
-          doen voor nieuwe berichten. Je hoeft niets te downloaden of uploaden.
+          Kies je account en bevestig bij Meta. Meta stuurt je bestaande foto&apos;s en video&apos;s
+          daarna automatisch naar Bewora — en blijft dat de komende jaren dagelijks doen voor nieuwe
+          berichten. Je hoeft niets te downloaden of uploaden.
         </p>
         <div className="space-y-4">
           <DirectConnect
@@ -66,7 +66,11 @@ export default async function MetaAssistedPage() {
     );
   }
 
-  return <AssistedDropboxFlow pending={fbState === 'pending_approval' || igState === 'pending_approval'} />;
+  return (
+    <AssistedDropboxFlow
+      pending={fbState === 'pending_approval' || igState === 'pending_approval'}
+    />
+  );
 }
 
 function DirectConnect({
@@ -96,7 +100,7 @@ function DirectConnect({
             <ArrowUpRight className="ml-1 h-4 w-4" aria-hidden="true" />
           </ButtonLink>
         ) : (
-          <span className="text-ink-soft bg-warm rounded-pill border-border shrink-0 border px-3 py-1 text-small">
+          <span className="text-ink-soft bg-warm rounded-pill border-border text-small shrink-0 border px-3 py-1">
             Binnenkort
           </span>
         )}
@@ -132,7 +136,8 @@ async function AssistedDropboxFlow({ pending }: { pending: boolean }) {
           <Info className="text-forest mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
           <p>
             We werken aan een directe koppeling waarbij Meta je foto&apos;s rechtstreeks naar Bewora
-            stuurt. Zolang die er nog niet is, werkt de route via Dropbox hieronder gewoon vandaag al.
+            stuurt. Zolang die er nog niet is, werkt de route via Dropbox hieronder gewoon vandaag
+            al.
           </p>
         </div>
       ) : null}

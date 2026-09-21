@@ -13,7 +13,12 @@ import { ingestTransferItem, type TransferItem } from './ingestion';
 export type ImportEndpoint = 'photos' | 'videos' | 'media' | 'social-posts';
 
 function bearer(request: NextRequest): string | null {
-  return request.headers.get('authorization')?.match(/^Bearer\s+(.+)$/i)?.[1]?.trim() ?? null;
+  return (
+    request.headers
+      .get('authorization')
+      ?.match(/^Bearer\s+(.+)$/i)?.[1]
+      ?.trim() ?? null
+  );
 }
 
 function indexOf(hay: Uint8Array, needle: Uint8Array, from = 0): number {
@@ -47,7 +52,10 @@ function splitMultipart(buf: Uint8Array, boundary: string): Uint8Array[] {
   return parts;
 }
 
-async function parseItem(request: NextRequest, endpoint: ImportEndpoint): Promise<TransferItem | null> {
+async function parseItem(
+  request: NextRequest,
+  endpoint: ImportEndpoint,
+): Promise<TransferItem | null> {
   const ct = request.headers.get('content-type') ?? '';
   if (ct.includes('application/json')) {
     const meta = (await request.json().catch(() => null)) as Record<string, unknown> | null;
@@ -93,7 +101,8 @@ export function metaImporter(endpoint: ImportEndpoint) {
     if (!item) return NextResponse.json({ error: 'invalid_request' }, { status: 400 });
 
     // The token may not carry a specific platform; ensure/keep a connector account.
-    const connectorAccountId = owner.connectorAccountId ?? (await ensureConnectorAccount(admin, owner.userId, 'facebook'));
+    const connectorAccountId =
+      owner.connectorAccountId ?? (await ensureConnectorAccount(admin, owner.userId, 'facebook'));
 
     try {
       const outcome = await ingestTransferItem(
@@ -102,7 +111,8 @@ export function metaImporter(endpoint: ImportEndpoint) {
         connectorAccountId,
         item,
       );
-      if (outcome === 'failed') return NextResponse.json({ error: 'invalid_item' }, { status: 422 });
+      if (outcome === 'failed')
+        return NextResponse.json({ error: 'invalid_item' }, { status: 422 });
       return NextResponse.json({ status: outcome }, { status: 201 });
     } catch {
       // Transient storage/db problem → 429 so Meta backs off and retries.
