@@ -32,6 +32,24 @@ function backoffMs(attempts: number): number {
   return base + Math.floor(Math.random() * 1000);
 }
 
+/** Bound a promise so one hung download cannot occupy a pool slot indefinitely.
+ * A timeout is a transient failure — the item is retried later, never dropped. */
+function withTimeout<T>(p: Promise<T>, ms: number, message: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new LiveSourceError('transient', message)), ms);
+    p.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (error) => {
+        clearTimeout(timer);
+        reject(error);
+      },
+    );
+  });
+}
+
 export async function POST(request: NextRequest) {
   return handle(request);
 }
@@ -192,27 +210,33 @@ async function processJob(admin: Admin, job: JobRow, worker: string, deadline: n
     return handleJobError(admin, job, e);
   }
 
-  // Phase B — process claimed item batches. Reaching here with work to do is
-  // real progress, so clear the stale-reclaim attempts counter: a large import
-  // spans many ticks (and may occasionally be cut off at the function wall), and
-  // must never be mistaken for a poison job and capped (CLAUDE.md §69).
+  // Phase B — a continuous pool of slots. Each slot independently claims and
+  // processes ONE item at a time, so a single large or slow file only occupies
+  // its own slot and never stalls the others: throughput is latency-hidden
+  // instead of gated by the slowest file in a batch. A per-item timeout (inside
+  // processItem) frees a slot from a hung download; the item is retried later
+  // (claim_job_items reclaims its lease). Reaching here with work to do is real
+  // progress, so the stale-reclaim attempts counter is cleared once — a large
+  // import spanning many ticks must never be mistaken for a poison job (§69).
+  const CONCURRENCY = 20;
   let clearedAttempts = false;
-  while (Date.now() < deadline) {
-    const { data: items } = await admin.rpc('claim_job_items', {
-      p_job: job.id,
-      p_limit: 25,
-      p_worker: worker,
-    });
-    const batch = (items ?? []) as ItemRow[];
-    if (batch.length === 0) break;
-    if (!clearedAttempts) {
-      await admin.from('archive_jobs').update({ attempts: 0 }).eq('id', job.id);
-      clearedAttempts = true;
+  const slot = async () => {
+    while (Date.now() < deadline) {
+      const { data: claimed } = await admin.rpc('claim_job_items', {
+        p_job: job.id,
+        p_limit: 1,
+        p_worker: worker,
+      });
+      const it = ((claimed ?? []) as ItemRow[])[0];
+      if (!it) return; // queue drained for now
+      if (!clearedAttempts) {
+        clearedAttempts = true;
+        await admin.from('archive_jobs').update({ attempts: 0 }).eq('id', job.id);
+      }
+      await processItem(admin, storage, source, accessToken, account, it);
     }
-    await Promise.allSettled(
-      batch.map((it) => processItem(admin, storage, source, accessToken, account, it)),
-    );
-  }
+  };
+  await Promise.all(Array.from({ length: CONCURRENCY }, () => slot()));
 
   const { count } = await admin
     .from('archive_job_items')
@@ -396,12 +420,16 @@ async function processItem(
   item: ItemRow,
 ) {
   try {
-    const bytes = await source.fetchContent(accessToken, {
-      sourceItemId: item.source_item_id,
-      filename: item.filename ?? 'bestand',
-      mimeType: item.mime_type ?? 'application/octet-stream',
-      sizeBytes: Number(item.size_bytes ?? 0),
-    });
+    const bytes = await withTimeout(
+      source.fetchContent(accessToken, {
+        sourceItemId: item.source_item_id,
+        filename: item.filename ?? 'bestand',
+        mimeType: item.mime_type ?? 'application/octet-stream',
+        sizeBytes: Number(item.size_bytes ?? 0),
+      }),
+      90_000,
+      'download timed out',
+    );
     const key = await archiveBytes(
       admin,
       storage,
