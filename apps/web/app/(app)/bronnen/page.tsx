@@ -1,3 +1,4 @@
+import { headers } from 'next/headers';
 import { getTranslations } from 'next-intl/server';
 import {
   connectorsByCategory,
@@ -37,6 +38,13 @@ export default async function SourcesPage({
     .order('created_at', { ascending: true });
 
   const connectedKeys = new Set((accounts ?? []).map((a) => a.connector_key));
+
+  // Apple Photos cannot be connected from a browser (needs a native iOS app,
+  // docs/mobile/apple-photos.md). On an iPhone we surface the working path —
+  // importing straight from the device — prominently instead of a dead end.
+  const userAgent = headers().get('user-agent') ?? '';
+  const isIOS = /iphone|ipad|ipod/i.test(userAgent);
+  const showIphonePrompt = isIOS && !connectedKeys.has('phone');
 
   const label = (action: OnboardingAction) => {
     switch (action) {
@@ -111,6 +119,26 @@ export default async function SourcesPage({
             title={tActions('reconnect')}
             description={t('reconnect')}
           />
+        </div>
+      ) : null}
+
+      {/* iPhone visitors: promote the working device-import path (§3). */}
+      {showIphonePrompt ? (
+        <div className="mb-8">
+          <Card>
+            <CardBody className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-3">
+                <SourceLogo name="Apple Foto's" />
+                <div className="min-w-0">
+                  <p className="text-ink font-semibold">{t('iphoneTitle')}</p>
+                  <p className="text-small text-ink-soft">{t('iphoneBody')}</p>
+                </div>
+              </div>
+              <ButtonLink href="/importeren?connector=phone" className="shrink-0">
+                {t('iphoneCta')}
+              </ButtonLink>
+            </CardBody>
+          </Card>
         </div>
       ) : null}
 

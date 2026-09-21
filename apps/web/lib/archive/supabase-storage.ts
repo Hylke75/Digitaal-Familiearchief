@@ -90,4 +90,19 @@ export class SupabaseStorageProvider implements ArchiveStorageProvider {
     const bytes = await this.get(key);
     return sha256Hex(bytes) === expectedSha256;
   }
+
+  /**
+   * Create a one-time signed target the client uploads directly to (Supabase
+   * resumable upload), so large media never passes through app memory
+   * (docs/mobile/apple-photos.md). Not part of the storage domain interface —
+   * a Supabase-specific capability for the mobile upload flow. Storage RLS
+   * still confines the key to the owner's folder.
+   */
+  async createSignedUpload(key: string): Promise<{ uploadUrl: string; token: string }> {
+    const { data, error } = await this.supabase.storage
+      .from(BUCKET)
+      .createSignedUploadUrl(key, { upsert: true });
+    if (error || !data) throw error ?? new StorageKeyNotFoundError(key);
+    return { uploadUrl: data.signedUrl, token: data.token };
+  }
 }
