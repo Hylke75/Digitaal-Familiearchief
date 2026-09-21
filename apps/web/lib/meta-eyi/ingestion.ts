@@ -10,7 +10,7 @@ import { adaptMediaItem, adaptSocialPost } from './adapter';
  * deletion never removes the archived copy (that is the RPC's contract, §28).
  */
 export interface TransferItem {
-  endpoint: 'photos' | 'videos' | 'social-posts';
+  endpoint: 'photos' | 'videos' | 'media' | 'social-posts';
   meta: Record<string, unknown>;
   bytes?: Uint8Array;
 }
