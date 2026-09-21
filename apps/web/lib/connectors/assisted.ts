@@ -1,11 +1,12 @@
 /**
- * "Assisted transfer" connectors — sources that offer no third-party API to pull
- * a user's media (Instagram/Facebook: Basic Display API shut down 2024, Graph API
- * is business-only), but DO support Meta's official "Transfer Your Information"
- * tool, which copies a user's photos/videos straight into Dropbox. Bewora already
- * archives Dropbox automatically, so this gives an honest "connect once" feel
- * without scraping or a manual ZIP. Verified 2026 against the Data Transfer
- * Initiative registry, Meta Newsroom and Dropbox Help (worldwide; photos+videos).
+ * Guided source cards — sources whose connect action routes to a guided flow
+ * instead of a direct web OAuth. Two kinds today:
+ *  - Instagram/Facebook: no third-party API to pull media (Basic Display shut
+ *    down 2024, Graph is business-only), so a guided transfer (Meta → Dropbox,
+ *    verified against the Data Transfer Initiative registry + Meta Newsroom +
+ *    Dropbox Help). Direct Meta EYI transfer is the future path (docs/connectors/meta-eyi.md).
+ *  - Apple Foto's: no browser API at all (docs/connectors/apple-photos.md) — the
+ *    card opens the "use the iPhone app" landing (universal link).
  */
 export interface AssistedGuide {
   /** Consumer action label on the source card. */
@@ -26,6 +27,11 @@ export const ASSISTED_GUIDES: Record<string, AssistedGuide> = {
     label: 'Koppelen',
     href: '/koppelen/meta',
     description: "Voeg je Facebook-foto's toe via Dropbox — Bewora archiveert ze automatisch.",
+  },
+  apple_photos: {
+    label: 'Open op iPhone',
+    href: '/connect/apple-photos',
+    description: 'Automatisch via de Bewora-app op je iPhone.',
   },
 };
 
