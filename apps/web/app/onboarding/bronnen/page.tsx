@@ -5,6 +5,7 @@ import { Button, ButtonLink } from '@/components/ui/Button';
 import { SourceLogo } from '@/components/ui/SourceCard';
 import { connectMockAction } from '@/lib/archive/actions';
 import { isConnectProviderConfigured } from '@/lib/connectors/connect-registry';
+import { getAssistedGuide } from '@/lib/connectors/assisted';
 
 export default async function OnboardingSourcesPage() {
   const t = await getTranslations('onboarding');
@@ -18,6 +19,7 @@ export default async function OnboardingSourcesPage() {
   const renderSource = (c: ConnectorCapability) => {
     const liveConnectable = isConnectProviderConfigured(c.connectorKey);
     const action = onboardingAction(c);
+    const assisted = getAssistedGuide(c.connectorKey);
     return (
       <li key={c.connectorKey} className="flex items-center gap-3 py-3">
         <SourceLogo name={c.displayName} />
@@ -25,6 +27,10 @@ export default async function OnboardingSourcesPage() {
         {liveConnectable ? (
           <ButtonLink href={`/auth/${c.connectorKey}/start`} size="sm">
             {tActions('connect')}
+          </ButtonLink>
+        ) : assisted ? (
+          <ButtonLink href={assisted.href} size="sm">
+            {assisted.label}
           </ButtonLink>
         ) : action === 'import' ? (
           <ButtonLink
