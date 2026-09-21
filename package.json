@@ -23,6 +23,27 @@
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "typescript": "^5.6.3",
-    "vitest": "^2.1.8"
+    "vitest": "^3.2.6"
+  },
+  "pnpm": {
+    "overrides": {
+      "postcss": "^8.5.18",
+      "glob": "^10.5.0",
+      "vite": "^6.4.3"
+    },
+    "auditConfig": {
+      "ignoreGhsas": [
+        "GHSA-h25m-26qc-wcjf",
+        "GHSA-q4gf-8mx6-v5v3",
+        "GHSA-8h8q-6873-q5fj",
+        "GHSA-c4j6-fc7j-m34r",
+        "GHSA-36qx-fr4f-26g5",
+        "GHSA-m99w-x7hq-7vfj",
+        "GHSA-89xv-2m56-2m9x",
+        "GHSA-p9j2-gv94-2wf4",
+        "GHSA-p293-qw3h-jr36",
+        "GHSA-2xp9-vwfh-vxw4"
+      ]
+    }
   }
 }
