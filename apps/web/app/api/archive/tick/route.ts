@@ -54,7 +54,10 @@ async function handle(request: NextRequest) {
   }
 
   const worker = randomToken(8);
-  const deadline = Date.now() + 760_000; // stop ~40s before the wall
+  // Stop claiming new batches ~100s before the 800s wall so in-flight downloads
+  // finish and the job requeues itself cleanly (avoids wall-deaths that would
+  // otherwise need the slower stale-lease reclaim).
+  const deadline = Date.now() + 700_000;
   const { data: jobs } = await admin.rpc('claim_due_jobs', { p_limit: 3, p_worker: worker });
 
   let processed = 0;
@@ -189,15 +192,23 @@ async function processJob(admin: Admin, job: JobRow, worker: string, deadline: n
     return handleJobError(admin, job, e);
   }
 
-  // Phase B — process claimed item batches.
+  // Phase B — process claimed item batches. Reaching here with work to do is
+  // real progress, so clear the stale-reclaim attempts counter: a large import
+  // spans many ticks (and may occasionally be cut off at the function wall), and
+  // must never be mistaken for a poison job and capped (CLAUDE.md §69).
+  let clearedAttempts = false;
   while (Date.now() < deadline) {
     const { data: items } = await admin.rpc('claim_job_items', {
       p_job: job.id,
-      p_limit: 15,
+      p_limit: 25,
       p_worker: worker,
     });
     const batch = (items ?? []) as ItemRow[];
     if (batch.length === 0) break;
+    if (!clearedAttempts) {
+      await admin.from('archive_jobs').update({ attempts: 0 }).eq('id', job.id);
+      clearedAttempts = true;
+    }
     await Promise.allSettled(
       batch.map((it) => processItem(admin, storage, source, accessToken, account, it)),
     );

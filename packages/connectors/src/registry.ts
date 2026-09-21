@@ -178,8 +178,11 @@ export const CONNECTOR_REGISTRY: readonly ConnectorCapability[] = [
     category: 'photo_video',
     featureFlag: 'GOOGLE_PHOTOS_ENABLED',
     type: 'portability',
-    connectionType: 'user_picker', // Picker API; full-library API is restricted
-    description: "Kies foto's om veilig te stellen, of importeer je Google-archief.",
+    // Google restricted the full-library API (2025); the reliable path today is a
+    // Google Takeout export the user imports (handled by the google_takeout
+    // importer). Surface it as an import rather than a dead "coming soon".
+    connectionType: 'guided_export',
+    description: "Importeer je Google Foto's-archief (Google Takeout-export).",
     originalMediaAvailable: true,
     metadataAvailable: true,
     oauth: true,
