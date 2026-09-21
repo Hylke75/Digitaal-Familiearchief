@@ -21,11 +21,15 @@ import { appUrl } from '@/lib/env';
  * unless it can actually run. Google Drive / OneDrive OAuth configs exist in
  * @dla/oauth; they are added here once their source clients + credentials land.
  */
-export interface LiveProvider {
+/** Shared shape for any OAuth-connected provider (live or portability). */
+export interface ConnectProvider {
   key: string;
   oauth: OAuthProviderConfig;
   credentialKind: 'refresh_token';
   makeClient(): OAuthClient;
+}
+
+export interface LiveProvider extends ConnectProvider {
   makeSourceClient(): LiveSourceClient;
 }
 

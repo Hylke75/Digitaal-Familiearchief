@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { generatePkce, randomToken } from '@dla/security';
 import { buildAuthorizeUrl } from '@dla/oauth';
 import { createClient } from '@/lib/supabase/server';
-import { getLiveProvider } from '@/lib/connectors/live-providers';
+import { getConnectProvider } from '@/lib/connectors/connect-registry';
 
 export const OAUTH_COOKIE = 'bewora_oauth';
 
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest, { params }: { params: { provider
   } = await supabase.auth.getUser();
   if (!user) return NextResponse.redirect(new URL('/inloggen', request.url));
 
-  const lp = getLiveProvider(provider);
+  const lp = getConnectProvider(provider);
   if (!lp)
     return NextResponse.redirect(new URL('/bronnen?verbinden=niet-beschikbaar', request.url));
 

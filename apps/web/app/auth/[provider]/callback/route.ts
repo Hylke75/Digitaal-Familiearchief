@@ -5,7 +5,8 @@ import { exchangeCode, type FetchLike } from '@dla/oauth';
 import { getConnector } from '@dla/connectors';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { getLiveProvider } from '@/lib/connectors/live-providers';
+import { getConnectProvider } from '@/lib/connectors/connect-registry';
+import { getPortabilityProvider } from '@/lib/connectors/portability-providers';
 import { encryptRefreshToken } from '@/lib/connectors/token';
 import { OAUTH_COOKIE } from '../start/route';
 
@@ -45,8 +46,9 @@ export async function GET(request: NextRequest, { params }: { params: { provider
   } = await supabase.auth.getUser();
   if (!user) return NextResponse.redirect(new URL('/inloggen', request.url));
 
-  const lp = getLiveProvider(provider);
+  const lp = getConnectProvider(provider);
   if (!lp) return fail();
+  const isPortability = getPortabilityProvider(provider) !== undefined;
 
   let tokens;
   try {
@@ -105,7 +107,7 @@ export async function GET(request: NextRequest, { params }: { params: { provider
     await admin.from('archive_jobs').insert({
       user_id: user.id,
       connector_account_id: accountId,
-      job_type: 'discovery',
+      job_type: isPortability ? 'initial_import' : 'discovery',
       status: 'queued',
       run_at: new Date().toISOString(),
     });

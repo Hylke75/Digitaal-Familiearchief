@@ -2,7 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '@dla/database';
 import { AesGcmTokenEncryption } from '@dla/security';
 import { refreshAccessToken, type FetchLike } from '@dla/oauth';
-import type { LiveProvider } from './live-providers';
+import type { ConnectProvider } from './live-providers';
 
 const globalFetch = fetch as unknown as FetchLike;
 
@@ -25,7 +25,7 @@ export async function encryptRefreshToken(refreshToken: string) {
 export async function getAccessToken(
   admin: SupabaseClient<Database>,
   connectorAccountId: string,
-  provider: LiveProvider,
+  provider: ConnectProvider,
 ): Promise<string> {
   const { data: cred } = await admin
     .from('connector_credentials')

@@ -2,11 +2,18 @@ import { NextResponse, type NextRequest } from 'next/server';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '@dla/database';
 import { randomToken } from '@dla/security';
-import { archiveTypeFromMime, LiveSourceError, type LiveSourceClient } from '@dla/connectors';
+import {
+  archiveTypeFromMime,
+  LiveSourceError,
+  type LiveSourceClient,
+  type PortabilityClient,
+} from '@dla/connectors';
+import { detectImporter, listZipEntries, readZipSafely } from '@dla/import';
 import { contentStorageKey, sha256Hex } from '@dla/archive';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { SupabaseStorageProvider } from '@/lib/archive/supabase-storage';
 import { getLiveProvider } from '@/lib/connectors/live-providers';
+import { getPortabilityProvider } from '@/lib/connectors/portability-providers';
 import { getAccessToken } from '@/lib/connectors/token';
 
 export const runtime = 'nodejs';
@@ -71,12 +78,14 @@ async function processJob(admin: Admin, job: JobRow, worker: string, deadline: n
     .maybeSingle();
   if (!account) return finishJob(admin, job.id, 'failed', 'connector account gone');
 
-  const lp = getLiveProvider(account.connector_key);
-  if (!lp) return finishJob(admin, job.id, 'failed', 'provider not configured');
+  const live = getLiveProvider(account.connector_key);
+  const port = getPortabilityProvider(account.connector_key);
+  const provider = live ?? port;
+  if (!provider) return finishJob(admin, job.id, 'failed', 'provider not configured');
 
   let accessToken: string;
   try {
-    accessToken = await getAccessToken(admin, account.id, lp);
+    accessToken = await getAccessToken(admin, account.id, provider);
   } catch {
     // Authorization problem → action required; retry in an hour.
     await admin
@@ -86,8 +95,21 @@ async function processJob(admin: Admin, job: JobRow, worker: string, deadline: n
     return requeue(admin, job.id, 3_600_000);
   }
 
-  const source = lp.makeSourceClient();
   const storage = new SupabaseStorageProvider(admin);
+
+  // Portability providers (TikTok): async request → poll → download → parse.
+  if (port)
+    return portabilityFlow(
+      admin,
+      job,
+      account,
+      port.makePortabilityClient(),
+      accessToken,
+      storage,
+      deadline,
+    );
+
+  const source = live!.makeSourceClient();
   const cursor = ((job.cursor as Record<string, unknown> | null) ?? {}) as {
     discoveryDone?: boolean;
     pageCursor?: string;
@@ -219,6 +241,141 @@ async function scheduleIncremental(
   });
 }
 
+/**
+ * Store bytes as an archived item: SHA-256 → durable storage → dedup on
+ * (owner, checksum) → retain the source relationship. Shared by live and
+ * portability flows. Returns the storage key.
+ */
+async function archiveBytes(
+  admin: Admin,
+  storage: SupabaseStorageProvider,
+  account: AccountRow,
+  sourceItemId: string,
+  filename: string,
+  mimeType: string,
+  bytes: Uint8Array,
+): Promise<string> {
+  const checksum = sha256Hex(bytes);
+  const key = contentStorageKey(account.user_id, checksum);
+  await storage.put(key, bytes, { contentType: mimeType, checksumSha256: checksum });
+
+  const { data: existing } = await admin
+    .from('archive_items')
+    .select('id')
+    .eq('owner_id', account.user_id)
+    .eq('checksum_sha256', checksum)
+    .maybeSingle();
+
+  let archiveItemId = existing?.id;
+  if (!archiveItemId) {
+    const { data: inserted } = await admin
+      .from('archive_items')
+      .insert({
+        owner_id: account.user_id,
+        type: archiveTypeFromMime(mimeType),
+        original_filename: filename,
+        mime_type: mimeType,
+        file_size: bytes.byteLength,
+        checksum_sha256: checksum,
+        archived_at: new Date().toISOString(),
+        storage_provider: 'supabase',
+        storage_key: key,
+        status: 'archived',
+      })
+      .select('id')
+      .single();
+    archiveItemId = inserted?.id;
+  }
+  if (archiveItemId) {
+    await admin.from('archive_item_sources').upsert(
+      {
+        archive_item_id: archiveItemId,
+        connector_account_id: account.id,
+        source_item_id: sourceItemId,
+      },
+      { onConflict: 'archive_item_id,connector_account_id,source_item_id', ignoreDuplicates: true },
+    );
+  }
+  return key;
+}
+
+/**
+ * Portability flow (TikTok): a small state machine across ticks. The user may
+ * close the browser; each phase persists in the job cursor and resumes.
+ */
+async function portabilityFlow(
+  admin: Admin,
+  job: JobRow,
+  account: AccountRow,
+  client: PortabilityClient,
+  accessToken: string,
+  storage: SupabaseStorageProvider,
+  deadline: number,
+) {
+  const cursor = ((job.cursor as Record<string, unknown> | null) ?? {}) as {
+    phase?: 'request' | 'poll' | 'download';
+    requestId?: string;
+  };
+  const save = () => admin.from('archive_jobs').update({ cursor }).eq('id', job.id);
+
+  try {
+    if (!cursor.phase || cursor.phase === 'request') {
+      cursor.requestId = await client.requestExport(accessToken);
+      cursor.phase = 'poll';
+      await save();
+      return requeue(admin, job.id, 60_000); // give the provider time to prepare
+    }
+    if (cursor.phase === 'poll') {
+      const status = await client.checkStatus(accessToken, cursor.requestId!);
+      if (status.failed) {
+        cursor.phase = 'request';
+        delete cursor.requestId;
+        await save();
+        return requeue(admin, job.id, 5_000);
+      }
+      if (!status.ready) return requeue(admin, job.id, 60_000);
+      cursor.phase = 'download';
+      await save();
+    }
+    if (cursor.phase === 'download') {
+      const zip = await client.downloadExport(accessToken, cursor.requestId!);
+      const entries = await listZipEntries(zip);
+      const { importer } = detectImporter(entries);
+      const { items } = importer.parse(await readZipSafely(zip));
+      for (const it of items) {
+        if (Date.now() >= deadline) return requeue(admin, job.id, 5_000);
+        await archiveBytes(
+          admin,
+          storage,
+          account,
+          it.sourceItemId,
+          it.filename,
+          it.mimeType,
+          it.bytes,
+        );
+      }
+    }
+  } catch (e) {
+    return handleJobError(admin, job, e);
+  }
+
+  await finishJob(admin, job.id, 'completed');
+  await admin
+    .from('connector_accounts')
+    .update({ status: 'connected', last_successful_archive_at: new Date().toISOString() })
+    .eq('id', account.id);
+  // Schedule the next export, honouring at least a 24h interval (§7).
+  await admin.from('archive_jobs').insert({
+    user_id: job.user_id,
+    connector_account_id: account.id,
+    job_type: 'initial_import',
+    status: 'queued',
+    run_at: new Date(
+      Date.now() + Math.max(frequencyMs(account.archive_frequency), 24 * 3_600_000),
+    ).toISOString(),
+  });
+}
+
 async function processItem(
   admin: Admin,
   storage: SupabaseStorageProvider,
@@ -234,55 +391,15 @@ async function processItem(
       mimeType: item.mime_type ?? 'application/octet-stream',
       sizeBytes: Number(item.size_bytes ?? 0),
     });
-    const checksum = sha256Hex(bytes);
-    const key = contentStorageKey(account.user_id, checksum);
-    await storage.put(key, bytes, {
-      contentType: item.mime_type ?? 'application/octet-stream',
-      checksumSha256: checksum,
-    });
-
-    // Dedup on (owner, checksum); keep the source relationship regardless.
-    const { data: existing } = await admin
-      .from('archive_items')
-      .select('id')
-      .eq('owner_id', account.user_id)
-      .eq('checksum_sha256', checksum)
-      .maybeSingle();
-
-    let archiveItemId = existing?.id;
-    if (!archiveItemId) {
-      const { data: inserted } = await admin
-        .from('archive_items')
-        .insert({
-          owner_id: account.user_id,
-          type: archiveTypeFromMime(item.mime_type ?? ''),
-          original_filename: item.filename ?? 'bestand',
-          mime_type: item.mime_type ?? 'application/octet-stream',
-          file_size: bytes.byteLength,
-          checksum_sha256: checksum,
-          archived_at: new Date().toISOString(),
-          storage_provider: 'supabase',
-          storage_key: key,
-          status: 'archived',
-        })
-        .select('id')
-        .single();
-      archiveItemId = inserted?.id;
-    }
-    if (archiveItemId) {
-      await admin.from('archive_item_sources').upsert(
-        {
-          archive_item_id: archiveItemId,
-          connector_account_id: account.id,
-          source_item_id: item.source_item_id,
-        },
-        {
-          onConflict: 'archive_item_id,connector_account_id,source_item_id',
-          ignoreDuplicates: true,
-        },
-      );
-    }
-
+    const key = await archiveBytes(
+      admin,
+      storage,
+      account,
+      item.source_item_id,
+      item.filename ?? 'bestand',
+      item.mime_type ?? 'application/octet-stream',
+      bytes,
+    );
     await admin
       .from('archive_job_items')
       .update({ status: 'done', storage_key: key, last_error: null })

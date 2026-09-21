@@ -14,7 +14,7 @@ export function buildAuthorizeUrl(
 ): string {
   const sep = cfg.scopeSeparator ?? ' ';
   const params = new URLSearchParams({
-    client_id: client.clientId,
+    [cfg.clientIdParam ?? 'client_id']: client.clientId,
     redirect_uri: client.redirectUri,
     response_type: 'code',
     scope: cfg.scopes.join(sep),
@@ -71,7 +71,7 @@ export function exchangeCode(
     grant_type: 'authorization_code',
     code: opts.code,
     redirect_uri: client.redirectUri,
-    client_id: client.clientId,
+    [cfg.clientIdParam ?? 'client_id']: client.clientId,
     client_secret: client.clientSecret,
   });
   if (cfg.usePkce && opts.codeVerifier) body.set('code_verifier', opts.codeVerifier);
@@ -88,7 +88,7 @@ export function refreshAccessToken(
   const body = new URLSearchParams({
     grant_type: 'refresh_token',
     refresh_token: refreshToken,
-    client_id: client.clientId,
+    [cfg.clientIdParam ?? 'client_id']: client.clientId,
     client_secret: client.clientSecret,
   });
   return tokenRequest(cfg, body, fetchImpl);

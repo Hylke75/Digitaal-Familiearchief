@@ -176,7 +176,8 @@ export function archiveTypeFromMime(
     mimeType.startsWith('text/') ||
     mimeType.includes('word') ||
     mimeType.includes('document') ||
-    mimeType.includes('spreadsheet')
+    mimeType.includes('spreadsheet') ||
+    mimeType.includes('presentation')
   ) {
     return 'document';
   }

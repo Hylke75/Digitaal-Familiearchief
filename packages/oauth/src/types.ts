@@ -14,8 +14,10 @@ export interface OAuthProviderConfig {
   usePkce: boolean;
   /** Provider-specific authorize params (e.g. Google access_type=offline). */
   extraAuthorizeParams?: Record<string, string>;
-  /** Scope separator (space for all three providers). */
+  /** Scope separator (space for most providers). */
   scopeSeparator?: string;
+  /** Client-id parameter name (TikTok uses `client_key`). Defaults to `client_id`. */
+  clientIdParam?: string;
 }
 
 export interface OAuthClient {

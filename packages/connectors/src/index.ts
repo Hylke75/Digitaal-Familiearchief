@@ -6,3 +6,5 @@ export * from './live';
 export * from './dropbox';
 export * from './onedrive';
 export * from './google-drive';
+export * from './portability';
+export * from './tiktok';

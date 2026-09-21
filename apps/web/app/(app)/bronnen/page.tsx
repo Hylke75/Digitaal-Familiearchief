@@ -12,7 +12,7 @@ import { ConnectedSourceRow, SourceLogo } from '@/components/ui/SourceCard';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { StatusBanner } from '@/components/ui/StatusBanner';
 import { createClient } from '@/lib/supabase/server';
-import { isLiveProviderConfigured } from '@/lib/connectors/live-providers';
+import { isConnectProviderConfigured } from '@/lib/connectors/connect-registry';
 
 const DISPLAY_NAME: Record<string, string> = { mock: 'Testbron' };
 const CATEGORIES = [
@@ -57,7 +57,7 @@ export default async function SourcesPage({
     const action = onboardingAction(c);
     // A live OAuth connector that is fully implemented AND configured (client
     // credentials present) can be connected now, regardless of registry status.
-    const liveConnectable = isLiveProviderConfigured(c.connectorKey);
+    const liveConnectable = isConnectProviderConfigured(c.connectorKey);
     return (
       <li key={c.connectorKey} className="flex items-center gap-3 py-3">
         <SourceLogo name={c.displayName} />

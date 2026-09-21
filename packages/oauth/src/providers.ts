@@ -42,10 +42,22 @@ export const DROPBOX_OAUTH: OAuthProviderConfig = {
   extraAuthorizeParams: { token_access_type: 'offline' },
 };
 
+export const TIKTOK_OAUTH: OAuthProviderConfig = {
+  key: 'tiktok',
+  // Login Kit v2. TikTok uses `client_key` instead of `client_id`.
+  authorizeUrl: 'https://www.tiktok.com/v2/auth/authorize/',
+  tokenUrl: 'https://open.tiktokapis.com/v2/oauth/token/',
+  // posts + profile only (no direct messages unless separately approved).
+  scopes: ['user.info.basic', 'portability.postsandprofile.single'],
+  usePkce: true,
+  clientIdParam: 'client_key',
+};
+
 export const OAUTH_PROVIDERS: Record<string, OAuthProviderConfig> = {
   google_drive: GOOGLE_DRIVE_OAUTH,
   onedrive: ONEDRIVE_OAUTH,
   dropbox: DROPBOX_OAUTH,
+  tiktok: TIKTOK_OAUTH,
 };
 
 export function getOAuthProvider(key: string): OAuthProviderConfig | undefined {
