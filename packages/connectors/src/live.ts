@@ -43,4 +43,12 @@ export interface LiveSourceClient {
   fetchContent(accessToken: string, item: DiscoveredItem): Promise<Uint8Array>;
   /** Incremental changes since a stored cursor. */
   getChanges(accessToken: string, cursor: string): Promise<LiveChanges>;
+  /**
+   * Optional: capture the incremental cursor at the START of the initial crawl.
+   * Needed by providers (e.g. Google Drive changes API) where the incremental
+   * cursor is independent of the full-listing cursor. Providers whose crawl
+   * cursor doubles as the incremental cursor (Dropbox, OneDrive delta) omit this;
+   * the worker then uses the final page cursor.
+   */
+  initialSyncCursor?(accessToken: string): Promise<string | undefined>;
 }

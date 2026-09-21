@@ -91,11 +91,11 @@ export class GoogleDriveSourceClient implements LiveSourceClient {
   }
 
   /** Initial cursor for incremental syncs (changes.getStartPageToken). */
-  async getStartCursor(accessToken: string): Promise<string> {
+  async initialSyncCursor(accessToken: string): Promise<string | undefined> {
     const data = (await this.getJson(`${DRIVE}/changes/startPageToken`, accessToken)) as {
       startPageToken?: string;
     };
-    return data.startPageToken ?? '';
+    return data.startPageToken ?? undefined;
   }
 
   async getChanges(accessToken: string, cursor: string): Promise<LiveChanges> {

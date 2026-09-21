@@ -91,40 +91,83 @@ async function processJob(admin: Admin, job: JobRow, worker: string, deadline: n
   const cursor = ((job.cursor as Record<string, unknown> | null) ?? {}) as {
     discoveryDone?: boolean;
     pageCursor?: string;
+    syncCursor?: string | null;
+    incrementalCursor?: string;
+    changesSeeded?: boolean;
   };
 
-  // Phase A — discovery: page the source and seed per-file work rows.
-  if (!cursor.discoveryDone) {
-    try {
+  const seed = async (
+    items: {
+      sourceItemId: string;
+      etag?: string;
+      filename: string;
+      mimeType: string;
+      sizeBytes: number;
+    }[],
+  ) => {
+    if (!items.length) return;
+    await admin.from('archive_job_items').upsert(
+      items.map((it) => ({
+        job_id: job.id,
+        user_id: job.user_id,
+        connector_account_id: account.id,
+        source_item_id: it.sourceItemId,
+        source_etag: it.etag ?? null,
+        filename: it.filename,
+        mime_type: it.mimeType,
+        size_bytes: it.sizeBytes,
+      })),
+      { onConflict: 'job_id,source_item_id', ignoreDuplicates: true },
+    );
+  };
+
+  try {
+    if (job.job_type === 'incremental_import') {
+      // Seed only new/changed items since the stored cursor; retain deleted ones.
+      if (!cursor.changesSeeded) {
+        const changes = await source.getChanges(accessToken, cursor.incrementalCursor ?? '');
+        await seed(changes.added);
+        for (const sid of changes.deletedSourceItemIds) {
+          await admin
+            .from('archive_item_sources')
+            .update({ source_deleted_at: new Date().toISOString() })
+            .eq('connector_account_id', account.id)
+            .eq('source_item_id', sid)
+            .is('source_deleted_at', null);
+        }
+        cursor.incrementalCursor = changes.nextCursor;
+        cursor.changesSeeded = true;
+        await admin.from('archive_jobs').update({ cursor }).eq('id', job.id);
+      }
+    } else if (!cursor.discoveryDone) {
+      // Phase A — full discovery: page the source and seed per-file work rows.
+      // Capture the incremental cursor at the start where the provider needs it.
+      if (cursor.syncCursor === undefined && !cursor.pageCursor && source.initialSyncCursor) {
+        try {
+          cursor.syncCursor = (await source.initialSyncCursor(accessToken)) ?? null;
+        } catch {
+          cursor.syncCursor = null;
+        }
+      }
       while (Date.now() < deadline) {
         const page = await source.listPage(accessToken, cursor.pageCursor);
-        if (page.items.length) {
-          const rows = page.items.map((it) => ({
-            job_id: job.id,
-            user_id: job.user_id,
-            connector_account_id: account.id,
-            source_item_id: it.sourceItemId,
-            source_etag: it.etag ?? null,
-            filename: it.filename,
-            mime_type: it.mimeType,
-            size_bytes: it.sizeBytes,
-          }));
-          await admin
-            .from('archive_job_items')
-            .upsert(rows, { onConflict: 'job_id,source_item_id', ignoreDuplicates: true });
-        }
+        await seed(page.items);
         cursor.pageCursor = page.nextCursor;
-        if (page.done) cursor.discoveryDone = true;
+        if (page.done) {
+          cursor.discoveryDone = true;
+          // For Dropbox/OneDrive the final crawl cursor doubles as the sync cursor.
+          if (cursor.syncCursor == null) cursor.syncCursor = page.nextCursor ?? null;
+        }
         await admin.from('archive_jobs').update({ cursor }).eq('id', job.id);
         if (page.done) break;
       }
-    } catch (e) {
-      return handleJobError(admin, job, e);
+      if (!cursor.discoveryDone) return requeue(admin, job.id, 2000);
     }
-    if (!cursor.discoveryDone) return requeue(admin, job.id, 2000);
+  } catch (e) {
+    return handleJobError(admin, job, e);
   }
 
-  // Phase B — process items in bounded batches.
+  // Phase B — process claimed item batches.
   while (Date.now() < deadline) {
     const { data: items } = await admin.rpc('claim_job_items', {
       p_job: job.id,
@@ -145,7 +188,35 @@ async function processJob(admin: Admin, job: JobRow, worker: string, deadline: n
     .in('status', ['pending', 'failed', 'running']);
 
   if ((count ?? 0) > 0) return requeue(admin, job.id, 5000);
-  return completeJob(admin, job, account);
+
+  const nextCursor =
+    job.job_type === 'incremental_import'
+      ? cursor.incrementalCursor
+      : (cursor.syncCursor ?? undefined);
+  return completeJob(admin, job, account, nextCursor ?? undefined);
+}
+
+function frequencyMs(freq: string): number {
+  if (freq === 'weekly') return 7 * 24 * 3_600_000;
+  if (freq === 'monthly') return 30 * 24 * 3_600_000;
+  return 24 * 3_600_000; // daily default
+}
+
+/** Schedule the next incremental sync by enqueueing a future job (self-perpetuating). */
+async function scheduleIncremental(
+  admin: Admin,
+  job: JobRow,
+  account: AccountRow,
+  syncCursor: string,
+) {
+  await admin.from('archive_jobs').insert({
+    user_id: job.user_id,
+    connector_account_id: account.id,
+    job_type: 'incremental_import',
+    status: 'queued',
+    run_at: new Date(Date.now() + frequencyMs(account.archive_frequency)).toISOString(),
+    cursor: { incrementalCursor: syncCursor },
+  });
 }
 
 async function processItem(
@@ -286,10 +357,13 @@ async function finishJob(
     .eq('id', jobId);
 }
 
-async function completeJob(admin: Admin, job: JobRow, account: AccountRow) {
+async function completeJob(admin: Admin, job: JobRow, account: AccountRow, syncCursor?: string) {
   await finishJob(admin, job.id, 'completed');
   await admin
     .from('connector_accounts')
     .update({ status: 'connected', last_successful_archive_at: new Date().toISOString() })
     .eq('id', account.id);
+  // Keep the source fresh: schedule the next incremental sync (§7). Self-
+  // perpetuating via the queue — no separate scheduler needed for the loop.
+  if (syncCursor) await scheduleIncremental(admin, job, account, syncCursor);
 }
