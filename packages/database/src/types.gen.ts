@@ -415,6 +415,195 @@ export type Database = {
           },
         ]
       }
+      meta_oauth_clients: {
+        Row: {
+          client_id: string
+          client_secret_hash: string
+          created_at: string
+          id: string
+          name: string | null
+          redirect_uris: string[]
+        }
+        Insert: {
+          client_id: string
+          client_secret_hash: string
+          created_at?: string
+          id?: string
+          name?: string | null
+          redirect_uris?: string[]
+        }
+        Update: {
+          client_id?: string
+          client_secret_hash?: string
+          created_at?: string
+          id?: string
+          name?: string | null
+          redirect_uris?: string[]
+        }
+        Relationships: []
+      }
+      meta_oauth_codes: {
+        Row: {
+          client_id: string
+          code_hash: string
+          connector_account_id: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          redirect_uri: string
+          scope: string | null
+          used: boolean
+          user_id: string
+        }
+        Insert: {
+          client_id: string
+          code_hash: string
+          connector_account_id?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          redirect_uri: string
+          scope?: string | null
+          used?: boolean
+          user_id: string
+        }
+        Update: {
+          client_id?: string
+          code_hash?: string
+          connector_account_id?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          redirect_uri?: string
+          scope?: string | null
+          used?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meta_oauth_codes_connector_account_id_fkey"
+            columns: ["connector_account_id"]
+            isOneToOne: false
+            referencedRelation: "connector_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      meta_oauth_tokens: {
+        Row: {
+          access_expires_at: string
+          access_token_hash: string
+          client_id: string
+          connector_account_id: string | null
+          created_at: string
+          id: string
+          refresh_expires_at: string | null
+          refresh_token_hash: string | null
+          revoked: boolean
+          scope: string | null
+          user_id: string
+        }
+        Insert: {
+          access_expires_at: string
+          access_token_hash: string
+          client_id: string
+          connector_account_id?: string | null
+          created_at?: string
+          id?: string
+          refresh_expires_at?: string | null
+          refresh_token_hash?: string | null
+          revoked?: boolean
+          scope?: string | null
+          user_id: string
+        }
+        Update: {
+          access_expires_at?: string
+          access_token_hash?: string
+          client_id?: string
+          connector_account_id?: string | null
+          created_at?: string
+          id?: string
+          refresh_expires_at?: string | null
+          refresh_token_hash?: string | null
+          revoked?: boolean
+          scope?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meta_oauth_tokens_connector_account_id_fkey"
+            columns: ["connector_account_id"]
+            isOneToOne: false
+            referencedRelation: "connector_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      meta_transfer_jobs: {
+        Row: {
+          bytes_received: number
+          completed_at: string | null
+          connector_account_id: string | null
+          created_at: string
+          id: string
+          items_duplicate: number
+          items_failed: number
+          items_new: number
+          items_seen: number
+          received_at: string | null
+          requested_at: string | null
+          source_type: string
+          status: string
+          transfer_kind: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bytes_received?: number
+          completed_at?: string | null
+          connector_account_id?: string | null
+          created_at?: string
+          id?: string
+          items_duplicate?: number
+          items_failed?: number
+          items_new?: number
+          items_seen?: number
+          received_at?: string | null
+          requested_at?: string | null
+          source_type: string
+          status?: string
+          transfer_kind?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bytes_received?: number
+          completed_at?: string | null
+          connector_account_id?: string | null
+          created_at?: string
+          id?: string
+          items_duplicate?: number
+          items_failed?: number
+          items_new?: number
+          items_seen?: number
+          received_at?: string | null
+          requested_at?: string | null
+          source_type?: string
+          status?: string
+          transfer_kind?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meta_transfer_jobs_connector_account_id_fkey"
+            columns: ["connector_account_id"]
+            isOneToOne: false
+            referencedRelation: "connector_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
