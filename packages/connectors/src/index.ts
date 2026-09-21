@@ -4,3 +4,5 @@ export * from './mock';
 export * from './mime';
 export * from './live';
 export * from './dropbox';
+export * from './onedrive';
+export * from './google-drive';

@@ -1,5 +1,17 @@
-import { DROPBOX_OAUTH, type OAuthClient, type OAuthProviderConfig } from '@dla/oauth';
-import { DropboxSourceClient, type Fetcher, type LiveSourceClient } from '@dla/connectors';
+import {
+  DROPBOX_OAUTH,
+  GOOGLE_DRIVE_OAUTH,
+  ONEDRIVE_OAUTH,
+  type OAuthClient,
+  type OAuthProviderConfig,
+} from '@dla/oauth';
+import {
+  DropboxSourceClient,
+  GoogleDriveSourceClient,
+  OneDriveSourceClient,
+  type Fetcher,
+  type LiveSourceClient,
+} from '@dla/connectors';
 import { appUrl } from '@/lib/env';
 
 /**
@@ -34,6 +46,38 @@ const FACTORIES: Record<string, () => LiveProvider | undefined> = {
         redirectUri: appUrl('/auth/dropbox/callback'),
       }),
       makeSourceClient: () => new DropboxSourceClient(globalFetch),
+    };
+  },
+  onedrive() {
+    const clientId = process.env.MICROSOFT_CLIENT_ID;
+    const clientSecret = process.env.MICROSOFT_CLIENT_SECRET;
+    if (!clientId || !clientSecret) return undefined;
+    return {
+      key: 'onedrive',
+      oauth: ONEDRIVE_OAUTH,
+      credentialKind: 'refresh_token',
+      makeClient: () => ({
+        clientId,
+        clientSecret,
+        redirectUri: appUrl('/auth/onedrive/callback'),
+      }),
+      makeSourceClient: () => new OneDriveSourceClient(globalFetch),
+    };
+  },
+  google_drive() {
+    const clientId = process.env.GOOGLE_CLIENT_ID;
+    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+    if (!clientId || !clientSecret) return undefined;
+    return {
+      key: 'google_drive',
+      oauth: GOOGLE_DRIVE_OAUTH,
+      credentialKind: 'refresh_token',
+      makeClient: () => ({
+        clientId,
+        clientSecret,
+        redirectUri: appUrl('/auth/google_drive/callback'),
+      }),
+      makeSourceClient: () => new GoogleDriveSourceClient(globalFetch),
     };
   },
 };
