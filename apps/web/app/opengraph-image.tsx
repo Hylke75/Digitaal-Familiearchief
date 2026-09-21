@@ -22,12 +22,9 @@ export default function OpengraphImage() {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="#1D3D2A">
-          <rect x="16" y="14" width="8" height="36" rx="4" />
-          <path d="M24 14h11a8.5 8.5 0 0 1 0 17H24z" />
-          <path d="M24 33h14a8.5 8.5 0 0 1 0 17H24z" />
-        </svg>
-        <span style={{ fontSize: 40, fontWeight: 600, color: '#1B211D' }}>Bewora</span>
+        <span style={{ fontSize: 44, fontWeight: 700, color: '#1D3D2A', letterSpacing: -0.5 }}>
+          Bewora
+        </span>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>

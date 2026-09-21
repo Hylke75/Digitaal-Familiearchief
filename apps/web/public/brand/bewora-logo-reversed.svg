@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 64" fill="none" role="img" aria-label="Bewora">
-  <g fill="#FAF6F1">
-    <rect x="4" y="14" width="8" height="36" rx="4"/>
-    <path d="M12 14h11a8.5 8.5 0 0 1 0 17H12z"/>
-    <path d="M12 33h14a8.5 8.5 0 0 1 0 17H12z"/>
-  </g>
-  <text x="66" y="42" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="34" font-weight="600" letter-spacing="-0.5" fill="#FAF6F1">Bewora</text>
-</svg>

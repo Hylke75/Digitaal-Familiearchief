@@ -22,7 +22,8 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description,
     icons: {
-      icon: [{ url: '/brand/bewora-favicon.svg', type: 'image/svg+xml' }],
+      icon: [{ url: '/brand/bewora-favicon.png', type: 'image/png', sizes: '64x64' }],
+      apple: [{ url: '/brand/bewora-apple-touch-icon.png', sizes: '180x180' }],
     },
     openGraph: {
       type: 'website',

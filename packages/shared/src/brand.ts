@@ -35,14 +35,14 @@ export const BRAND = {
     interactiveBorder: '#7F8981',
   },
 
-  /** Logo assets (docs/BRAND.md §11). SVG preferred. */
+  /** Logo assets (docs/BRAND.md §11) — the supplied leaf-B brand marks. */
   logo: {
-    primary: '/brand/bewora-logo-primary.svg',
-    reversed: '/brand/bewora-logo-reversed.svg',
-    icon: '/brand/bewora-logo-icon.svg',
-    iconReversed: '/brand/bewora-logo-icon-reversed.svg',
-    stacked: '/brand/bewora-logo-stacked.svg',
-    favicon: '/brand/bewora-favicon.svg',
+    mark: '/brand/bewora-mark.png',
+    markLight: '/brand/bewora-mark-light.png',
+    horizontal: '/brand/bewora-logo-horizontal.png',
+    stacked: '/brand/bewora-logo-stacked.png',
+    appIcon: '/brand/bewora-app-icon.png',
+    favicon: '/brand/bewora-favicon.png',
   },
 
   /** Contact + legal pointers. */
