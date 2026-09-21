@@ -21,6 +21,7 @@ const IMPORTER_TO_CONNECTOR: Record<string, string> = {
   facebook: 'facebook',
   snapchat: 'snapchat',
   x: 'x',
+  whatsapp: 'whatsapp',
   google_takeout: 'google_photos',
   generic: 'phone',
 };
