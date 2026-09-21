@@ -2,7 +2,7 @@ import { zipSync } from 'fflate';
 import { describe, expect, it } from 'vitest';
 import { detectImporter } from './detect';
 import { isSafeEntryName, readZipSafely, ZipSafetyError } from './zip';
-import { InstagramImporter } from './importers';
+import { InstagramImporter, WhatsAppImporter } from './importers';
 
 const bytes = (s: string) => new TextEncoder().encode(s);
 
@@ -64,5 +64,27 @@ describe('parsing', () => {
     expect(items.map((i) => i.mimeType).sort()).toEqual(['image/jpeg', 'video/mp4']);
     expect(items[0]!.metadata).toMatchObject({ provider: 'instagram' });
     expect(warnings).toHaveLength(0);
+  });
+
+  it('detects a WhatsApp export and reads the date + provenance from filenames', () => {
+    const { result } = detectImporter([
+      'WhatsApp Chat - Familie/_chat.txt',
+      'IMG-20240115-WA0001.jpg',
+    ]);
+    expect(result.importerKey).toBe('whatsapp');
+
+    const files = new Map<string, Uint8Array>([
+      ['chat/_chat.txt', bytes('[15/01/2024, 12:00] Hylke: foto')],
+      ['chat/IMG-20240115-WA0001.jpg', bytes('img')],
+      ['chat/VID-20240115-WA0002.mp4', bytes('vid')],
+    ]);
+    const { items } = WhatsAppImporter.parse(files);
+    expect(items).toHaveLength(2);
+    const img = items.find((i) => i.mimeType === 'image/jpeg')!;
+    expect(img.createdAtSource).toBe('2024-01-15T12:00:00.000Z');
+    expect(img.metadata).toMatchObject({
+      origin_source: 'whatsapp',
+      origin_confidence: 'verified',
+    });
   });
 });

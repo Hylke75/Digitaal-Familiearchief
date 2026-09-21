@@ -204,6 +204,23 @@ export const CONNECTOR_REGISTRY: readonly ConnectorCapability[] = [
     archiveImportSupported: true,
     implementationStatus: 'beta',
   }),
+  def({
+    // WhatsApp: one source, per-platform ingestion (docs/connectors/whatsapp.md).
+    // iOS = via Apple Foto's + chat-export import; Android = native app (later);
+    // today the working path everywhere is a user-initiated chat export.
+    connectorKey: 'whatsapp',
+    displayName: 'WhatsApp',
+    category: 'photo_video',
+    featureFlag: 'WHATSAPP_SOURCE_ENABLED',
+    type: 'archive_importer',
+    connectionType: 'archive_import',
+    description: "Bewaar de foto's en video's die je via WhatsApp ontvangt.",
+    historicalImport: true,
+    originalMediaAvailable: true,
+    metadataAvailable: true,
+    archiveImportSupported: true,
+    implementationStatus: 'beta',
+  }),
 
   // --- Social ----------------------------------------------------------------
   def({

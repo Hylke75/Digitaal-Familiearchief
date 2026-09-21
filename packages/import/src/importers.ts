@@ -87,6 +87,50 @@ export const GoogleTakeoutImporter: ArchiveImporter = {
   parse: (files) => extractMedia(files, 'google_takeout', { includeDocuments: true }),
 };
 
+/** WhatsApp media filenames carry a reliable, locale-independent date, e.g.
+ * `IMG-20240115-WA0001.jpg` / `VID-20240115-WA0002.mp4`. */
+function whatsappDate(name: string): string | undefined {
+  const m = name.match(/(?:IMG|VID|AUD|PTT|STK)-(\d{4})(\d{2})(\d{2})-WA\d+/i);
+  return m ? `${m[1]}-${m[2]}-${m[3]}T12:00:00.000Z` : undefined;
+}
+
+export const WhatsAppImporter: ArchiveImporter = {
+  key: 'whatsapp',
+  displayName: 'WhatsApp',
+  detect(names) {
+    // A WhatsApp "Export chat" package: a _chat.txt transcript + media files.
+    if (has(names, '_chat.txt')) return 0.96;
+    if (names.some((n) => /-WA\d{3,}\./i.test(n))) return 0.85;
+    if (has(names, 'whatsapp')) return 0.5;
+    return 0;
+  },
+  parse(files) {
+    const items: ImportedItem[] = [];
+    const warnings: string[] = [];
+    for (const [path, bytes] of files) {
+      if (!isMediaName(path)) continue;
+      const filename = filenameOf(path);
+      items.push({
+        sourceItemId: path,
+        path,
+        filename,
+        mimeType: mimeFromName(path),
+        bytes,
+        createdAtSource: whatsappDate(filename),
+        // A WhatsApp export is authoritative provenance (§8, §30). View Once is
+        // never present in exports and is not archivable (§28).
+        metadata: {
+          provider: 'whatsapp',
+          origin_source: 'whatsapp',
+          origin_confidence: 'verified',
+        },
+      });
+    }
+    if (items.length === 0) warnings.push('Geen WhatsApp-media gevonden in de export.');
+    return { items, warnings };
+  },
+};
+
 export const GenericZipImporter: ArchiveImporter = {
   key: 'generic',
   displayName: 'Archiefbestand',
@@ -99,6 +143,7 @@ export const IMPORTERS: readonly ArchiveImporter[] = [
   FacebookImporter,
   SnapchatImporter,
   XImporter,
+  WhatsAppImporter,
   GoogleTakeoutImporter,
   GenericZipImporter,
 ];
