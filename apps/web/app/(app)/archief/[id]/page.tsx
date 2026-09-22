@@ -7,8 +7,13 @@ import { Card, CardBody } from '@/components/ui/Card';
 import { ButtonLink } from '@/components/ui/Button';
 import { FavouriteButton } from '@/components/archive/FavouriteButton';
 import { AddToAlbum } from '@/components/archive/AddToAlbum';
+import { MembershipPicker } from '@/components/archive/MembershipPicker';
 import { getItemDetail } from '@/lib/archive/queries';
 import { getAlbumMembership } from '@/lib/archive/albums';
+import { getPersonMembership } from '@/lib/archive/people';
+import { toggleItemPersonAction } from '@/lib/archive/people-actions';
+import { getPlaceMembership } from '@/lib/archive/places';
+import { toggleItemPlaceAction } from '@/lib/archive/places-actions';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const item = await getItemDetail(params.id);
@@ -29,7 +34,13 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
   const f = await getFormatter();
   const t = await getTranslations('archive');
   const tAlbums = await getTranslations('albums');
-  const membership = await getAlbumMembership(item.id);
+  const tPeople = await getTranslations('people');
+  const tPlaces = await getTranslations('places');
+  const [membership, personMembership, placeMembership] = await Promise.all([
+    getAlbumMembership(item.id),
+    getPersonMembership(item.id),
+    getPlaceMembership(item.id),
+  ]);
 
   const rows: Array<[string, string]> = [];
   if (item.effectiveDate) {
@@ -90,6 +101,32 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
             noAlbumsYet: tAlbums('noAlbumsYet'),
             manageAlbums: tAlbums('manageAlbums'),
             done: tAlbums('done'),
+          }}
+        />
+        <MembershipPicker
+          itemId={item.id}
+          entries={personMembership.people}
+          memberOf={personMembership.memberOf}
+          toggleAction={toggleItemPersonAction}
+          labels={{
+            button: tPeople('tag'),
+            empty: tPeople('noneYet'),
+            manage: tPeople('manage'),
+            manageHref: '/personen',
+            done: tPeople('done'),
+          }}
+        />
+        <MembershipPicker
+          itemId={item.id}
+          entries={placeMembership.places}
+          memberOf={placeMembership.memberOf}
+          toggleAction={toggleItemPlaceAction}
+          labels={{
+            button: tPlaces('tag'),
+            empty: tPlaces('noneYet'),
+            manage: tPlaces('manage'),
+            manageHref: '/plaatsen',
+            done: tPlaces('done'),
           }}
         />
         <ButtonLink href={`/archief/download/${item.id}`} size="sm">
