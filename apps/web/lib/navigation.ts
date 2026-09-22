@@ -8,6 +8,7 @@ import {
   MapPin,
   Settings,
   Share2,
+  Star,
   Users,
   Video,
   type LucideIcon,
@@ -29,6 +30,7 @@ export const NAV_GROUPS: NavItem[][] = [
     { key: 'videos', href: '/videos', icon: Video },
     { key: 'documents', href: '/documenten', icon: FileText },
     { key: 'social', href: '/social', icon: Share2 },
+    { key: 'favourites', href: '/favorieten', icon: Star },
   ],
   [
     { key: 'people', href: '/personen', icon: Users },
