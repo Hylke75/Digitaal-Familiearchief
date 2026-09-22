@@ -175,6 +175,21 @@ export async function listFavourites(
   return { items: await toCards(supabase, pageRows), hasMore, nextPage: page + 1 };
 }
 
+/** Build media cards for a specific set of ids (newest first). Used by albums/
+ * people/places feeds. Capped to keep a single query bounded. */
+export async function mediaCardsByIds(ids: string[]): Promise<MediaCard[]> {
+  if (ids.length === 0) return [];
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return [];
+  const { data } = await orderNewest(
+    supabase.from('archive_items').select(SELECT).in('id', ids.slice(0, 500)),
+  );
+  return toCards(supabase, (data ?? []) as ItemRow[]);
+}
+
 export interface ItemDetail extends MediaCard {
   camera: string | null;
   archivedAt: string | null;
