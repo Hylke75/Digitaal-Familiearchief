@@ -18,8 +18,16 @@ export async function loadMoreMediaAction(
   return listMedia({ type: type ?? undefined, page });
 }
 
-/** Next timeline page — photos and videos only (documents live elsewhere, §B). */
-export async function loadMoreTimelineAction(page: number): Promise<MediaPage> {
+export type TimelineFilter = 'all' | 'photo' | 'video' | 'favourites';
+
+/** Timeline page for a chip filter (Alles/Foto's/Video's/Favorieten, §C). */
+export async function loadTimelineFilterAction(
+  filter: TimelineFilter,
+  page: number,
+): Promise<MediaPage> {
+  if (filter === 'favourites') return listFavourites({ page });
+  if (filter === 'photo') return listMedia({ type: 'photo', page });
+  if (filter === 'video') return listMedia({ type: 'video', page });
   return listMedia({ visualOnly: true, page });
 }
 

@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { ChevronRight, FileText, HeartHandshake, MapPin, Settings, Users } from 'lucide-react';
+import { ChevronRight, FileText, Images, MapPin, Settings, Users } from 'lucide-react';
 import { PageHeader } from '@/components/app-shell/PageHeader';
 import { Card } from '@/components/ui/Card';
 
 const MORE_ITEMS = [
   { key: 'documents', href: '/documenten', icon: FileText },
+  { key: 'albums', href: '/albums', icon: Images },
   { key: 'people', href: '/personen', icon: Users },
   { key: 'places', href: '/plaatsen', icon: MapPin },
-  { key: 'family', href: '/familie', icon: HeartHandshake },
   { key: 'settings', href: '/instellingen', icon: Settings },
 ];
 

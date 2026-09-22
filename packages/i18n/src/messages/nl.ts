@@ -217,6 +217,7 @@ const nl = {
   archive: {
     timelineTitle: 'Mijn leven',
     timelineSubtitle: 'Je herinneringen op volgorde van tijd.',
+    all: 'Alles',
     onThisDay: 'Op deze dag',
     favouritesTitle: 'Favorieten',
     loadMore: 'Meer laden',
