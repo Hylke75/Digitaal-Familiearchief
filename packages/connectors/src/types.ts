@@ -124,6 +124,12 @@ export interface DiscoveredItem {
   modifiedAtSource?: string;
   /** Provider content/version hash for change detection (e.g. Dropbox content_hash). */
   etag?: string;
+  /**
+   * Capture metadata (EXIF/geo/dimensions/duration) when the connector can
+   * supply it. Normalised keys: takenAt, latitude, longitude, width, height,
+   * durationMs, camera. Retained in archive_items.metadata_json.
+   */
+  metadata?: Record<string, unknown>;
 }
 
 export interface ConnectorStatus {
