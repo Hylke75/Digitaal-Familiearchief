@@ -25,9 +25,14 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { createClient } from '@supabase/supabase-js';
-import sharp from 'sharp';
-import ffmpegPath from 'ffmpeg-static';
+import { createRequire } from 'node:module';
+
+// Resolve third-party deps from the web app's node_modules (pnpm doesn't hoist
+// them to the repo root), so this script runs from anywhere.
+const requireFromApp = createRequire(new URL('../apps/web/package.json', import.meta.url));
+const { createClient } = requireFromApp('@supabase/supabase-js');
+const sharp = requireFromApp('sharp');
+const ffmpegPath = requireFromApp('ffmpeg-static');
 
 // ---------------------------------------------------------------------------
 // Env
