@@ -2,14 +2,15 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Search } from 'lucide-react';
-import { MediaTile } from '@/components/archive/MediaTile';
+import { JustifiedGrid } from '@/components/archive/JustifiedGrid';
+import { Lightbox } from '@/components/archive/Lightbox';
 import { searchMediaAction } from '@/lib/archive/search-actions';
 import type { ArchiveItemType, MediaCard } from '@/lib/archive/queries';
 
 const FACETS: Array<ArchiveItemType | null> = [null, 'photo', 'video', 'document'];
 
 export function SearchView({
-  locale,
+  locale: _locale,
   labels,
   typeLabels,
 }: {
@@ -33,6 +34,7 @@ export function SearchView({
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [lastQuery, setLastQuery] = useState('');
+  const [open, setOpen] = useState<number | null>(null);
   const sentinel = useRef<HTMLDivElement | null>(null);
 
   const doSearch = useCallback(async (qArg: string, typeArg: ArchiveItemType | null) => {
@@ -145,13 +147,7 @@ export function SearchView({
         </p>
       ) : (
         <>
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {items.map((item) => (
-              <li key={item.id}>
-                <MediaTile item={item} locale={locale} />
-              </li>
-            ))}
-          </ul>
+          <JustifiedGrid items={items} onOpen={setOpen} />
           {hasMore ? (
             <div ref={sentinel} className="mt-6 flex justify-center">
               <button
@@ -166,6 +162,9 @@ export function SearchView({
           ) : null}
         </>
       )}
+      {open !== null ? (
+        <Lightbox items={items} index={open} onClose={() => setOpen(null)} onIndex={setOpen} />
+      ) : null}
     </div>
   );
 }
