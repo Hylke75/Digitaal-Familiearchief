@@ -314,6 +314,21 @@ const en: AppMessages = {
     banner: 'You’re viewing the Bewora demo with sample data. Changes aren’t saved.',
     exit: 'Leave demo',
   },
+  settings: {
+    title: 'Settings',
+    accountTitle: 'Account',
+    email: 'Email address',
+    language: 'Language',
+    exportTitle: 'Download your whole archive',
+    exportBody:
+      'Your archive stays yours. Download all your original files plus an overview (archive.json) in a single zip — independent of Bewora and the original platforms.',
+    exportButton: 'Download my archive',
+    exportNote: 'Large archives may take a moment; the download starts automatically.',
+    deleteTitle: 'Delete account',
+    deleteBody:
+      'Want your account and archive deleted? Send a request and we’ll handle it carefully. Disconnecting sources never deletes anything already preserved.',
+    deleteButton: 'Request deletion',
+  },
 } as const;
 
 export default en;
