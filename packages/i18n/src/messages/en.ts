@@ -83,6 +83,8 @@ const en: AppMessages = {
     sourcesTitle: 'Your sources',
     addSource: 'Add a source',
     newSinceLastVisit: 'New since your last visit',
+    recentlyAdded: 'Recently added',
+    allUpdated: 'All sources up to date',
     viewArchive: 'View my archive',
   },
   sources: {
