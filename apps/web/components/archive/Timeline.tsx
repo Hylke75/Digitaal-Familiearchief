@@ -1,9 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { JustifiedGrid } from '@/components/archive/JustifiedGrid';
 import { Lightbox } from '@/components/archive/Lightbox';
-import { loadMoreTimelineAction } from '@/lib/archive/media-actions';
+import { loadTimelineFilterAction, type TimelineFilter } from '@/lib/archive/media-actions';
 import { groupByMonth, isOnThisDay } from '@/lib/archive/grouping';
 import type { MediaCard } from '@/lib/archive/queries';
 
@@ -28,12 +29,21 @@ export function Timeline({
     unknownDate: string;
   };
 }) {
+  const t = useTranslations();
   const [items, setItems] = useState<MediaCard[]>(initial);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(initialHasMore);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState<number | null>(null);
+  const [filter, setFilter] = useState<TimelineFilter>('all');
   const sentinel = useRef<HTMLDivElement | null>(null);
+
+  const chips: Array<{ key: TimelineFilter; label: string }> = [
+    { key: 'all', label: t('archive.all') },
+    { key: 'photo', label: t('nav.photos') },
+    { key: 'video', label: t('nav.videos') },
+    { key: 'favourites', label: t('nav.favourites') },
+  ];
 
   const today = useMemo(() => {
     const d = new Date();
@@ -48,7 +58,7 @@ export function Timeline({
     if (loading || !hasMore) return;
     setLoading(true);
     try {
-      const next = await loadMoreTimelineAction(page + 1);
+      const next = await loadTimelineFilterAction(filter, page + 1);
       setItems((prev) => {
         const seen = new Set(prev.map((i) => i.id));
         return [...prev, ...next.items.filter((i) => !seen.has(i.id))];
@@ -58,7 +68,21 @@ export function Timeline({
     } finally {
       setLoading(false);
     }
-  }, [loading, hasMore, page]);
+  }, [loading, hasMore, page, filter]);
+
+  const applyFilter = useCallback(async (next: TimelineFilter) => {
+    setFilter(next);
+    setLoading(true);
+    setOpen(null);
+    try {
+      const res = await loadTimelineFilterAction(next, 0);
+      setItems(res.items);
+      setPage(0);
+      setHasMore(res.hasMore);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     const el = sentinel.current;
@@ -85,7 +109,28 @@ export function Timeline({
 
   return (
     <div className="space-y-10">
-      {onThisDay.length > 0 ? (
+      <div className="flex flex-wrap gap-2">
+        {chips.map((chip) => {
+          const active = chip.key === filter;
+          return (
+            <button
+              key={chip.key}
+              type="button"
+              onClick={() => void applyFilter(chip.key)}
+              aria-pressed={active}
+              className={`rounded-pill text-small border px-3 py-1 font-medium transition-colors ${
+                active
+                  ? 'border-forest bg-forest text-white'
+                  : 'border-border text-ink-soft hover:bg-warm'
+              }`}
+            >
+              {chip.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {onThisDay.length > 0 && filter === 'all' ? (
         <section>
           <h2 className="text-h3 text-ink mb-3">{labels.onThisDay}</h2>
           <JustifiedGrid items={onThisDay} onOpen={openLocal(onThisDay)} />

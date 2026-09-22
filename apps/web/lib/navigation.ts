@@ -1,18 +1,12 @@
 import {
   Clock,
   FileText,
-  HeartHandshake,
   Home,
-  Image,
   Images,
   Link2,
   MapPin,
   Search,
-  Settings,
-  Share2,
-  Star,
   Users,
-  Video,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -23,34 +17,31 @@ export interface NavItem {
   icon: LucideIcon;
 }
 
-/** Primary sidebar navigation (docs/DESIGN.md §6), grouped by separators. */
+/**
+ * Primary navigation, reduced from fourteen items to eight (design advice,
+ * Advice C). Foto's, Video's, Favorieten and Social are no longer menu items —
+ * they're filter chips at the top of Mijn leven. Instellingen lives in the
+ * account area; Familie returns once the feature exists.
+ */
 export const NAV_GROUPS: NavItem[][] = [
   [
     { key: 'today', href: '/vandaag', icon: Home },
-    { key: 'search', href: '/zoeken', icon: Search },
     { key: 'myLife', href: '/mijn-leven', icon: Clock },
-    { key: 'photos', href: '/fotos', icon: Image },
-    { key: 'videos', href: '/videos', icon: Video },
     { key: 'documents', href: '/documenten', icon: FileText },
-    { key: 'social', href: '/social', icon: Share2 },
-    { key: 'favourites', href: '/favorieten', icon: Star },
+    { key: 'search', href: '/zoeken', icon: Search },
   ],
   [
     { key: 'albums', href: '/albums', icon: Images },
     { key: 'people', href: '/personen', icon: Users },
     { key: 'places', href: '/plaatsen', icon: MapPin },
   ],
-  [
-    { key: 'sources', href: '/bronnen', icon: Link2 },
-    { key: 'family', href: '/familie', icon: HeartHandshake },
-  ],
-  [{ key: 'settings', href: '/instellingen', icon: Settings }],
+  [{ key: 'sources', href: '/bronnen', icon: Link2 }],
 ];
 
 /** Bottom navigation on mobile (docs/DESIGN.md §7) — one-thumb reach. */
 export const MOBILE_NAV: NavItem[] = [
   { key: 'today', href: '/vandaag', icon: Home },
-  { key: 'archive', href: '/fotos', icon: Image },
   { key: 'myLife', href: '/mijn-leven', icon: Clock },
+  { key: 'search', href: '/zoeken', icon: Search },
   { key: 'sources', href: '/bronnen', icon: Link2 },
 ];

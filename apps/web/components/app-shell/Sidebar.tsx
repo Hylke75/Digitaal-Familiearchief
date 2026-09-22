@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { NAV_GROUPS } from '@/lib/navigation';
-import { CheckCircle2, LogOut } from 'lucide-react';
+import { CheckCircle2, LogOut, Settings } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
 import { Logo } from '@/components/brand/Logo';
 import { signOutAction } from '@/lib/auth/actions';
@@ -62,6 +62,14 @@ export function Sidebar({ userName }: { userName: string }) {
             {tHealth('safe')}
           </p>
         </div>
+        <Link
+          href="/instellingen"
+          aria-label={t('settings')}
+          title={t('settings')}
+          className="rounded-button text-ink-soft hover:bg-warm hover:text-ink p-2 transition-colors"
+        >
+          <Settings className="h-5 w-5" aria-hidden="true" />
+        </Link>
         <form action={signOutAction}>
           <button
             type="submit"

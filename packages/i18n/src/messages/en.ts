@@ -216,6 +216,7 @@ const en: AppMessages = {
   archive: {
     timelineTitle: 'My life',
     timelineSubtitle: 'Your memories in order of time.',
+    all: 'All',
     onThisDay: 'On this day',
     favouritesTitle: 'Favourites',
     loadMore: 'Load more',
