@@ -313,6 +313,7 @@ const nl = {
   demo: {
     tryButton: 'Probeer de demo',
     banner: 'Je bekijkt de Bewora-demo met voorbeelddata. Wijzigingen worden niet bewaard.',
+    startOwn: 'Start je eigen archief',
     exit: 'Demo verlaten',
   },
   settings: {

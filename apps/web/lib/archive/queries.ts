@@ -8,6 +8,10 @@ export type ArchiveItemType = Enums<'archive_item_type'>;
 const BUCKET = 'archief';
 export const MEDIA_PAGE_SIZE = 60;
 
+// Signed thumbnail/preview URLs live for a day so a tab left open doesn't show
+// broken images after an hour (design advice §D7). Downloads stay short-lived.
+const SIGNED_TTL = 60 * 60 * 24;
+
 // Types the browser can render as a real thumbnail via a transform; everything
 // else (HEIC, video, documents) falls back to a file card until slice 4 adds
 // server-generated derivatives.
@@ -40,7 +44,7 @@ async function signThumb(
   supabase: SupabaseClient<Database>,
   storageKey: string,
 ): Promise<string | null> {
-  const { data } = await supabase.storage.from(BUCKET).createSignedUrl(storageKey, 3600, {
+  const { data } = await supabase.storage.from(BUCKET).createSignedUrl(storageKey, SIGNED_TTL, {
     transform: { width: 600, height: 600, resize: 'cover', quality: 60 },
   });
   return data?.signedUrl ?? null;
@@ -98,7 +102,7 @@ async function toCards(supabase: SupabaseClient<Database>, rows: ItemRow[]): Pro
       const derivKey = thumbKeys.get(r.id);
       let thumbUrl: string | null = null;
       if (derivKey) {
-        const { data } = await supabase.storage.from(BUCKET).createSignedUrl(derivKey, 3600);
+        const { data } = await supabase.storage.from(BUCKET).createSignedUrl(derivKey, SIGNED_TTL);
         thumbUrl = data?.signedUrl ?? null;
       } else if (RENDERABLE.has(r.mime_type)) {
         thumbUrl = await signThumb(supabase, r.storage_key);
@@ -251,7 +255,7 @@ export async function getItemDetail(id: string): Promise<ItemDetail | null> {
     RENDERABLE.has(row.mime_type)
       ? supabase.storage
           .from(BUCKET)
-          .createSignedUrl(row.storage_key, 3600, {
+          .createSignedUrl(row.storage_key, SIGNED_TTL, {
             transform: { width: 1600, height: 1600, resize: 'contain', quality: 80 },
           })
           .then((res) => res.data?.signedUrl ?? null)
@@ -259,7 +263,7 @@ export async function getItemDetail(id: string): Promise<ItemDetail | null> {
     row.type === 'video' || row.type === 'audio'
       ? supabase.storage
           .from(BUCKET)
-          .createSignedUrl(row.storage_key, 3600)
+          .createSignedUrl(row.storage_key, SIGNED_TTL)
           .then((res) => res.data?.signedUrl ?? null)
       : Promise.resolve(null),
   ]);
@@ -268,7 +272,9 @@ export async function getItemDetail(id: string): Promise<ItemDetail | null> {
   // detail view still shows something rather than "no preview".
   let previewUrl = transformPreview;
   if (!previewUrl && row.type === 'photo' && deriv?.storage_key) {
-    const { data } = await supabase.storage.from(BUCKET).createSignedUrl(deriv.storage_key, 3600);
+    const { data } = await supabase.storage
+      .from(BUCKET)
+      .createSignedUrl(deriv.storage_key, SIGNED_TTL);
     previewUrl = data?.signedUrl ?? null;
   }
 

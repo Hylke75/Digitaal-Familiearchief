@@ -312,6 +312,7 @@ const en: AppMessages = {
   demo: {
     tryButton: 'Try the demo',
     banner: 'You’re viewing the Bewora demo with sample data. Changes aren’t saved.',
+    startOwn: 'Start your own archive',
     exit: 'Leave demo',
   },
   settings: {

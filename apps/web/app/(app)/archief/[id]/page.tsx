@@ -9,6 +9,7 @@ import { FavouriteButton } from '@/components/archive/FavouriteButton';
 import { AddToAlbum } from '@/components/archive/AddToAlbum';
 import { MembershipPicker } from '@/components/archive/MembershipPicker';
 import { getItemDetail } from '@/lib/archive/queries';
+import { formatDuration, stripExtension } from '@/lib/archive/display';
 import { getAlbumMembership } from '@/lib/archive/albums';
 import { getPersonMembership } from '@/lib/archive/people';
 import { toggleItemPersonAction } from '@/lib/archive/people-actions';
@@ -17,14 +18,7 @@ import { toggleItemPlaceAction } from '@/lib/archive/places-actions';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const item = await getItemDetail(params.id);
-  return { title: item?.filename ?? 'Archief' };
-}
-
-function formatDuration(ms: number): string {
-  const total = Math.round(ms / 1000);
-  const m = Math.floor(total / 60);
-  const s = total % 60;
-  return `${m}:${s.toString().padStart(2, '0')}`;
+  return { title: item ? stripExtension(item.filename) : 'Archief' };
 }
 
 export default async function ItemDetailPage({ params }: { params: { id: string } }) {
@@ -85,7 +79,9 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
       </div>
 
       <div className="mb-5 flex flex-wrap items-center gap-3">
-        <h1 className="text-h3 text-ink min-w-0 flex-1 truncate font-semibold">{item.filename}</h1>
+        <h1 className="text-h3 text-ink min-w-0 flex-1 font-semibold">
+          {stripExtension(item.filename)}
+        </h1>
         <FavouriteButton
           itemId={item.id}
           initial={item.favourite}
