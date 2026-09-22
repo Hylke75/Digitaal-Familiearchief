@@ -36,6 +36,7 @@ const en: AppMessages = {
     archive: 'Archive',
     favourites: 'Favourites',
     albums: 'Albums',
+    search: 'Search',
   },
   landing: {
     heading: 'Your digital life, safely preserved',
@@ -297,6 +298,16 @@ const en: AppMessages = {
     noneYet: 'You have no places yet. Create one first.',
     manage: 'Manage places',
     done: 'Done',
+  },
+  search: {
+    title: 'Search',
+    placeholder: 'Search by file name…',
+    submit: 'Search',
+    all: 'All',
+    hint: 'Search your whole archive by file name.',
+    noResults: 'Nothing found for',
+    loadMore: 'Load more',
+    loading: 'Loading…',
   },
 } as const;
 

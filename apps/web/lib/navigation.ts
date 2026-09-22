@@ -7,6 +7,7 @@ import {
   Images,
   Link2,
   MapPin,
+  Search,
   Settings,
   Share2,
   Star,
@@ -26,6 +27,7 @@ export interface NavItem {
 export const NAV_GROUPS: NavItem[][] = [
   [
     { key: 'today', href: '/vandaag', icon: Home },
+    { key: 'search', href: '/zoeken', icon: Search },
     { key: 'myLife', href: '/mijn-leven', icon: Clock },
     { key: 'photos', href: '/fotos', icon: Image },
     { key: 'videos', href: '/videos', icon: Video },

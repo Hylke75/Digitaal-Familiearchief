@@ -1,6 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database, Enums } from '@dla/database';
 import { createClient } from '@/lib/supabase/server';
+import { escapeLike } from '@/lib/archive/search-utils';
 
 export type ArchiveItemType = Enums<'archive_item_type'>;
 
@@ -114,10 +115,15 @@ function orderNewest<T>(q: T): T {
     .order('id', { ascending: false }) as unknown as T;
 }
 
-/** A page of media, optionally filtered by type, newest first, hidden excluded. */
+/**
+ * A page of media, optionally filtered by type and/or a filename query, newest
+ * first, hidden excluded. The text query is a case-insensitive filename match —
+ * a deliberately simple MVP search (docs/ARCHIVE_EXPERIENCE_AUDIT.md §7).
+ */
 export async function listMedia(
   opts: {
     type?: ArchiveItemType;
+    q?: string;
     page?: number;
     pageSize?: number;
   } = {},
@@ -132,9 +138,11 @@ export async function listMedia(
   const page = Math.max(0, opts.page ?? 0);
   const from = page * pageSize;
   const hidden = await hiddenIds(supabase);
+  const q = opts.q?.trim();
 
   let query = supabase.from('archive_items').select(SELECT);
   if (opts.type) query = query.eq('type', opts.type);
+  if (q) query = query.ilike('original_filename', `%${escapeLike(q)}%`);
   if (hidden.length > 0) query = query.not('id', 'in', `(${hidden.join(',')})`);
   query = orderNewest(query).range(from, from + pageSize); // one extra row → hasMore
 
