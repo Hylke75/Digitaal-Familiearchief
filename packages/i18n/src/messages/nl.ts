@@ -310,6 +310,11 @@ const nl = {
     loadMore: 'Meer laden',
     loading: 'Laden…',
   },
+  demo: {
+    tryButton: 'Probeer de demo',
+    banner: 'Je bekijkt de Bewora-demo met voorbeelddata. Wijzigingen worden niet bewaard.',
+    exit: 'Demo verlaten',
+  },
 } as const;
 
 export default nl;

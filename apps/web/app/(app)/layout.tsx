@@ -1,6 +1,8 @@
 import { redirect } from 'next/navigation';
 import { AppShell } from '@/components/app-shell/AppShell';
+import { DemoBanner } from '@/components/app-shell/DemoBanner';
 import { createClient } from '@/lib/supabase/server';
+import { isDemoUser } from '@/lib/demo-account';
 
 /**
  * Authenticated area layout. The middleware already redirects anonymous users,
@@ -23,5 +25,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   const userName = profile?.first_name?.trim() || user.email?.split('@')[0] || 'Jij';
 
-  return <AppShell userName={userName}>{children}</AppShell>;
+  return (
+    <AppShell userName={userName}>
+      {isDemoUser(user.id) ? <DemoBanner /> : null}
+      {children}
+    </AppShell>
+  );
 }

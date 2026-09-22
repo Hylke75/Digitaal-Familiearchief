@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
+import { isDemoUser } from '@/lib/demo-account';
 import {
   listFavourites,
   listMedia,
@@ -33,6 +34,8 @@ export async function toggleFavouriteAction(itemId: string, next: boolean): Prom
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return false;
+  // Demo account: reflect the toggle in the UI but never persist.
+  if (isDemoUser(user.id)) return next;
 
   const { error } = await supabase
     .from('archive_item_flags')
