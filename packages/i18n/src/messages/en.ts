@@ -309,6 +309,11 @@ const en: AppMessages = {
     loadMore: 'Load more',
     loading: 'Loading…',
   },
+  demo: {
+    tryButton: 'Try the demo',
+    banner: 'You’re viewing the Bewora demo with sample data. Changes aren’t saved.',
+    exit: 'Leave demo',
+  },
 } as const;
 
 export default en;

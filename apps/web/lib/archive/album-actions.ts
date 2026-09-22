@@ -3,6 +3,8 @@
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
+import { isDemoUser } from '@/lib/demo-account';
+import { isDemoSession } from '@/lib/demo-guard';
 import { normalizeTitle } from '@/lib/archive/album-utils';
 
 /**
@@ -20,6 +22,7 @@ export async function createAlbumAction(formData: FormData): Promise<void> {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect('/inloggen');
+  if (isDemoUser(user.id)) redirect('/albums');
 
   const { data, error } = await supabase
     .from('archive_albums')
@@ -36,6 +39,7 @@ export async function renameAlbumAction(formData: FormData): Promise<void> {
   const title = normalizeTitle(String(formData.get('title') ?? ''));
   if (!albumId || !title) return;
   const supabase = createClient();
+  if (await isDemoSession(supabase)) return;
   await supabase.from('archive_albums').update({ title }).eq('id', albumId);
   revalidatePath(`/albums/${albumId}`);
   revalidatePath('/albums');
@@ -45,6 +49,7 @@ export async function deleteAlbumAction(formData: FormData): Promise<void> {
   const albumId = String(formData.get('albumId') ?? '');
   if (!albumId) return;
   const supabase = createClient();
+  if (await isDemoSession(supabase)) redirect('/albums');
   await supabase.from('archive_albums').delete().eq('id', albumId);
   revalidatePath('/albums');
   redirect('/albums');
@@ -55,6 +60,7 @@ export async function removeFromAlbumAction(formData: FormData): Promise<void> {
   const itemId = String(formData.get('itemId') ?? '');
   if (!albumId || !itemId) return;
   const supabase = createClient();
+  if (await isDemoSession(supabase)) return;
   await supabase
     .from('archive_album_items')
     .delete()
@@ -77,6 +83,7 @@ export async function toggleItemInAlbumAction(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return !present;
+  if (isDemoUser(user.id)) return present;
 
   if (present) {
     const { error } = await supabase

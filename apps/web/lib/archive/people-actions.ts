@@ -3,6 +3,8 @@
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
+import { isDemoUser } from '@/lib/demo-account';
+import { isDemoSession } from '@/lib/demo-guard';
 import { normalizeTitle } from '@/lib/archive/album-utils';
 
 /**
@@ -18,6 +20,7 @@ export async function createPersonAction(formData: FormData): Promise<void> {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect('/inloggen');
+  if (isDemoUser(user.id)) redirect('/personen');
 
   const { data, error } = await supabase
     .from('archive_people')
@@ -34,6 +37,7 @@ export async function renamePersonAction(formData: FormData): Promise<void> {
   const name = normalizeTitle(String(formData.get('name') ?? ''));
   if (!personId || !name) return;
   const supabase = createClient();
+  if (await isDemoSession(supabase)) return;
   await supabase.from('archive_people').update({ display_name: name }).eq('id', personId);
   revalidatePath(`/personen/${personId}`);
   revalidatePath('/personen');
@@ -43,6 +47,7 @@ export async function deletePersonAction(formData: FormData): Promise<void> {
   const personId = String(formData.get('personId') ?? '');
   if (!personId) return;
   const supabase = createClient();
+  if (await isDemoSession(supabase)) redirect('/personen');
   await supabase.from('archive_people').delete().eq('id', personId);
   revalidatePath('/personen');
   redirect('/personen');
@@ -53,6 +58,7 @@ export async function removePersonFromItemAction(formData: FormData): Promise<vo
   const itemId = String(formData.get('itemId') ?? '');
   if (!personId || !itemId) return;
   const supabase = createClient();
+  if (await isDemoSession(supabase)) return;
   await supabase
     .from('archive_item_people')
     .delete()
@@ -72,6 +78,7 @@ export async function toggleItemPersonAction(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return !present;
+  if (isDemoUser(user.id)) return present;
 
   if (present) {
     const { error } = await supabase

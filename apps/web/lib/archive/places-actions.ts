@@ -3,6 +3,8 @@
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
+import { isDemoUser } from '@/lib/demo-account';
+import { isDemoSession } from '@/lib/demo-guard';
 import { normalizeTitle } from '@/lib/archive/album-utils';
 
 /** Places mutations. Manual, owner-scoped tagging (RLS). */
@@ -15,6 +17,7 @@ export async function createPlaceAction(formData: FormData): Promise<void> {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect('/inloggen');
+  if (isDemoUser(user.id)) redirect('/plaatsen');
 
   const { data, error } = await supabase
     .from('archive_places')
@@ -31,6 +34,7 @@ export async function renamePlaceAction(formData: FormData): Promise<void> {
   const name = normalizeTitle(String(formData.get('name') ?? ''));
   if (!placeId || !name) return;
   const supabase = createClient();
+  if (await isDemoSession(supabase)) return;
   await supabase.from('archive_places').update({ name }).eq('id', placeId);
   revalidatePath(`/plaatsen/${placeId}`);
   revalidatePath('/plaatsen');
@@ -40,6 +44,7 @@ export async function deletePlaceAction(formData: FormData): Promise<void> {
   const placeId = String(formData.get('placeId') ?? '');
   if (!placeId) return;
   const supabase = createClient();
+  if (await isDemoSession(supabase)) redirect('/plaatsen');
   await supabase.from('archive_places').delete().eq('id', placeId);
   revalidatePath('/plaatsen');
   redirect('/plaatsen');
@@ -50,6 +55,7 @@ export async function removePlaceFromItemAction(formData: FormData): Promise<voi
   const itemId = String(formData.get('itemId') ?? '');
   if (!placeId || !itemId) return;
   const supabase = createClient();
+  if (await isDemoSession(supabase)) return;
   await supabase
     .from('archive_item_places')
     .delete()
@@ -69,6 +75,7 @@ export async function toggleItemPlaceAction(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return !present;
+  if (isDemoUser(user.id)) return present;
 
   if (present) {
     const { error } = await supabase

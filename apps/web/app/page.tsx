@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { ArrowRight, Check, Download, Lock, Layers, Clock } from 'lucide-react';
 import { CONNECTOR_REGISTRY, type ConnectorCapability } from '@dla/connectors';
 import { BRAND } from '@dla/shared';
+import { demoEnabled } from '@/lib/demo-account';
 import { ButtonLink } from '@/components/ui/Button';
 import { Card, CardBody } from '@/components/ui/Card';
 import { Logo } from '@/components/brand/Logo';
@@ -50,7 +52,8 @@ const PLATFORMS = PLATFORM_ORDER.map((key) =>
   CONNECTOR_REGISTRY.find((c) => c.connectorKey === key),
 ).filter((c): c is ConnectorCapability => Boolean(c));
 
-export default function HomePage() {
+export default async function HomePage() {
+  const tDemo = await getTranslations('demo');
   return (
     <div className="bg-warm min-h-dvh">
       <SiteHeader />
@@ -70,10 +73,16 @@ export default function HomePage() {
             <ButtonLink href="/registreren" size="lg">
               {m.nav.cta}
             </ButtonLink>
-            <a href="#hoe" className="text-forest inline-flex items-center gap-1.5 font-medium">
-              {m.nav.ctaSecondary}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </a>
+            {demoEnabled() ? (
+              <ButtonLink href="/api/demo/enter" variant="secondary" size="lg">
+                {tDemo('tryButton')}
+              </ButtonLink>
+            ) : (
+              <a href="#hoe" className="text-forest inline-flex items-center gap-1.5 font-medium">
+                {m.nav.ctaSecondary}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+            )}
           </div>
           <p className="text-ink-soft text-small">{m.hero.note}</p>
         </div>
