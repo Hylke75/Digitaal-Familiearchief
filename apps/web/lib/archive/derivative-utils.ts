@@ -7,3 +7,8 @@
 export function thumbnailKey(ownerId: string, itemId: string): string {
   return `archive/${ownerId}/thumb/${itemId}.webp`;
 }
+
+/** Storage key for a persisted video poster (same RLS-safe layout). */
+export function posterKey(ownerId: string, itemId: string): string {
+  return `archive/${ownerId}/poster/${itemId}.webp`;
+}
