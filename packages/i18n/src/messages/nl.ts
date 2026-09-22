@@ -315,6 +315,21 @@ const nl = {
     banner: 'Je bekijkt de Bewora-demo met voorbeelddata. Wijzigingen worden niet bewaard.',
     exit: 'Demo verlaten',
   },
+  settings: {
+    title: 'Instellingen',
+    accountTitle: 'Account',
+    email: 'E-mailadres',
+    language: 'Taal',
+    exportTitle: 'Download je volledige archief',
+    exportBody:
+      'Je archief blijft van jou. Download al je originele bestanden en een overzicht (archive.json) in één zip — onafhankelijk van Bewora en de oorspronkelijke platforms.',
+    exportButton: 'Download mijn archief',
+    exportNote: 'Grote archieven kunnen even duren; de download start automatisch.',
+    deleteTitle: 'Account verwijderen',
+    deleteBody:
+      'Wil je je account en archief laten verwijderen? Stuur een verzoek, dan verwerken we dit zorgvuldig. Bronnen ontkoppelen verwijdert niets van wat al is veiliggesteld.',
+    deleteButton: 'Verwijdering aanvragen',
+  },
 } as const;
 
 export default nl;
