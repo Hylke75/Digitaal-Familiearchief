@@ -83,11 +83,12 @@ async function toCards(supabase: SupabaseClient<Database>, rows: ItemRow[]): Pro
         .in('archive_item_id', ids),
       supabase
         .from('archive_derivatives')
-        .select('archive_item_id, storage_key')
-        .eq('kind', 'thumb')
+        .select('archive_item_id, storage_key, kind')
+        .in('kind', ['thumb', 'poster'])
         .in('archive_item_id', ids),
     ]);
     (flags ?? []).forEach((r) => favourites.add(r.archive_item_id));
+    // A photo has a 'thumb', a video a 'poster'; either becomes the tile image.
     (derivs ?? []).forEach((d) => thumbKeys.set(d.archive_item_id, d.storage_key));
   }
   return Promise.all(
