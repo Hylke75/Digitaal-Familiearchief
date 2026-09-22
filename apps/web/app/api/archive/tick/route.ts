@@ -12,6 +12,7 @@ import { detectImporter, listZipEntries, readZipSafely } from '@dla/import';
 import { contentStorageKey, sha256Hex } from '@dla/archive';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { SupabaseStorageProvider } from '@/lib/archive/supabase-storage';
+import { generateThumbnailBatch } from '@/lib/archive/derivatives';
 import { getLiveProvider } from '@/lib/connectors/live-providers';
 import { getPortabilityProvider } from '@/lib/connectors/portability-providers';
 import { getAccessToken } from '@/lib/connectors/token';
@@ -88,7 +89,18 @@ async function handle(request: NextRequest) {
     processed += 1;
   }
 
-  return NextResponse.json({ ok: true, claimed: jobs?.length ?? 0, processed });
+  // Generate a small batch of missing photo thumbnails (incl. HEIC) each tick —
+  // bounded, idempotent, and skipped when we're near the wall.
+  let thumbnails = 0;
+  if (Date.now() < deadline) {
+    try {
+      thumbnails = await generateThumbnailBatch(admin, 12);
+    } catch {
+      // Thumbnail generation is best-effort; never fail the tick over it.
+    }
+  }
+
+  return NextResponse.json({ ok: true, claimed: jobs?.length ?? 0, processed, thumbnails });
 }
 
 async function processJob(admin: Admin, job: JobRow, worker: string, deadline: number) {

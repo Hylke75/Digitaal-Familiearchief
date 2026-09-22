@@ -73,28 +73,49 @@ type ItemRow = {
 async function toCards(supabase: SupabaseClient<Database>, rows: ItemRow[]): Promise<MediaCard[]> {
   const ids = rows.map((r) => r.id);
   const favourites = new Set<string>();
+  const thumbKeys = new Map<string, string>();
   if (ids.length > 0) {
-    const { data } = await supabase
-      .from('archive_item_flags')
-      .select('archive_item_id')
-      .eq('favourite', true)
-      .in('archive_item_id', ids);
-    (data ?? []).forEach((r) => favourites.add(r.archive_item_id));
+    const [{ data: flags }, { data: derivs }] = await Promise.all([
+      supabase
+        .from('archive_item_flags')
+        .select('archive_item_id')
+        .eq('favourite', true)
+        .in('archive_item_id', ids),
+      supabase
+        .from('archive_derivatives')
+        .select('archive_item_id, storage_key')
+        .eq('kind', 'thumb')
+        .in('archive_item_id', ids),
+    ]);
+    (flags ?? []).forEach((r) => favourites.add(r.archive_item_id));
+    (derivs ?? []).forEach((d) => thumbKeys.set(d.archive_item_id, d.storage_key));
   }
   return Promise.all(
-    rows.map(async (r) => ({
-      id: r.id,
-      filename: r.original_filename,
-      type: r.type,
-      mimeType: r.mime_type,
-      fileSize: r.file_size,
-      effectiveDate: r.taken_at ?? r.created_at_source ?? r.archived_at,
-      thumbUrl: RENDERABLE.has(r.mime_type) ? await signThumb(supabase, r.storage_key) : null,
-      favourite: favourites.has(r.id),
-      width: r.width,
-      height: r.height,
-      durationMs: r.duration_ms,
-    })),
+    rows.map(async (r) => {
+      // Prefer a persisted thumbnail (the only way HEIC/other non-transformable
+      // formats get a preview); otherwise transform a renderable original.
+      const derivKey = thumbKeys.get(r.id);
+      let thumbUrl: string | null = null;
+      if (derivKey) {
+        const { data } = await supabase.storage.from(BUCKET).createSignedUrl(derivKey, 3600);
+        thumbUrl = data?.signedUrl ?? null;
+      } else if (RENDERABLE.has(r.mime_type)) {
+        thumbUrl = await signThumb(supabase, r.storage_key);
+      }
+      return {
+        id: r.id,
+        filename: r.original_filename,
+        type: r.type,
+        mimeType: r.mime_type,
+        fileSize: r.file_size,
+        effectiveDate: r.taken_at ?? r.created_at_source ?? r.archived_at,
+        thumbUrl,
+        favourite: favourites.has(r.id),
+        width: r.width,
+        height: r.height,
+        durationMs: r.duration_ms,
+      };
+    }),
   );
 }
 
@@ -218,8 +239,14 @@ export async function getItemDetail(id: string): Promise<ItemDetail | null> {
   if (!r) return null;
   const row = r as ItemRow & { camera: string | null };
 
-  const [{ data: fav }, previewUrl, originalUrl] = await Promise.all([
+  const [{ data: fav }, { data: deriv }, transformPreview, originalUrl] = await Promise.all([
     supabase.from('archive_item_flags').select('favourite').eq('archive_item_id', id).maybeSingle(),
+    supabase
+      .from('archive_derivatives')
+      .select('storage_key')
+      .eq('archive_item_id', id)
+      .eq('kind', 'thumb')
+      .maybeSingle(),
     RENDERABLE.has(row.mime_type)
       ? supabase.storage
           .from(BUCKET)
@@ -235,6 +262,14 @@ export async function getItemDetail(id: string): Promise<ItemDetail | null> {
           .then((res) => res.data?.signedUrl ?? null)
       : Promise.resolve(null),
   ]);
+
+  // Non-transformable images (HEIC) fall back to the persisted thumbnail so the
+  // detail view still shows something rather than "no preview".
+  let previewUrl = transformPreview;
+  if (!previewUrl && row.type === 'photo' && deriv?.storage_key) {
+    const { data } = await supabase.storage.from(BUCKET).createSignedUrl(deriv.storage_key, 3600);
+    previewUrl = data?.signedUrl ?? null;
+  }
 
   return {
     id: row.id,
