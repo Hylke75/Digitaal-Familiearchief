@@ -6,7 +6,9 @@ import { formatBytes } from '@dla/shared';
 import { Card, CardBody } from '@/components/ui/Card';
 import { ButtonLink } from '@/components/ui/Button';
 import { FavouriteButton } from '@/components/archive/FavouriteButton';
+import { AddToAlbum } from '@/components/archive/AddToAlbum';
 import { getItemDetail } from '@/lib/archive/queries';
+import { getAlbumMembership } from '@/lib/archive/albums';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const item = await getItemDetail(params.id);
@@ -26,6 +28,8 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
 
   const f = await getFormatter();
   const t = await getTranslations('archive');
+  const tAlbums = await getTranslations('albums');
+  const membership = await getAlbumMembership(item.id);
 
   const rows: Array<[string, string]> = [];
   if (item.effectiveDate) {
@@ -76,6 +80,17 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
           initial={item.favourite}
           addLabel={t('addFavourite')}
           removeLabel={t('removeFavourite')}
+        />
+        <AddToAlbum
+          itemId={item.id}
+          albums={membership.albums}
+          memberOf={membership.memberOf}
+          labels={{
+            addToAlbum: tAlbums('addToAlbum'),
+            noAlbumsYet: tAlbums('noAlbumsYet'),
+            manageAlbums: tAlbums('manageAlbums'),
+            done: tAlbums('done'),
+          }}
         />
         <ButtonLink href={`/archief/download/${item.id}`} size="sm">
           <Download className="h-4 w-4" aria-hidden="true" />

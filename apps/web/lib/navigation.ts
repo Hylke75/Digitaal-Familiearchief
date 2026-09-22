@@ -4,6 +4,7 @@ import {
   HeartHandshake,
   Home,
   Image,
+  Images,
   Link2,
   MapPin,
   Settings,
@@ -33,6 +34,7 @@ export const NAV_GROUPS: NavItem[][] = [
     { key: 'favourites', href: '/favorieten', icon: Star },
   ],
   [
+    { key: 'albums', href: '/albums', icon: Images },
     { key: 'people', href: '/personen', icon: Users },
     { key: 'places', href: '/plaatsen', icon: MapPin },
   ],
