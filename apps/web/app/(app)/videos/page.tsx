@@ -1,10 +1,10 @@
 import { getTranslations } from 'next-intl/server';
-import { ArchiveList } from '@/components/archive/ArchiveList';
+import { ArchiveTypeView } from '@/components/archive/ArchiveTypeView';
 
 export default async function VideosPage() {
   const t = await getTranslations();
   return (
-    <ArchiveList
+    <ArchiveTypeView
       type="video"
       title={t('nav.videos')}
       emptyTitle={t('emptyStates.genericTitle')}

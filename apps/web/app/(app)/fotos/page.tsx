@@ -1,10 +1,10 @@
 import { getTranslations } from 'next-intl/server';
-import { ArchiveList } from '@/components/archive/ArchiveList';
+import { ArchiveTypeView } from '@/components/archive/ArchiveTypeView';
 
 export default async function PhotosPage() {
   const t = await getTranslations();
   return (
-    <ArchiveList
+    <ArchiveTypeView
       type="photo"
       title={t('nav.photos')}
       emptyTitle={t('emptyStates.photosTitle')}
