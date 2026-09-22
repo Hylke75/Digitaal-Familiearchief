@@ -118,6 +118,11 @@ async function ingest(accountId, uid, item) {
       width: item.width ?? null,
       height: item.height ?? null,
       camera: item.camera ?? null,
+      // Document classification (retained; drives the life-area view).
+      gebied: item.gebied ?? null,
+      afzender: item.afzender ?? null,
+      documentDate: item.documentDate ?? null,
+      labels: item.labels ?? null,
     },
   });
   if (error) throw error;
@@ -214,16 +219,21 @@ async function main() {
     if (p.favoriet && p.favoriet.toLowerCase() === 'ja') favourites.push(id);
   }
 
-  // Documents
+  // Documents — ordered by life area (categorie), with sender + document date.
   console.log(`→ ${docs.length} documents…`);
   for (const d of docs) {
     const bytes = await readFile(join(EXPORT_DIR, 'documenten', d.bestandsnaam));
+    const docDate = d.documentdatum ? `${d.documentdatum}T09:00:00Z` : null;
     await ingest(accountByName.get(d.bron), uid, {
       bytes,
       type: 'document',
       filename: d.titel || d.bestandsnaam,
       mime: 'application/pdf',
-      takenAt: d.documentdatum ? `${d.documentdatum}T09:00:00Z` : null,
+      takenAt: docDate,
+      gebied: d.categorie || null,
+      afzender: d.bron || null,
+      documentDate: docDate,
+      labels: d.labels || null,
     });
   }
 

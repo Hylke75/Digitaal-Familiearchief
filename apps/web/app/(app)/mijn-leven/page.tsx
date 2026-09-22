@@ -11,7 +11,7 @@ export default async function MyLifePage() {
   const tArchive = await getTranslations('archive');
   const tEmpty = await getTranslations('emptyStates');
   const tSources = await getTranslations('sources');
-  const { items, hasMore } = await listMedia({});
+  const { items, hasMore } = await listMedia({ visualOnly: true });
 
   return (
     <div>

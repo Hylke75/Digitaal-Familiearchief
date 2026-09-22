@@ -149,6 +149,8 @@ function orderNewest<T>(q: T): T {
 export async function listMedia(
   opts: {
     type?: ArchiveItemType;
+    /** Timeline: only photos and videos (documents get their own place, §B). */
+    visualOnly?: boolean;
     q?: string;
     page?: number;
     pageSize?: number;
@@ -168,6 +170,7 @@ export async function listMedia(
 
   let query = supabase.from('archive_items').select(SELECT);
   if (opts.type) query = query.eq('type', opts.type);
+  else if (opts.visualOnly) query = query.in('type', ['photo', 'video']);
   if (q) query = query.ilike('original_filename', `%${escapeLike(q)}%`);
   if (hidden.length > 0) query = query.not('id', 'in', `(${hidden.join(',')})`);
   query = orderNewest(query).range(from, from + pageSize); // one extra row → hasMore

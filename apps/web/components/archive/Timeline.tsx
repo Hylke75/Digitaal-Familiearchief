@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { JustifiedGrid } from '@/components/archive/JustifiedGrid';
 import { Lightbox } from '@/components/archive/Lightbox';
-import { loadMoreMediaAction } from '@/lib/archive/media-actions';
+import { loadMoreTimelineAction } from '@/lib/archive/media-actions';
 import { groupByMonth, isOnThisDay } from '@/lib/archive/grouping';
 import type { MediaCard } from '@/lib/archive/queries';
 
@@ -48,7 +48,7 @@ export function Timeline({
     if (loading || !hasMore) return;
     setLoading(true);
     try {
-      const next = await loadMoreMediaAction(null, page + 1);
+      const next = await loadMoreTimelineAction(page + 1);
       setItems((prev) => {
         const seen = new Set(prev.map((i) => i.id));
         return [...prev, ...next.items.filter((i) => !seen.has(i.id))];

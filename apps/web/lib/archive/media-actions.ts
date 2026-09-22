@@ -18,6 +18,11 @@ export async function loadMoreMediaAction(
   return listMedia({ type: type ?? undefined, page });
 }
 
+/** Next timeline page — photos and videos only (documents live elsewhere, §B). */
+export async function loadMoreTimelineAction(page: number): Promise<MediaPage> {
+  return listMedia({ visualOnly: true, page });
+}
+
 /** Fetch the next page of favourites for the infinite-scroll grid. */
 export async function loadMoreFavouritesAction(page: number): Promise<MediaPage> {
   return listFavourites({ page });
