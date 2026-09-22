@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { MediaTile } from '@/components/archive/MediaTile';
+import { JustifiedGrid } from '@/components/archive/JustifiedGrid';
+import { Lightbox } from '@/components/archive/Lightbox';
 import { loadMoreMediaAction } from '@/lib/archive/media-actions';
 import { groupByMonth, isOnThisDay } from '@/lib/archive/grouping';
 import type { MediaCard } from '@/lib/archive/queries';
@@ -31,6 +32,7 @@ export function Timeline({
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(initialHasMore);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState<number | null>(null);
   const sentinel = useRef<HTMLDivElement | null>(null);
 
   const today = useMemo(() => {
@@ -71,21 +73,22 @@ export function Timeline({
     return () => io.disconnect();
   }, [load]);
 
-  const onThisDay = items.filter((i) => isOnThisDay(i.effectiveDate, today.month, today.day));
+  const indexById = useMemo(() => new Map(items.map((it, i) => [it.id, i])), [items]);
+  const onThisDay = items
+    .filter((i) => isOnThisDay(i.effectiveDate, today.month, today.day))
+    .slice(0, 8);
   const groups = groupByMonth(items);
+  const openLocal = (list: MediaCard[]) => (local: number) => {
+    const id = list[local]?.id;
+    if (id != null) setOpen(indexById.get(id) ?? null);
+  };
 
   return (
     <div className="space-y-10">
       {onThisDay.length > 0 ? (
         <section>
           <h2 className="text-h3 text-ink mb-3">{labels.onThisDay}</h2>
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {onThisDay.slice(0, 8).map((item) => (
-              <li key={`otd-${item.id}`}>
-                <MediaTile item={item} locale={locale} />
-              </li>
-            ))}
-          </ul>
+          <JustifiedGrid items={onThisDay} onOpen={openLocal(onThisDay)} />
         </section>
       ) : null}
 
@@ -94,13 +97,7 @@ export function Timeline({
           <h2 className="text-h3 text-ink mb-3 capitalize">
             {group.monthStart ? monthLabel.format(new Date(group.monthStart)) : labels.unknownDate}
           </h2>
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {group.items.map((item) => (
-              <li key={item.id}>
-                <MediaTile item={item} locale={locale} />
-              </li>
-            ))}
-          </ul>
+          <JustifiedGrid items={group.items} onOpen={openLocal(group.items)} />
         </section>
       ))}
 
@@ -115,6 +112,10 @@ export function Timeline({
             {loading ? labels.loading : labels.loadMore}
           </button>
         </div>
+      ) : null}
+
+      {open !== null ? (
+        <Lightbox items={items} index={open} onClose={() => setOpen(null)} onIndex={setOpen} />
       ) : null}
     </div>
   );

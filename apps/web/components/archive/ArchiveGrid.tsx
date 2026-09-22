@@ -1,21 +1,23 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { MediaTile } from '@/components/archive/MediaTile';
+import { JustifiedGrid } from '@/components/archive/JustifiedGrid';
+import { Lightbox } from '@/components/archive/Lightbox';
 import { loadMoreFavouritesAction, loadMoreMediaAction } from '@/lib/archive/media-actions';
 import type { ArchiveItemType, MediaCard } from '@/lib/archive/queries';
 
 /**
- * Client-side infinite-scroll grid. Renders the server-provided first page, then
- * loads further pages through a server action as a sentinel scrolls into view.
- * Signed thumbnail URLs come pre-baked on each card (valid for the session).
+ * Client-side infinite-scroll justified grid with a lightbox. Renders the
+ * server-provided first page, then loads further pages through a server action
+ * as a sentinel scrolls into view. Signed thumbnail URLs come pre-baked on each
+ * card.
  */
 export function ArchiveGrid({
   initial,
   hasMore: initialHasMore,
   type = null,
   variant = 'media',
-  locale,
+  locale: _locale,
   loadMoreLabel,
   loadingLabel,
 }: {
@@ -31,6 +33,7 @@ export function ArchiveGrid({
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(initialHasMore);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState<number | null>(null);
   const sentinel = useRef<HTMLDivElement | null>(null);
 
   const load = useCallback(async () => {
@@ -67,13 +70,7 @@ export function ArchiveGrid({
 
   return (
     <div>
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-        {items.map((item) => (
-          <li key={item.id}>
-            <MediaTile item={item} locale={locale} />
-          </li>
-        ))}
-      </ul>
+      <JustifiedGrid items={items} onOpen={setOpen} />
       {hasMore ? (
         <div ref={sentinel} className="mt-6 flex justify-center">
           <button
@@ -85,6 +82,9 @@ export function ArchiveGrid({
             {loading ? loadingLabel : loadMoreLabel}
           </button>
         </div>
+      ) : null}
+      {open !== null ? (
+        <Lightbox items={items} index={open} onClose={() => setOpen(null)} onIndex={setOpen} />
       ) : null}
     </div>
   );
