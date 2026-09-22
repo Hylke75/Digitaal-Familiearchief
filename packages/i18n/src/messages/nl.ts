@@ -34,6 +34,7 @@ const nl = {
     archive: 'Archief',
     favourites: 'Favorieten',
     albums: 'Albums',
+    search: 'Zoeken',
   },
   landing: {
     heading: 'Je digitale leven, veilig bewaard',
@@ -298,6 +299,16 @@ const nl = {
     noneYet: 'Je hebt nog geen plaatsen. Maak er eerst een.',
     manage: 'Plaatsen beheren',
     done: 'Klaar',
+  },
+  search: {
+    title: 'Zoeken',
+    placeholder: 'Zoek op bestandsnaam…',
+    submit: 'Zoeken',
+    all: 'Alles',
+    hint: 'Zoek in je hele archief op bestandsnaam.',
+    noResults: 'Niets gevonden voor',
+    loadMore: 'Meer laden',
+    loading: 'Laden…',
   },
 } as const;
 
