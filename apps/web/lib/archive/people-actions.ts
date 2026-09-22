@@ -1,0 +1,91 @@
+'use server';
+
+import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
+import { createClient } from '@/lib/supabase/server';
+import { normalizeTitle } from '@/lib/archive/album-utils';
+
+/**
+ * People mutations. A person is not an app user (§37); this is manual tagging
+ * only — no face recognition (§59, §62). All writes are owner-scoped by RLS.
+ */
+
+export async function createPersonAction(formData: FormData): Promise<void> {
+  const name = normalizeTitle(String(formData.get('name') ?? ''));
+  if (!name) return;
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect('/inloggen');
+
+  const { data, error } = await supabase
+    .from('archive_people')
+    .insert({ owner_id: user.id, display_name: name })
+    .select('id')
+    .single();
+  if (error || !data) return;
+  revalidatePath('/personen');
+  redirect(`/personen/${data.id}`);
+}
+
+export async function renamePersonAction(formData: FormData): Promise<void> {
+  const personId = String(formData.get('personId') ?? '');
+  const name = normalizeTitle(String(formData.get('name') ?? ''));
+  if (!personId || !name) return;
+  const supabase = createClient();
+  await supabase.from('archive_people').update({ display_name: name }).eq('id', personId);
+  revalidatePath(`/personen/${personId}`);
+  revalidatePath('/personen');
+}
+
+export async function deletePersonAction(formData: FormData): Promise<void> {
+  const personId = String(formData.get('personId') ?? '');
+  if (!personId) return;
+  const supabase = createClient();
+  await supabase.from('archive_people').delete().eq('id', personId);
+  revalidatePath('/personen');
+  redirect('/personen');
+}
+
+export async function removePersonFromItemAction(formData: FormData): Promise<void> {
+  const personId = String(formData.get('personId') ?? '');
+  const itemId = String(formData.get('itemId') ?? '');
+  if (!personId || !itemId) return;
+  const supabase = createClient();
+  await supabase
+    .from('archive_item_people')
+    .delete()
+    .eq('person_id', personId)
+    .eq('archive_item_id', itemId);
+  revalidatePath(`/personen/${personId}`);
+}
+
+/** Tag/untag a memory with a person (item-detail picker). */
+export async function toggleItemPersonAction(
+  personId: string,
+  itemId: string,
+  present: boolean,
+): Promise<boolean> {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return !present;
+
+  if (present) {
+    const { error } = await supabase
+      .from('archive_item_people')
+      .insert({ person_id: personId, archive_item_id: itemId });
+    if (error) return false;
+  } else {
+    await supabase
+      .from('archive_item_people')
+      .delete()
+      .eq('person_id', personId)
+      .eq('archive_item_id', itemId);
+  }
+  revalidatePath(`/personen/${personId}`);
+  revalidatePath(`/archief/${itemId}`);
+  return present;
+}
