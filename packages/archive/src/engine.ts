@@ -23,6 +23,8 @@ export interface UpsertItemInput {
   storageKey: string;
   sourceItemId: string;
   sourceUrlIfSafe?: string;
+  /** Capture metadata retained in metadata_json (normalised subset derived server-side). */
+  metadata?: Record<string, unknown>;
 }
 
 export interface ArchivePersistencePort {
@@ -113,6 +115,7 @@ export async function runImport(args: RunImportArgs): Promise<ImportResult> {
         storageProvider: storage.id,
         storageKey: key,
         sourceItemId: item.sourceItemId,
+        metadata: item.metadata,
       });
 
       result.processed += 1;

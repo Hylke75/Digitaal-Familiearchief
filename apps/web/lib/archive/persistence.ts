@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from '@dla/database';
+import type { Database, Json } from '@dla/database';
 import type { ArchivePersistencePort } from '@dla/archive';
 
 /**
@@ -26,6 +26,7 @@ export function createSupabasePersistence(
         p_created_at_source: input.createdAtSource,
         p_modified_at_source: input.modifiedAtSource,
         p_source_url: input.sourceUrlIfSafe,
+        p_metadata: (input.metadata ?? {}) as Json,
       });
       if (error) throw error;
       const deduped =

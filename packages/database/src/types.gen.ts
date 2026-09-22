@@ -42,6 +42,240 @@ export type Database = {
   }
   public: {
     Tables: {
+      archive_album_items: {
+        Row: {
+          added_at: string
+          album_id: string
+          archive_item_id: string
+          id: string
+          position: number
+        }
+        Insert: {
+          added_at?: string
+          album_id: string
+          archive_item_id: string
+          id?: string
+          position?: number
+        }
+        Update: {
+          added_at?: string
+          album_id?: string
+          archive_item_id?: string
+          id?: string
+          position?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_album_items_album_id_fkey"
+            columns: ["album_id"]
+            isOneToOne: false
+            referencedRelation: "archive_albums"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "archive_album_items_archive_item_id_fkey"
+            columns: ["archive_item_id"]
+            isOneToOne: false
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      archive_albums: {
+        Row: {
+          cover_item_id: string | null
+          created_at: string
+          description: string | null
+          id: string
+          owner_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          cover_item_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          owner_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          cover_item_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          owner_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_albums_cover_item_id_fkey"
+            columns: ["cover_item_id"]
+            isOneToOne: false
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      archive_derivatives: {
+        Row: {
+          archive_item_id: string
+          byte_size: number
+          created_at: string
+          height: number | null
+          id: string
+          kind: string
+          mime_type: string
+          owner_id: string
+          storage_key: string
+          width: number | null
+        }
+        Insert: {
+          archive_item_id: string
+          byte_size?: number
+          created_at?: string
+          height?: number | null
+          id?: string
+          kind: string
+          mime_type: string
+          owner_id: string
+          storage_key: string
+          width?: number | null
+        }
+        Update: {
+          archive_item_id?: string
+          byte_size?: number
+          created_at?: string
+          height?: number | null
+          id?: string
+          kind?: string
+          mime_type?: string
+          owner_id?: string
+          storage_key?: string
+          width?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_derivatives_archive_item_id_fkey"
+            columns: ["archive_item_id"]
+            isOneToOne: false
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      archive_item_flags: {
+        Row: {
+          archive_item_id: string
+          created_at: string
+          favourite: boolean
+          hidden: boolean
+          id: string
+          owner_id: string
+          updated_at: string
+        }
+        Insert: {
+          archive_item_id: string
+          created_at?: string
+          favourite?: boolean
+          hidden?: boolean
+          id?: string
+          owner_id: string
+          updated_at?: string
+        }
+        Update: {
+          archive_item_id?: string
+          created_at?: string
+          favourite?: boolean
+          hidden?: boolean
+          id?: string
+          owner_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_item_flags_archive_item_id_fkey"
+            columns: ["archive_item_id"]
+            isOneToOne: false
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      archive_item_people: {
+        Row: {
+          added_at: string
+          archive_item_id: string
+          id: string
+          person_id: string
+        }
+        Insert: {
+          added_at?: string
+          archive_item_id: string
+          id?: string
+          person_id: string
+        }
+        Update: {
+          added_at?: string
+          archive_item_id?: string
+          id?: string
+          person_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_item_people_archive_item_id_fkey"
+            columns: ["archive_item_id"]
+            isOneToOne: false
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "archive_item_people_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "archive_people"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      archive_item_places: {
+        Row: {
+          added_at: string
+          archive_item_id: string
+          id: string
+          place_id: string
+        }
+        Insert: {
+          added_at?: string
+          archive_item_id: string
+          id?: string
+          place_id: string
+        }
+        Update: {
+          added_at?: string
+          archive_item_id?: string
+          id?: string
+          place_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_item_places_archive_item_id_fkey"
+            columns: ["archive_item_id"]
+            isOneToOne: false
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "archive_item_places_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "archive_places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       archive_item_sources: {
         Row: {
           archive_item_id: string
@@ -99,11 +333,16 @@ export type Database = {
       archive_items: {
         Row: {
           archived_at: string | null
+          camera: string | null
           checksum_sha256: string
           created_at: string
           created_at_source: string | null
+          duration_ms: number | null
           file_size: number
+          height: number | null
           id: string
+          latitude: number | null
+          longitude: number | null
           metadata_json: Json
           mime_type: string
           modified_at_source: string | null
@@ -112,16 +351,23 @@ export type Database = {
           status: Database["public"]["Enums"]["archive_item_status"]
           storage_key: string
           storage_provider: string
+          taken_at: string | null
           type: Database["public"]["Enums"]["archive_item_type"]
           updated_at: string
+          width: number | null
         }
         Insert: {
           archived_at?: string | null
+          camera?: string | null
           checksum_sha256: string
           created_at?: string
           created_at_source?: string | null
+          duration_ms?: number | null
           file_size?: number
+          height?: number | null
           id?: string
+          latitude?: number | null
+          longitude?: number | null
           metadata_json?: Json
           mime_type: string
           modified_at_source?: string | null
@@ -130,16 +376,23 @@ export type Database = {
           status?: Database["public"]["Enums"]["archive_item_status"]
           storage_key: string
           storage_provider: string
+          taken_at?: string | null
           type: Database["public"]["Enums"]["archive_item_type"]
           updated_at?: string
+          width?: number | null
         }
         Update: {
           archived_at?: string | null
+          camera?: string | null
           checksum_sha256?: string
           created_at?: string
           created_at_source?: string | null
+          duration_ms?: number | null
           file_size?: number
+          height?: number | null
           id?: string
+          latitude?: number | null
+          longitude?: number | null
           metadata_json?: Json
           mime_type?: string
           modified_at_source?: string | null
@@ -148,8 +401,10 @@ export type Database = {
           status?: Database["public"]["Enums"]["archive_item_status"]
           storage_key?: string
           storage_provider?: string
+          taken_at?: string | null
           type?: Database["public"]["Enums"]["archive_item_type"]
           updated_at?: string
+          width?: number | null
         }
         Relationships: []
       }
@@ -325,6 +580,71 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      archive_people: {
+        Row: {
+          cover_item_id: string | null
+          created_at: string
+          display_name: string
+          id: string
+          owner_id: string
+          updated_at: string
+        }
+        Insert: {
+          cover_item_id?: string | null
+          created_at?: string
+          display_name: string
+          id?: string
+          owner_id: string
+          updated_at?: string
+        }
+        Update: {
+          cover_item_id?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          owner_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_people_cover_item_id_fkey"
+            columns: ["cover_item_id"]
+            isOneToOne: false
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      archive_places: {
+        Row: {
+          created_at: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          name: string
+          owner_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          owner_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          owner_id?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       connector_accounts: {
         Row: {
@@ -663,6 +983,7 @@ export type Database = {
           p_connector_account_id: string
           p_created_at_source?: string
           p_file_size: number
+          p_metadata?: Json
           p_mime_type: string
           p_modified_at_source?: string
           p_original_filename: string
