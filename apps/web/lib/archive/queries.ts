@@ -2,6 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database, Enums } from '@dla/database';
 import { createClient } from '@/lib/supabase/server';
 import { escapeLike } from '@/lib/archive/search-utils';
+import { isOnThisDay } from '@/lib/archive/grouping';
 
 export type ArchiveItemType = Enums<'archive_item_type'>;
 
@@ -210,6 +211,21 @@ export async function listFavourites(
   const hasMore = rows.length > pageSize;
   const pageRows = hasMore ? rows.slice(0, pageSize) : rows;
   return { items: await toCards(supabase, pageRows), hasMore, nextPage: page + 1 };
+}
+
+/** The newest photos/videos (for the Vandaag "recently added" strip). */
+export async function listRecent(limit = 12): Promise<MediaCard[]> {
+  const { items } = await listMedia({ visualOnly: true, pageSize: limit });
+  return items;
+}
+
+/** Photos/videos taken on today's calendar day in earlier years (Vandaag). */
+export async function listOnThisDay(limit = 12): Promise<MediaCard[]> {
+  const { items } = await listMedia({ visualOnly: true, pageSize: 500 });
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+  return items.filter((i) => isOnThisDay(i.effectiveDate, month, day)).slice(0, limit);
 }
 
 /** Build media cards for a specific set of ids (newest first). Used by albums/

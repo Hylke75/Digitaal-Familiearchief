@@ -83,6 +83,8 @@ const nl = {
     sourcesTitle: 'Jouw bronnen',
     addSource: 'Bron toevoegen',
     newSinceLastVisit: 'Nieuw sinds je laatste bezoek',
+    recentlyAdded: 'Onlangs toegevoegd',
+    allUpdated: 'Alle bronnen bijgewerkt',
     viewArchive: 'Bekijk mijn archief',
   },
   sources: {

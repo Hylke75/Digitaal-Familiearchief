@@ -5,13 +5,13 @@ import { useTranslations } from 'next-intl';
 import { JustifiedGrid } from '@/components/archive/JustifiedGrid';
 import { Lightbox } from '@/components/archive/Lightbox';
 import { loadTimelineFilterAction, type TimelineFilter } from '@/lib/archive/media-actions';
-import { groupByMonth, isOnThisDay } from '@/lib/archive/grouping';
+import { groupByMonth } from '@/lib/archive/grouping';
 import type { MediaCard } from '@/lib/archive/queries';
 
 /**
- * "Mijn leven" — memories grouped by month, newest first, with an on-this-day
- * highlight. Holds loaded items in client state and re-groups as further pages
- * stream in via the server action.
+ * "Mijn leven" — photos and videos grouped by month, newest first, with filter
+ * chips (Alles/Foto's/Video's/Favorieten). Holds loaded items in client state
+ * and re-groups as further pages stream in. On-this-day lives on Vandaag (§D8).
  */
 export function Timeline({
   initial,
@@ -25,7 +25,6 @@ export function Timeline({
   labels: {
     loadMore: string;
     loading: string;
-    onThisDay: string;
     unknownDate: string;
   };
 }) {
@@ -45,10 +44,6 @@ export function Timeline({
     { key: 'favourites', label: t('nav.favourites') },
   ];
 
-  const today = useMemo(() => {
-    const d = new Date();
-    return { month: d.getMonth() + 1, day: d.getDate() };
-  }, []);
   const monthLabel = useMemo(
     () => new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }),
     [locale],
@@ -98,9 +93,6 @@ export function Timeline({
   }, [load]);
 
   const indexById = useMemo(() => new Map(items.map((it, i) => [it.id, i])), [items]);
-  const onThisDay = items
-    .filter((i) => isOnThisDay(i.effectiveDate, today.month, today.day))
-    .slice(0, 8);
   const groups = groupByMonth(items);
   const openLocal = (list: MediaCard[]) => (local: number) => {
     const id = list[local]?.id;
@@ -129,13 +121,6 @@ export function Timeline({
           );
         })}
       </div>
-
-      {onThisDay.length > 0 && filter === 'all' ? (
-        <section>
-          <h2 className="text-h3 text-ink mb-3">{labels.onThisDay}</h2>
-          <JustifiedGrid items={onThisDay} onOpen={openLocal(onThisDay)} />
-        </section>
-      ) : null}
 
       {groups.map((group) => (
         <section key={group.key}>

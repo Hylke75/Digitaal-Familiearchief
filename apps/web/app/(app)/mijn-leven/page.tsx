@@ -31,7 +31,6 @@ export default async function MyLifePage() {
           labels={{
             loadMore: tArchive('loadMore'),
             loading: tArchive('loading'),
-            onThisDay: tArchive('onThisDay'),
             unknownDate: tArchive('unknownDate'),
           }}
         />
