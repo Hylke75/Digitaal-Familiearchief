@@ -386,6 +386,10 @@ const nl = {
     deleteBody:
       'Wil je je account en archief laten verwijderen? Stuur een verzoek, dan verwerken we dit zorgvuldig. Bronnen ontkoppelen verwijdert niets van wat al is veiliggesteld.',
     deleteButton: 'Verwijdering aanvragen',
+    signOutTitle: 'Sessie',
+    signOutBody: 'Je blijft ingelogd op dit apparaat totdat je uitlogt.',
+    signOut: 'Uitloggen',
+    languageChange: 'Taal wijzigen',
   },
 } as const;
 

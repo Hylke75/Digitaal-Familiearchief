@@ -1,20 +1,19 @@
 import { getLocale, getTranslations } from 'next-intl/server';
-import { Download, Globe, Mail, ShieldAlert } from 'lucide-react';
+import { Download, Globe, LogOut, Mail, ShieldAlert } from 'lucide-react';
 import { PageHeader } from '@/components/app-shell/PageHeader';
 import { Card, CardBody } from '@/components/ui/Card';
-import { ButtonLink } from '@/components/ui/Button';
-import { createClient } from '@/lib/supabase/server';
+import { Button, ButtonLink } from '@/components/ui/Button';
+import { getCurrentUser } from '@/lib/supabase/current-user';
+import { setLocaleAction } from '@/lib/settings/locale-actions';
+import { signOutAction } from '@/lib/auth/actions';
 
 export const metadata = { title: 'Instellingen' };
 
 export default async function SettingsPage() {
   const t = await getTranslations('settings');
   const locale = await getLocale();
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const languageName = locale.startsWith('nl') ? 'Nederlands' : 'English';
+  const user = await getCurrentUser();
+  const isNl = locale.startsWith('nl');
 
   return (
     <div className="max-w-2xl space-y-6">
@@ -28,7 +27,18 @@ export default async function SettingsPage() {
               {user?.email ?? '—'}
             </Row>
             <Row icon={<Globe className="h-4 w-4" aria-hidden="true" />} label={t('language')}>
-              {languageName}
+              <form
+                action={setLocaleAction}
+                className="flex gap-1"
+                aria-label={t('languageChange')}
+              >
+                <LocaleButton locale="nl" active={isNl}>
+                  Nederlands
+                </LocaleButton>
+                <LocaleButton locale="en" active={!isNl}>
+                  English
+                </LocaleButton>
+              </form>
             </Row>
           </dl>
         </CardBody>
@@ -61,7 +71,48 @@ export default async function SettingsPage() {
           </ButtonLink>
         </CardBody>
       </Card>
+
+      <Card>
+        <CardBody className="space-y-3">
+          <h2 className="text-ink font-semibold">{t('signOutTitle')}</h2>
+          <p className="text-body text-ink-soft">{t('signOutBody')}</p>
+          <form action={signOutAction}>
+            <Button type="submit" variant="secondary">
+              <LogOut className="h-4 w-4" aria-hidden="true" />
+              {t('signOut')}
+            </Button>
+          </form>
+        </CardBody>
+      </Card>
     </div>
+  );
+}
+
+/** One language choice — a submit button that posts its locale. The active
+ * language is shown as pressed (aria-pressed) rather than only by colour. */
+function LocaleButton({
+  locale,
+  active,
+  children,
+}: {
+  locale: 'nl' | 'en';
+  active: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="submit"
+      name="locale"
+      value={locale}
+      aria-pressed={active}
+      className={`rounded-pill text-small focus-visible:ring-forest border px-3 py-1 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 ${
+        active
+          ? 'bg-forest border-forest text-white'
+          : 'border-border text-ink-soft hover:text-ink hover:border-forest/40'
+      }`}
+    >
+      {children}
+    </button>
   );
 }
 

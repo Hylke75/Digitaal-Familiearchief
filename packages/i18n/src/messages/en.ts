@@ -384,6 +384,10 @@ const en: AppMessages = {
     deleteBody:
       'Want your account and archive deleted? Send a request and we’ll handle it carefully. Disconnecting sources never deletes anything already preserved.',
     deleteButton: 'Request deletion',
+    signOutTitle: 'Session',
+    signOutBody: 'You stay signed in on this device until you sign out.',
+    signOut: 'Sign out',
+    languageChange: 'Change language',
   },
 } as const;
 
