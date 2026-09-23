@@ -12,14 +12,16 @@
  * EXPORT_DIR overrides the folder. DEMO_EMAIL/DEMO_PASSWORD optional.
  */
 import { readFileSync, existsSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdtemp, rm, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import { homedir } from 'node:os';
+import { homedir, tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
+import { spawn } from 'node:child_process';
 
 const requireFromApp = createRequire(new URL('../apps/web/package.json', import.meta.url));
 const { createClient } = requireFromApp('@supabase/supabase-js');
+const sharp = requireFromApp('sharp');
 
 // unpdf is ESM-only — resolve its path from the app, then dynamic-import it.
 const { extractText, getDocumentProxy } = await import(requireFromApp.resolve('unpdf'));
@@ -147,6 +149,68 @@ async function ingest(accountId, uid, item) {
   return data.item_id;
 }
 
+// Render a PDF's first page to PNG via macOS Quick Look (system PDFKit — renders
+// non-embedded standard fonts perfectly, which pdfjs-in-node does not). Returns
+// PNG bytes, or null when unavailable (non-macOS, or nothing produced).
+async function qlFirstPage(pdfBytes) {
+  if (process.platform !== 'darwin') return null;
+  const dir = await mkdtemp(join(tmpdir(), 'bewora-ql-'));
+  const inFile = join(dir, 'doc.pdf');
+  try {
+    await writeFile(inFile, pdfBytes);
+    await new Promise((resolve, reject) => {
+      const proc = spawn('qlmanage', ['-t', '-s', '1000', '-o', dir, inFile], { stdio: 'ignore' });
+      const timer = setTimeout(() => {
+        proc.kill('SIGKILL');
+        reject(new Error('qlmanage timeout'));
+      }, 20000);
+      proc.on('error', (e) => {
+        clearTimeout(timer);
+        reject(e);
+      });
+      proc.on('close', () => {
+        clearTimeout(timer);
+        resolve();
+      });
+    });
+    const png = (await readdir(dir)).find((f) => f.endsWith('.png'));
+    return png ? await readFile(join(dir, png)) : null;
+  } catch {
+    return null;
+  } finally {
+    await rm(dir, { recursive: true, force: true }).catch(() => {});
+  }
+}
+
+// Generate + store a document's first-page preview derivative. Uploads the webp
+// under the owner's own storage path (owner-writable) and registers the row via
+// the owner-scoped archive_register_derivative RPC (migration 0011). Best-effort:
+// a failure never aborts the seed. Returns true when a preview was stored.
+async function storeDocPreview(uid, itemId, pdfBytes) {
+  const png = await qlFirstPage(pdfBytes);
+  if (!png) return false;
+  const { data: out, info } = await sharp(png, { failOn: 'none' })
+    .resize(800, 1040, { fit: 'inside', withoutEnlargement: true })
+    .flatten({ background: '#ffffff' })
+    .webp({ quality: 72 })
+    .toBuffer({ resolveWithObject: true });
+  const key = `archive/${uid}/docpreview/${itemId}.webp`;
+  const up = await supabase.storage
+    .from(BUCKET)
+    .upload(key, out, { contentType: 'image/webp', upsert: true });
+  if (up.error) return false;
+  const { error } = await supabase.rpc('archive_register_derivative', {
+    p_item_id: itemId,
+    p_kind: 'preview',
+    p_storage_key: key,
+    p_mime_type: 'image/webp',
+    p_width: info.width,
+    p_height: info.height,
+    p_byte_size: out.length,
+  });
+  return !error;
+}
+
 async function main() {
   const { error: signErr } = await supabase.auth.signUp({ email: EMAIL, password: PASSWORD });
   if (signErr && !/already registered|already exists/i.test(signErr.message)) {
@@ -244,6 +308,7 @@ async function main() {
     return d.toISOString().slice(0, 10);
   };
   let verzekIdx = 0;
+  let docPreviews = 0;
   for (const d of docs) {
     const bytes = await readFile(join(EXPORT_DIR, 'documenten', d.bestandsnaam));
     const docDate = d.documentdatum ? `${d.documentdatum}T09:00:00Z` : null;
@@ -256,7 +321,7 @@ async function main() {
     }
     const soort = (d.labels || '').split(/[;,]/)[0]?.trim() || null;
     const text = await extractPdfText(bytes);
-    await ingest(accountByName.get(d.bron), uid, {
+    const docId = await ingest(accountByName.get(d.bron), uid, {
       bytes,
       type: 'document',
       filename: d.titel || d.bestandsnaam,
@@ -270,7 +335,9 @@ async function main() {
       labels: d.labels || null,
       text,
     });
+    if (await storeDocPreview(uid, docId, bytes)) docPreviews++;
   }
+  console.log(`→ ${docPreviews}/${docs.length} document previews rendered`);
 
   // Albums / people / places / favourites
   console.log('→ albums, people, places, favourites…');

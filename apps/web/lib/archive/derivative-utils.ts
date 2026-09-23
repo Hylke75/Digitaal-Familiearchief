@@ -12,3 +12,12 @@ export function thumbnailKey(ownerId: string, itemId: string): string {
 export function posterKey(ownerId: string, itemId: string): string {
   return `archive/${ownerId}/poster/${itemId}.webp`;
 }
+
+/**
+ * Storage key for a document's first-page preview (same RLS-safe layout). PDFs
+ * can't be rendered by the on-the-fly image transform, so this pre-rendered
+ * image is the only way a document tile shows its actual first page.
+ */
+export function docPreviewKey(ownerId: string, itemId: string): string {
+  return `archive/${ownerId}/docpreview/${itemId}.webp`;
+}

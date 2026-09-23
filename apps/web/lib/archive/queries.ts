@@ -319,6 +319,22 @@ export async function getItemDetail(id: string): Promise<ItemDetail | null> {
       .createSignedUrl(deriv.storage_key, SIGNED_TTL);
     previewUrl = data?.signedUrl ?? null;
   }
+  // Documents (PDFs) can't be transformed, so their preview is the pre-rendered
+  // first-page image stored as a 'preview' derivative.
+  if (!previewUrl && row.type === 'document') {
+    const { data: pv } = await supabase
+      .from('archive_derivatives')
+      .select('storage_key')
+      .eq('archive_item_id', id)
+      .eq('kind', 'preview')
+      .maybeSingle();
+    if (pv?.storage_key) {
+      const { data } = await supabase.storage
+        .from(BUCKET)
+        .createSignedUrl(pv.storage_key, SIGNED_TTL);
+      previewUrl = data?.signedUrl ?? null;
+    }
+  }
 
   return {
     id: row.id,

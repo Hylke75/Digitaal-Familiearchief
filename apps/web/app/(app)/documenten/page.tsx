@@ -42,7 +42,7 @@ export default async function DocumentsPage() {
         {areas.map(({ area, documents }) => (
           <section key={area}>
             <h2 className="text-h3 text-ink mb-3">{area}</h2>
-            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {documents.map((doc) => {
                 const meta = [
                   doc.sender,
@@ -52,37 +52,46 @@ export default async function DocumentsPage() {
                 ]
                   .filter(Boolean)
                   .join(' · ');
+                const s = expiryStatus(doc.expiresAt, Date.now());
                 return (
                   <li key={doc.id}>
                     <Link
                       href={`/archief/${doc.id}`}
-                      className="border-border rounded-card hover:bg-warm flex items-start gap-3 border p-3 transition-colors"
+                      className="border-border rounded-card hover:border-forest/40 group block overflow-hidden border transition-colors"
                     >
-                      <span className="bg-warm text-forest inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px]">
-                        <FileText className="h-5 w-5" aria-hidden="true" />
+                      <span className="bg-warm relative flex aspect-[3/4] items-center justify-center overflow-hidden">
+                        {doc.previewUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={doc.previewUrl}
+                            alt=""
+                            loading="lazy"
+                            className="h-full w-full bg-white object-cover object-top"
+                          />
+                        ) : (
+                          <FileText className="text-forest/60 h-10 w-10" aria-hidden="true" />
+                        )}
+                        {s === 'expired' || s === 'soon' ? (
+                          <span
+                            className={`rounded-pill text-caption absolute left-2 top-2 px-2 py-0.5 font-medium ${
+                              s === 'expired'
+                                ? 'bg-danger/10 text-danger'
+                                : 'bg-brass/10 text-brass'
+                            }`}
+                          >
+                            {s === 'expired' ? t('archive.expired') : t('archive.expiresSoon')}
+                          </span>
+                        ) : null}
                       </span>
-                      <span className="min-w-0 flex-1">
+                      <span className="block p-3">
                         <span className="text-ink line-clamp-2 font-medium leading-snug">
                           {doc.title}
                         </span>
                         {meta ? (
-                          <span className="text-small text-ink-soft mt-0.5 block">{meta}</span>
+                          <span className="text-small text-ink-soft mt-0.5 block truncate">
+                            {meta}
+                          </span>
                         ) : null}
-                        {(() => {
-                          const s = expiryStatus(doc.expiresAt, Date.now());
-                          if (s !== 'expired' && s !== 'soon') return null;
-                          return (
-                            <span
-                              className={`rounded-pill text-caption mt-1 inline-block px-2 py-0.5 font-medium ${
-                                s === 'expired'
-                                  ? 'bg-danger/10 text-danger'
-                                  : 'bg-brass/10 text-brass'
-                              }`}
-                            >
-                              {s === 'expired' ? t('archive.expired') : t('archive.expiresSoon')}
-                            </span>
-                          );
-                        })()}
                       </span>
                     </Link>
                   </li>

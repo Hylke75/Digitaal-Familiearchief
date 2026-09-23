@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { posterKey, thumbnailKey } from '../apps/web/lib/archive/derivative-utils';
+import { docPreviewKey, posterKey, thumbnailKey } from '../apps/web/lib/archive/derivative-utils';
 
 describe('derivative storage keys', () => {
   it('thumbnail places the owner id as the 2nd path segment (storage RLS)', () => {
@@ -12,6 +12,12 @@ describe('derivative storage keys', () => {
   it('poster uses the same RLS-safe layout', () => {
     const key = posterKey('user-123', 'item-abc');
     expect(key).toBe('archive/user-123/poster/item-abc.webp');
+    expect(key.split('/')[1]).toBe('user-123');
+  });
+
+  it('document preview uses the same RLS-safe layout', () => {
+    const key = docPreviewKey('user-123', 'item-abc');
+    expect(key).toBe('archive/user-123/docpreview/item-abc.webp');
     expect(key.split('/')[1]).toBe('user-123');
   });
 });
