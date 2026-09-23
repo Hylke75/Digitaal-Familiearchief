@@ -4,8 +4,11 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ButtonLink } from '@/components/ui/Button';
 import { HealthPill } from '@/components/ui/StatusBanner';
 import { MediaGallery } from '@/components/archive/MediaGallery';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { listOnThisDay, listRecent } from '@/lib/archive/queries';
+import { preservedSummary } from '@/lib/archive/preserved';
 
 /**
  * Vandaag is a reason to come back, not a status report (design advice, §C):
@@ -16,6 +19,7 @@ export default async function TodayPage() {
   const t = await getTranslations('dashboard');
   const tHealth = await getTranslations('health');
   const tSources = await getTranslations('sources');
+  const tPreserved = await getTranslations('preserved');
   const f = await getFormatter();
 
   const supabase = createClient();
@@ -23,7 +27,7 @@ export default async function TodayPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: profile }, { data: accounts }, onThisDay, recent] = await Promise.all([
+  const [{ data: profile }, { data: accounts }, onThisDay, recent, preserved] = await Promise.all([
     user
       ? supabase.from('profiles').select('first_name').eq('id', user.id).maybeSingle()
       : Promise.resolve({ data: null }),
@@ -34,6 +38,7 @@ export default async function TodayPage() {
       .limit(1),
     listOnThisDay(),
     listRecent(),
+    preservedSummary(),
   ]);
 
   const name = profile?.first_name?.trim() || user?.email?.split('@')[0] || 'Jij';
@@ -53,6 +58,27 @@ export default async function TodayPage() {
           ) : null}
         </div>
       </div>
+
+      {preserved.count > 0 ? (
+        <section className="border-border rounded-card bg-warm/50 border p-5">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-h3 text-ink">{tPreserved('pageTitle')}</h2>
+            <Link
+              href="/bewaard-gebleven"
+              className="text-forest inline-flex items-center gap-1.5 text-sm font-medium hover:underline"
+            >
+              {tPreserved('viewAll')}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
+          <p className="text-body text-ink-soft mb-4">
+            {tPreserved('blockTitle', { count: preserved.count })}
+          </p>
+          {preserved.recent.length > 0 ? (
+            <MediaGallery items={preserved.recent} targetHeight={150} />
+          ) : null}
+        </section>
+      ) : null}
 
       {onThisDay.length === 0 && recent.length === 0 ? (
         <EmptyState
