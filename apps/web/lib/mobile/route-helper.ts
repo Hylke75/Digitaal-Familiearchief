@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { bearerContext, type BearerContext } from '@/lib/supabase/bearer';
+import { rateLimit } from '@/lib/security/rate-limit';
 import { MobileError } from './handlers';
 
 /**
@@ -13,6 +14,15 @@ export function mobilePost(
   return async (request: NextRequest): Promise<NextResponse> => {
     const ctx = await bearerContext(request);
     if (!ctx) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+
+    // Per-device throttle so a leaked token can't hammer the API.
+    const limited = rateLimit(`mobile:${ctx.userId}`, 120, 60_000);
+    if (!limited.ok) {
+      return NextResponse.json(
+        { error: 'rate_limited' },
+        { status: 429, headers: { 'retry-after': String(limited.retryAfter) } },
+      );
+    }
 
     let raw: unknown;
     try {

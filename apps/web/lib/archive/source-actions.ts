@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { MockArchiveConnector } from '@dla/connectors';
 import { runImport } from '@dla/archive';
 import { createClient } from '@/lib/supabase/server';
+import { auditLog } from '@/lib/security/audit';
 import { SupabaseStorageProvider } from '@/lib/archive/supabase-storage';
 import { createSupabasePersistence } from '@/lib/archive/persistence';
 
@@ -71,6 +72,7 @@ export async function disconnectAction(formData: FormData): Promise<void> {
   if (!accountId) return;
 
   const supabase = createClient();
+  await auditLog(supabase, 'connector_disconnected', { accountId });
   await supabase.from('connector_accounts').delete().eq('id', accountId);
   revalidatePath('/bronnen');
   redirect('/bronnen');

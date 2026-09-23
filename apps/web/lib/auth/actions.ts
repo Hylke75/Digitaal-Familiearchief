@@ -2,6 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { auditLog } from '@/lib/security/audit';
 import { clientEnv } from '@/lib/env';
 
 export interface AuthState {
@@ -26,6 +27,7 @@ export async function signInAction(_prev: AuthState, formData: FormData): Promis
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) return { error: 'invalidCredentials' };
 
+  await auditLog(supabase, 'login');
   redirect(next);
 }
 
@@ -56,6 +58,7 @@ export async function signUpAction(_prev: AuthState, formData: FormData): Promis
 
 export async function signOutAction(): Promise<void> {
   const supabase = createClient();
+  await auditLog(supabase, 'logout');
   await supabase.auth.signOut();
   redirect('/inloggen');
 }
