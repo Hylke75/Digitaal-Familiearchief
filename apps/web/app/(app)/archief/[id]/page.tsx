@@ -17,6 +17,7 @@ import { getPersonMembership } from '@/lib/archive/people';
 import { toggleItemPersonAction } from '@/lib/archive/people-actions';
 import { getPlaceMembership } from '@/lib/archive/places';
 import { toggleItemPlaceAction } from '@/lib/archive/places-actions';
+import { StoryPanel } from '@/components/stories/StoryPanel';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const item = await getItemDetail(params.id);
@@ -249,6 +250,8 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
           </button>
         </form>
       </details>
+
+      <StoryPanel itemId={item.id} />
     </div>
   );
 }

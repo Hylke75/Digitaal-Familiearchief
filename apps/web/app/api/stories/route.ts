@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { rateLimit } from '@/lib/security/rate-limit';
+import { isDemoSession } from '@/lib/demo-guard';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -34,6 +35,9 @@ export async function POST(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+
+  // Keep the shared demo account pristine: accept the recording but don't write.
+  if (await isDemoSession(supabase)) return NextResponse.json({ id: 'demo' });
 
   const limited = rateLimit(`stories:${user.id}`, 20, 60_000);
   if (!limited.ok) {
