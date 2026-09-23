@@ -9,6 +9,8 @@ import { groupByMonth } from '@/lib/archive/grouping';
 import { clusterMoments } from '@/lib/archive/moments';
 import type { MediaCard } from '@/lib/archive/queries';
 
+type Zoom = 'day' | 'month' | 'year';
+
 /**
  * "Mijn leven" — photos and videos grouped by month, newest first, with filter
  * chips (Alles/Foto's/Video's/Favorieten). Holds loaded items in client state
@@ -36,6 +38,7 @@ export function Timeline({
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState<number | null>(null);
   const [filter, setFilter] = useState<TimelineFilter>('all');
+  const [zoom, setZoom] = useState<Zoom>('month');
   const sentinel = useRef<HTMLDivElement | null>(null);
 
   const chips: Array<{ key: TimelineFilter; label: string }> = [
@@ -44,6 +47,12 @@ export function Timeline({
     { key: 'video', label: t('nav.videos') },
     { key: 'favourites', label: t('nav.favourites') },
   ];
+  const zooms: Array<{ key: Zoom; label: string }> = [
+    { key: 'day', label: t('archive.zoomDay') },
+    { key: 'month', label: t('archive.zoomMonth') },
+    { key: 'year', label: t('archive.zoomYear') },
+  ];
+  const targetHeight = zoom === 'day' ? 260 : zoom === 'year' ? 78 : 150;
 
   const monthLabel = useMemo(
     () => new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }),
@@ -101,34 +110,81 @@ export function Timeline({
     if (id != null) setOpen(indexById.get(id) ?? null);
   };
 
+  const years = Array.from(
+    new Set(groups.filter((g) => g.monthStart).map((g) => g.key.slice(0, 4))),
+  );
+  const jumpToYear = (y: string) => {
+    const g = groups.find((gr) => gr.key.startsWith(y));
+    if (g) document.getElementById(`sec-${g.key}`)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <div className="space-y-10">
-      <div className="flex flex-wrap gap-2">
-        {chips.map((chip) => {
-          const active = chip.key === filter;
-          return (
-            <button
-              key={chip.key}
-              type="button"
-              onClick={() => void applyFilter(chip.key)}
-              aria-pressed={active}
-              className={`rounded-pill text-small border px-3 py-1 font-medium transition-colors ${
-                active
-                  ? 'border-forest bg-forest text-white'
-                  : 'border-border text-ink-soft hover:bg-warm'
-              }`}
-            >
-              {chip.label}
-            </button>
-          );
-        })}
+    <div className="relative space-y-10">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap gap-2">
+          {chips.map((chip) => {
+            const active = chip.key === filter;
+            return (
+              <button
+                key={chip.key}
+                type="button"
+                onClick={() => void applyFilter(chip.key)}
+                aria-pressed={active}
+                className={`rounded-pill text-small border px-3 py-1 font-medium transition-colors ${
+                  active
+                    ? 'border-forest bg-forest text-white'
+                    : 'border-border text-ink-soft hover:bg-warm'
+                }`}
+              >
+                {chip.label}
+              </button>
+            );
+          })}
+        </div>
+        <div className="border-border rounded-pill inline-flex border p-0.5">
+          {zooms.map((z) => {
+            const active = z.key === zoom;
+            return (
+              <button
+                key={z.key}
+                type="button"
+                onClick={() => setZoom(z.key)}
+                aria-pressed={active}
+                className={`rounded-pill text-small px-3 py-1 font-medium transition-colors ${
+                  active ? 'bg-forest text-white' : 'text-ink-soft hover:bg-warm'
+                }`}
+              >
+                {z.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
+
+      {/* Draggable-year rail — jump across the archive without endless scrolling. */}
+      {years.length > 1 ? (
+        <nav
+          aria-label="Jaren"
+          className="fixed right-1 top-1/2 z-20 hidden -translate-y-1/2 flex-col items-end gap-1 lg:flex"
+        >
+          {years.map((y) => (
+            <button
+              key={y}
+              type="button"
+              onClick={() => jumpToYear(y)}
+              className="text-ink-soft hover:text-forest text-caption rounded px-1.5 py-0.5 font-medium hover:bg-white/70"
+            >
+              {y}
+            </button>
+          ))}
+        </nav>
+      ) : null}
 
       {groups.map((group) => {
         const cover = group.items[0];
         const moments = clusterMoments(group.items);
         return (
-          <section key={group.key}>
+          <section key={group.key} id={`sec-${group.key}`} className="scroll-mt-4">
             <h2 className="text-h3 text-ink mb-3 capitalize">
               {group.monthStart
                 ? monthLabel.format(new Date(group.monthStart))
@@ -164,7 +220,11 @@ export function Timeline({
                       {moment.length > 1 ? ` · ${moment.length}` : ''}
                     </h3>
                   ) : null}
-                  <JustifiedGrid items={gridItems} onOpen={openLocal(gridItems)} />
+                  <JustifiedGrid
+                    items={gridItems}
+                    onOpen={openLocal(gridItems)}
+                    targetHeight={targetHeight}
+                  />
                 </div>
               );
             })}
