@@ -249,6 +249,14 @@ export async function mediaCardsByIds(ids: string[]): Promise<MediaCard[]> {
   return toCards(supabase, (data ?? []) as ItemRow[]);
 }
 
+export interface DocumentFields {
+  sender: string | null;
+  docType: string | null;
+  documentDate: string | null;
+  labels: string[];
+  expiresAt: string | null;
+}
+
 export interface ItemDetail extends MediaCard {
   camera: string | null;
   archivedAt: string | null;
@@ -256,6 +264,8 @@ export interface ItemDetail extends MediaCard {
   previewUrl: string | null;
   /** Signed URL to stream the original (used for video/audio playback). */
   originalUrl: string | null;
+  /** Document fields from metadata_json (only for type='document'). */
+  doc: DocumentFields | null;
 }
 
 /** Full detail for one item (RLS restricts to the owner). */
@@ -263,11 +273,14 @@ export async function getItemDetail(id: string): Promise<ItemDetail | null> {
   const supabase = createClient();
   const { data: r } = await supabase
     .from('archive_items')
-    .select(`${SELECT}, camera`)
+    .select(`${SELECT}, camera, metadata_json`)
     .eq('id', id)
     .maybeSingle();
   if (!r) return null;
-  const row = r as ItemRow & { camera: string | null };
+  const row = r as ItemRow & {
+    camera: string | null;
+    metadata_json: Record<string, unknown> | null;
+  };
 
   const [{ data: fav }, { data: deriv }, transformPreview, originalUrl] = await Promise.all([
     supabase.from('archive_item_flags').select('favourite').eq('archive_item_id', id).maybeSingle(),
@@ -321,5 +334,27 @@ export async function getItemDetail(id: string): Promise<ItemDetail | null> {
     archivedAt: row.archived_at,
     previewUrl,
     originalUrl,
+    doc: row.type === 'document' ? documentFields(row.metadata_json) : null,
+  };
+}
+
+const asStr = (v: unknown): string | null => (typeof v === 'string' && v.trim() ? v.trim() : null);
+
+function documentFields(meta: Record<string, unknown> | null): DocumentFields {
+  const m = meta ?? {};
+  const labels = Array.isArray(m.labels)
+    ? (m.labels as unknown[]).filter((x): x is string => typeof x === 'string')
+    : asStr(m.labels)
+      ? String(m.labels)
+          .split(/[;,]/)
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [];
+  return {
+    sender: asStr(m.afzender),
+    docType: asStr(m.soort),
+    documentDate: asStr(m.documentDate),
+    labels,
+    expiresAt: asStr(m.expiresAt),
   };
 }

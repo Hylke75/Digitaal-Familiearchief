@@ -7,6 +7,7 @@ export interface DocumentCard {
   title: string;
   sender: string | null;
   documentDate: string | null;
+  expiresAt: string | null;
 }
 
 export interface DocumentArea {
@@ -54,6 +55,7 @@ export async function listDocuments(): Promise<DocumentArea[]> {
       title: stripExtension(r.original_filename),
       sender: str(meta.afzender),
       documentDate: str(meta.documentDate) ?? r.created_at_source ?? r.archived_at,
+      expiresAt: str(meta.expiresAt),
     };
     (byArea.get(area) ?? byArea.set(area, []).get(area)!).push(card);
   }
