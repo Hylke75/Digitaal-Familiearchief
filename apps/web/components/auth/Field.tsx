@@ -8,6 +8,7 @@ export function Field({
   autoComplete,
   required,
   hint,
+  error,
   className,
 }: {
   label: string;
@@ -16,9 +17,15 @@ export function Field({
   autoComplete?: string;
   required?: boolean;
   hint?: string;
+  error?: string;
   className?: string;
 }) {
   const id = `field-${name}`;
+  const hintId = hint ? `${id}-hint` : undefined;
+  const errorId = error ? `${id}-error` : undefined;
+  // Screen readers announce the error/hint because they're linked, and the
+  // invalid state is exposed programmatically, not just via colour (WCAG 2.2 AA).
+  const describedBy = [errorId, hintId].filter(Boolean).join(' ') || undefined;
   return (
     <div className={cn('space-y-1.5', className)}>
       <label htmlFor={id} className="text-small text-ink block font-semibold">
@@ -30,9 +37,23 @@ export function Field({
         type={type}
         autoComplete={autoComplete}
         required={required}
-        className="rounded-input border-border bg-surface text-body focus-visible:border-forest w-full border px-4 py-3 outline-none"
+        aria-invalid={error ? true : undefined}
+        aria-describedby={describedBy}
+        className={cn(
+          'rounded-input border-border bg-surface text-body focus-visible:border-forest w-full border px-4 py-3 outline-none',
+          error && 'border-danger focus-visible:border-danger',
+        )}
       />
-      {hint ? <p className="text-caption text-ink-soft">{hint}</p> : null}
+      {error ? (
+        <p id={errorId} className="text-caption text-danger">
+          {error}
+        </p>
+      ) : null}
+      {hint ? (
+        <p id={hintId} className="text-caption text-ink-soft">
+          {hint}
+        </p>
+      ) : null}
     </div>
   );
 }

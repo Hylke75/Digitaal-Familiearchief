@@ -25,9 +25,10 @@ export function Avatar({
         size === 'sm' ? 'text-caption h-8 w-8' : 'text-small h-10 w-10',
         className,
       )}
-      aria-hidden="true"
     >
-      {initials(name)}
+      {/* The initials are decorative; the full name is what a screen reader announces. */}
+      <span aria-hidden="true">{initials(name)}</span>
+      <span className="sr-only">{name}</span>
     </span>
   );
 }

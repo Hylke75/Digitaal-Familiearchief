@@ -105,7 +105,9 @@ function Cell({
           src={item.thumbUrl}
           alt={title}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+          width={Math.round(width)}
+          height={Math.round(height)}
+          className="h-full w-full object-cover duration-300 motion-safe:transition-transform motion-safe:group-hover:scale-[1.03]"
         />
       ) : (
         <span className="text-ink-soft flex h-full w-full flex-col items-center justify-center gap-1 p-2 text-center">
