@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
-import { CheckSquare, Download, Images, Star, X } from 'lucide-react';
+import { CheckSquare, Download, Images, Star, UserPlus, X } from 'lucide-react';
 import { JustifiedGrid } from '@/components/archive/JustifiedGrid';
 import { AutoRefreshImage } from '@/components/archive/AutoRefreshImage';
 import { Lightbox } from '@/components/archive/Lightbox';
@@ -12,6 +12,7 @@ import {
   type TimelineFilter,
 } from '@/lib/archive/media-actions';
 import { bulkAddToAlbumAction, listAlbumTitlesAction } from '@/lib/archive/album-actions';
+import { bulkTagPersonAction, listPersonTitlesAction } from '@/lib/archive/people-actions';
 import { groupByMonth } from '@/lib/archive/grouping';
 import { clusterMoments } from '@/lib/archive/moments';
 import type { MediaCard } from '@/lib/archive/queries';
@@ -50,6 +51,8 @@ export function Timeline({
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [albumsForPicker, setAlbumsForPicker] = useState<Array<{ id: string; title: string }>>([]);
   const [showAlbumPicker, setShowAlbumPicker] = useState(false);
+  const [peopleForPicker, setPeopleForPicker] = useState<Array<{ id: string; title: string }>>([]);
+  const [showPersonPicker, setShowPersonPicker] = useState(false);
   const [pending, startTransition] = useTransition();
   const lastGi = useRef<number | null>(null);
   const sentinel = useRef<HTMLDivElement | null>(null);
@@ -149,6 +152,7 @@ export function Timeline({
     setSelecting(false);
     setSelected(new Set());
     setShowAlbumPicker(false);
+    setShowPersonPicker(false);
     lastGi.current = null;
   };
 
@@ -166,6 +170,16 @@ export function Timeline({
   const doAlbum = (albumId: string) =>
     startTransition(async () => {
       await bulkAddToAlbumAction(albumId, selectedIds());
+      exitSelect();
+    });
+  const openPersonPicker = () =>
+    startTransition(async () => {
+      setPeopleForPicker(await listPersonTitlesAction());
+      setShowPersonPicker(true);
+    });
+  const doPerson = (personId: string) =>
+    startTransition(async () => {
+      await bulkTagPersonAction(personId, selectedIds());
       exitSelect();
     });
 
@@ -446,6 +460,38 @@ export function Timeline({
                               className="hover:bg-warm text-body w-full truncate rounded-[8px] px-2 py-2 text-left"
                             >
                               {a.title}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ) : null}
+              </div>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={openPersonPicker}
+                  disabled={pending}
+                  className="rounded-button border-border text-ink-soft hover:bg-warm text-small inline-flex items-center gap-1.5 border px-3 py-1.5 font-medium disabled:opacity-60"
+                >
+                  <UserPlus className="h-4 w-4" aria-hidden="true" />
+                  {t('archive.tagPerson')}
+                </button>
+                {showPersonPicker ? (
+                  <div className="border-border rounded-card absolute bottom-full right-0 mb-2 w-56 border bg-white p-2 shadow-lg">
+                    {peopleForPicker.length === 0 ? (
+                      <p className="text-ink-soft text-small p-2">{t('archive.noPeopleYet')}</p>
+                    ) : (
+                      <ul className="max-h-56 overflow-auto">
+                        {peopleForPicker.map((p) => (
+                          <li key={p.id}>
+                            <button
+                              type="button"
+                              onClick={() => doPerson(p.id)}
+                              className="hover:bg-warm text-body w-full truncate rounded-[8px] px-2 py-2 text-left"
+                            >
+                              {p.title}
                             </button>
                           </li>
                         ))}
