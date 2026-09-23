@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { SupabaseStorageProvider } from '@/lib/archive/supabase-storage';
+import { createArchiveStorage } from '@/lib/archive/storage-factory';
 
 /**
  * Secure original download. Looks up the item under RLS (so only the owner can
@@ -22,7 +22,7 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
 
   if (!item) return new NextResponse('Not found', { status: 404 });
 
-  const storage = new SupabaseStorageProvider(supabase);
+  const storage = createArchiveStorage(supabase);
   try {
     const { url } = await storage.createSignedAccess(item.storage_key, 60);
     return NextResponse.redirect(url);
