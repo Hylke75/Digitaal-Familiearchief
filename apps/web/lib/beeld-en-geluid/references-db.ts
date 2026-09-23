@@ -11,18 +11,13 @@ import {
 
 const TABLE = 'archive_external_references';
 
-/** The new table isn't in the generated Database types yet; confine the cast
- * here so every reference query stays otherwise type-checked. */
-function refTable(supabase: SupabaseClient<Database>) {
-  return (supabase as unknown as SupabaseClient).from(TABLE);
-}
-
 /** The owner's media moments, newest first (RLS restricts to the owner). */
 export async function listMediaMoments(): Promise<MediaMoment[]> {
   const supabase = createClient();
   const user = await getCurrentUser();
   if (!user) return [];
-  const { data } = await refTable(supabase)
+  const { data } = await supabase
+    .from(TABLE)
     .select('*')
     .order('created_at', { ascending: false })
     .limit(500);
@@ -35,7 +30,7 @@ export async function insertReference(
   ownerId: string,
   row: InsertableReference,
 ): Promise<void> {
-  await refTable(supabase).insert({ ...row, owner_id: ownerId, provider: 'beeld_en_geluid' });
+  await supabase.from(TABLE).insert({ ...row, owner_id: ownerId, provider: 'beeld_en_geluid' });
 }
 
 /** Delete one of the owner's references (RLS also enforces ownership). */
@@ -44,5 +39,5 @@ export async function deleteReference(
   ownerId: string,
   id: string,
 ): Promise<void> {
-  await refTable(supabase).delete().eq('id', id).eq('owner_id', ownerId);
+  await supabase.from(TABLE).delete().eq('id', id).eq('owner_id', ownerId);
 }

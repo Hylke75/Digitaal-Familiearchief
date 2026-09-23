@@ -166,6 +166,51 @@ export type Database = {
           },
         ]
       }
+      archive_external_references: {
+        Row: {
+          broadcast_note: string | null
+          created_at: string
+          fragment_end_seconds: number | null
+          fragment_start_seconds: number | null
+          id: string
+          note: string | null
+          owner_id: string
+          provider: string
+          public_page_url: string
+          rights_status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          broadcast_note?: string | null
+          created_at?: string
+          fragment_end_seconds?: number | null
+          fragment_start_seconds?: number | null
+          id?: string
+          note?: string | null
+          owner_id: string
+          provider?: string
+          public_page_url: string
+          rights_status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          broadcast_note?: string | null
+          created_at?: string
+          fragment_end_seconds?: number | null
+          fragment_start_seconds?: number | null
+          id?: string
+          note?: string | null
+          owner_id?: string
+          provider?: string
+          public_page_url?: string
+          rights_status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       archive_item_flags: {
         Row: {
           archive_item_id: string
@@ -1002,6 +1047,18 @@ export type Database = {
         }
         Returns: number
       }
+      archive_register_derivative: {
+        Args: {
+          p_byte_size?: number
+          p_height?: number
+          p_item_id: string
+          p_kind: string
+          p_mime_type: string
+          p_storage_key: string
+          p_width?: number
+        }
+        Returns: undefined
+      }
       archive_summary: { Args: never; Returns: Json }
       archive_update_item: {
         Args: {
@@ -1011,6 +1068,10 @@ export type Database = {
           p_original_filename?: string
           p_taken_at?: string
         }
+        Returns: undefined
+      }
+      audit_log: {
+        Args: { p_context?: Json; p_type: string }
         Returns: undefined
       }
       claim_due_jobs: {
@@ -1079,6 +1140,8 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
       store_connector_credential: {
         Args: {
           p_ciphertext: string
