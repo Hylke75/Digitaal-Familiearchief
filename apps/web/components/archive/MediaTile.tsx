@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Download, FileText, Play, Star } from 'lucide-react';
+import { AudioLines, Download, FileText, Play, Star } from 'lucide-react';
 import type { MediaCard } from '@/lib/archive/queries';
 import { formatDuration, stripExtension } from '@/lib/archive/display';
 import { AutoRefreshImage } from '@/components/archive/AutoRefreshImage';
@@ -42,6 +42,14 @@ export function MediaTile({ item, locale: _locale }: { item: MediaCard; locale: 
         {item.favourite ? (
           <span className="text-brass absolute left-2 top-2 z-10 drop-shadow">
             <Star className="h-4 w-4 fill-current" aria-hidden="true" />
+          </span>
+        ) : null}
+        {item.hasStory ? (
+          <span
+            className="pointer-events-none absolute bottom-2 left-2 z-10 inline-flex h-5 w-5 items-center justify-center rounded-full bg-black/45 text-white backdrop-blur"
+            title="Verhaal"
+          >
+            <AudioLines className="h-3 w-3" aria-hidden="true" />
           </span>
         ) : null}
         <a

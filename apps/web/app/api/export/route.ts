@@ -98,8 +98,32 @@ export async function GET(request: NextRequest): Promise<NextResponse | Response
     selection: ids ? 'subset' : 'full',
   });
 
+  // Stories belong to the owner and go along in the export (privacy §). Fetch the
+  // ones attached to the exported items; the audio is the archive piece, the
+  // transcript rides along as text.
+  const itemIndexById = new Map(items.map((it, i) => [it.id, i]));
+  const { data: storyData } = await supabase
+    .from('archive_stories')
+    .select('id, archive_item_id, audio_storage_key, audio_mime_type, narrator_name, transcript')
+    .in('archive_item_id', [...itemIndexById.keys()]);
+  const stories = (storyData ?? []).filter((s) => s.archive_item_id);
+  const storyExt = (m: string) =>
+    m.includes('ogg') ? 'ogg' : m.includes('mp4') || m.includes('m4a') ? 'm4a' : 'webm';
+  const storyEntries = stories.map((s, i) => ({
+    ...s,
+    file: `verhalen/${String(i + 1).padStart(3, '0')}_verhaal.${storyExt(s.audio_mime_type)}`,
+  }));
+
   const storage = createArchiveStorage(supabase);
-  const manifest = buildManifest(items, new Date().toISOString(), truncated);
+  const manifest = {
+    ...buildManifest(items, new Date().toISOString(), truncated),
+    stories: storyEntries.map((s) => ({
+      item: s.archive_item_id != null ? (itemIndexById.get(s.archive_item_id) ?? null) : null,
+      narrator: s.narrator_name,
+      transcript: s.transcript,
+      audioFile: s.file,
+    })),
+  };
   const enc = new TextEncoder();
 
   async function* entries(): AsyncIterable<ZipEntry> {
@@ -112,6 +136,16 @@ export async function GET(request: NextRequest): Promise<NextResponse | Response
         yield { name: exportEntryName(it, i), data: bytes };
       } catch {
         // A missing/unreadable original is skipped; the manifest still lists it.
+      }
+    }
+    for (const s of storyEntries) {
+      try {
+        const { data: blob } = await supabase.storage
+          .from('verhalen')
+          .download(s.audio_storage_key);
+        if (blob) yield { name: s.file, data: new Uint8Array(await blob.arrayBuffer()) };
+      } catch {
+        // Missing story audio is skipped; the manifest still lists it.
       }
     }
   }
