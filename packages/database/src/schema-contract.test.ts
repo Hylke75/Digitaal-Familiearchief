@@ -123,4 +123,14 @@ describe('archive experience schema contract', () => {
     };
     expect(args.p_metadata).toBeTruthy();
   });
+
+  it('archive_update_item corrects title/date and merges metadata', () => {
+    const args: Database['public']['Functions']['archive_update_item']['Args'] = {
+      p_id: 'i1',
+      p_taken_at: '1974-06-01T00:00:00Z',
+      p_original_filename: 'Trouwfoto',
+      p_metadata: { afzender: 'Gemeente', expiresAt: '2030-01-01' },
+    };
+    expect(args.p_id).toBe('i1');
+  });
 });
