@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/app-shell/PageHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ButtonLink } from '@/components/ui/Button';
 import { listDocuments } from '@/lib/archive/documents';
+import { expiryStatus } from '@/lib/archive/expiry';
 
 export const metadata = { title: 'Documenten' };
 
@@ -67,6 +68,21 @@ export default async function DocumentsPage() {
                         {meta ? (
                           <span className="text-small text-ink-soft mt-0.5 block">{meta}</span>
                         ) : null}
+                        {(() => {
+                          const s = expiryStatus(doc.expiresAt, Date.now());
+                          if (s !== 'expired' && s !== 'soon') return null;
+                          return (
+                            <span
+                              className={`rounded-pill text-caption mt-1 inline-block px-2 py-0.5 font-medium ${
+                                s === 'expired'
+                                  ? 'bg-danger/10 text-danger'
+                                  : 'bg-brass/10 text-brass'
+                              }`}
+                            >
+                              {s === 'expired' ? t('archive.expired') : t('archive.expiresSoon')}
+                            </span>
+                          );
+                        })()}
                       </span>
                     </Link>
                   </li>

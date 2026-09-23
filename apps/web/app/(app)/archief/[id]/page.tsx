@@ -11,6 +11,7 @@ import { MembershipPicker } from '@/components/archive/MembershipPicker';
 import { getItemDetail } from '@/lib/archive/queries';
 import { updateItemAction } from '@/lib/archive/item-actions';
 import { formatDuration, stripExtension } from '@/lib/archive/display';
+import { expiryStatus } from '@/lib/archive/expiry';
 import { getAlbumMembership } from '@/lib/archive/albums';
 import { getPersonMembership } from '@/lib/archive/people';
 import { toggleItemPersonAction } from '@/lib/archive/people-actions';
@@ -48,6 +49,16 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
   }
   if (item.durationMs) rows.push([t('metaDuration'), formatDuration(item.durationMs)]);
   if (item.camera) rows.push([t('metaCamera'), item.camera]);
+  if (item.doc?.sender) rows.push([t('docSender'), item.doc.sender]);
+  if (item.doc?.docType) rows.push([t('docType'), item.doc.docType]);
+  if (item.doc?.documentDate) {
+    rows.push([t('docDate'), f.dateTime(new Date(item.doc.documentDate), { dateStyle: 'medium' })]);
+  }
+  if (item.doc?.labels.length) rows.push([t('docLabels'), item.doc.labels.join(', ')]);
+  const expiry = item.doc ? expiryStatus(item.doc.expiresAt, Date.now()) : null;
+  if (item.doc?.expiresAt) {
+    rows.push([t('docExpires'), f.dateTime(new Date(item.doc.expiresAt), { dateStyle: 'medium' })]);
+  }
 
   return (
     <div className="max-w-3xl">
@@ -83,6 +94,15 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
         <h1 className="text-h3 text-ink min-w-0 flex-1 font-semibold">
           {stripExtension(item.filename)}
         </h1>
+        {expiry === 'expired' || expiry === 'soon' ? (
+          <span
+            className={`rounded-pill text-small px-3 py-1 font-medium ${
+              expiry === 'expired' ? 'bg-danger/10 text-danger' : 'bg-brass/10 text-brass'
+            }`}
+          >
+            {expiry === 'expired' ? t('expired') : t('expiresSoon')}
+          </span>
+        ) : null}
         <FavouriteButton
           itemId={item.id}
           initial={item.favourite}
@@ -170,6 +190,57 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
               className="border-border rounded-button focus:border-forest text-body border px-3 py-2 outline-none"
             />
           </label>
+
+          {item.doc ? (
+            <>
+              <label className="block">
+                <span className="text-small text-ink-soft mb-1 block">{t('docSender')}</span>
+                <input
+                  name="afzender"
+                  defaultValue={item.doc.sender ?? ''}
+                  maxLength={120}
+                  className="border-border rounded-button focus:border-forest text-body w-full border px-3 py-2 outline-none"
+                />
+              </label>
+              <label className="block">
+                <span className="text-small text-ink-soft mb-1 block">{t('docType')}</span>
+                <input
+                  name="soort"
+                  defaultValue={item.doc.docType ?? ''}
+                  maxLength={80}
+                  className="border-border rounded-button focus:border-forest text-body w-full border px-3 py-2 outline-none"
+                />
+              </label>
+              <label className="block">
+                <span className="text-small text-ink-soft mb-1 block">{t('docDate')}</span>
+                <input
+                  type="date"
+                  name="documentDate"
+                  defaultValue={item.doc.documentDate ? item.doc.documentDate.slice(0, 10) : ''}
+                  className="border-border rounded-button focus:border-forest text-body border px-3 py-2 outline-none"
+                />
+              </label>
+              <label className="block">
+                <span className="text-small text-ink-soft mb-1 block">{t('docExpires')}</span>
+                <input
+                  type="date"
+                  name="expiresAt"
+                  defaultValue={item.doc.expiresAt ? item.doc.expiresAt.slice(0, 10) : ''}
+                  className="border-border rounded-button focus:border-forest text-body border px-3 py-2 outline-none"
+                />
+              </label>
+              <label className="block">
+                <span className="text-small text-ink-soft mb-1 block">{t('docLabels')}</span>
+                <input
+                  name="labels"
+                  defaultValue={item.doc.labels.join(', ')}
+                  placeholder="huis, notaris"
+                  className="border-border rounded-button focus:border-forest text-body w-full border px-3 py-2 outline-none"
+                />
+              </label>
+            </>
+          ) : null}
+
           <button
             type="submit"
             className="rounded-button bg-forest text-small px-4 py-2 font-medium text-white transition-opacity hover:opacity-90"

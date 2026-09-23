@@ -121,7 +121,9 @@ async function ingest(accountId, uid, item) {
       // Document classification (retained; drives the life-area view).
       gebied: item.gebied ?? null,
       afzender: item.afzender ?? null,
+      soort: item.soort ?? null,
       documentDate: item.documentDate ?? null,
+      expiresAt: item.expiresAt ?? null,
       labels: item.labels ?? null,
     },
   });
@@ -221,9 +223,22 @@ async function main() {
 
   // Documents — ordered by life area (categorie), with sender + document date.
   console.log(`→ ${docs.length} documents…`);
+  const soonDay = (n) => {
+    const d = new Date(now.getTime() + n * 24 * 60 * 60 * 1000);
+    return d.toISOString().slice(0, 10);
+  };
+  let verzekIdx = 0;
   for (const d of docs) {
     const bytes = await readFile(join(EXPORT_DIR, 'documenten', d.bestandsnaam));
     const docDate = d.documentdatum ? `${d.documentdatum}T09:00:00Z` : null;
+    // Give expiry-bearing categories a demo expiry date: one already expired,
+    // one expiring soon, the rest comfortably in the future.
+    let expiresAt = null;
+    if (['Verzekeringen', 'Voertuigen'].includes(d.categorie)) {
+      expiresAt = verzekIdx === 0 ? soonDay(-20) : verzekIdx === 1 ? soonDay(12) : soonDay(400);
+      verzekIdx++;
+    }
+    const soort = (d.labels || '').split(/[;,]/)[0]?.trim() || null;
     await ingest(accountByName.get(d.bron), uid, {
       bytes,
       type: 'document',
@@ -232,7 +247,9 @@ async function main() {
       takenAt: docDate,
       gebied: d.categorie || null,
       afzender: d.bron || null,
+      soort,
       documentDate: docDate,
+      expiresAt,
       labels: d.labels || null,
     });
   }
