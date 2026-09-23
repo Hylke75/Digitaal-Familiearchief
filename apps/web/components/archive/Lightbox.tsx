@@ -34,6 +34,7 @@ export function Lightbox({
   };
   const item = items[index];
   const touchX = useRef<number | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
 
   const go = useCallback(
     (delta: number) => {
@@ -43,6 +44,8 @@ export function Lightbox({
     [index, items.length, onIndex],
   );
 
+  // Arrow/Escape navigation — re-bound when the index changes so it always
+  // pages from the current position.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -50,13 +53,49 @@ export function Lightbox({
       else if (e.key === 'ArrowRight') go(1);
     };
     window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [go, onClose]);
+
+  // Focus management + Tab trap — mount-only so focus doesn't jump between items.
+  useEffect(() => {
+    const restoreTo = document.activeElement as HTMLElement | null;
+    const focusables = () =>
+      Array.from(
+        dialogRef.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), video, audio, [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      ).filter((el) => el.offsetParent !== null);
+
+    const onTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+      // Keep Tab focus inside the modal (WCAG 2.2 — no focus escape).
+      const els = focusables();
+      const first = els[0];
+      const last = els[els.length - 1];
+      if (!first || !last) {
+        e.preventDefault();
+        return;
+      }
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && (active === first || !dialogRef.current?.contains(active))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (active === last || !dialogRef.current?.contains(active))) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    window.addEventListener('keydown', onTab);
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    focusables()[0]?.focus();
     return () => {
-      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('keydown', onTab);
       document.body.style.overflow = prevOverflow;
+      restoreTo?.focus?.();
     };
-  }, [go, onClose]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!item) return null;
   const src = `/archief/download/${item.id}`;
@@ -64,6 +103,7 @@ export function Lightbox({
 
   return (
     <div
+      ref={dialogRef}
       className="fixed inset-0 z-50 flex flex-col bg-black/95"
       role="dialog"
       aria-modal="true"
