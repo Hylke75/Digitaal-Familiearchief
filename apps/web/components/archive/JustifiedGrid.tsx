@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Check, FileText, Play, Star } from 'lucide-react';
 import { justifiedLayout } from '@/lib/archive/justified';
 import { formatDuration, stripExtension } from '@/lib/archive/display';
+import { AutoRefreshImage } from '@/components/archive/AutoRefreshImage';
 import type { MediaCard } from '@/lib/archive/queries';
 
 /**
@@ -100,11 +101,10 @@ function Cell({
       }`}
     >
       {item.thumbUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <AutoRefreshImage
+          itemId={item.id}
           src={item.thumbUrl}
           alt={title}
-          loading="lazy"
           width={Math.round(width)}
           height={Math.round(height)}
           className="h-full w-full object-cover duration-300 motion-safe:transition-transform motion-safe:group-hover:scale-[1.03]"
