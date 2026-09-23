@@ -171,9 +171,32 @@ export function Timeline({
   const years = Array.from(
     new Set(groups.filter((g) => g.monthStart).map((g) => g.key.slice(0, 4))),
   );
-  const jumpToYear = (y: string) => {
-    const g = groups.find((gr) => gr.key.startsWith(y));
-    if (g) document.getElementById(`sec-${g.key}`)?.scrollIntoView({ behavior: 'smooth' });
+
+  // Draggable time scrubber: map the pointer's position on the rail to a scroll
+  // position and show the month it lands on (design advice, "sleepbare tijdbalk").
+  const railRef = useRef<HTMLDivElement | null>(null);
+  const [scrubLabel, setScrubLabel] = useState<string | null>(null);
+  const scrubbing = useRef(false);
+
+  const currentMonthLabel = (): string => {
+    for (const g of groups) {
+      const el = document.getElementById(`sec-${g.key}`);
+      if (el && el.getBoundingClientRect().top <= 140) {
+        return g.monthStart ? monthLabel.format(new Date(g.monthStart)) : labels.unknownDate;
+      }
+    }
+    const first = groups[0];
+    return first?.monthStart ? monthLabel.format(new Date(first.monthStart)) : '';
+  };
+
+  const scrubTo = (clientY: number) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const rect = rail.getBoundingClientRect();
+    const frac = Math.min(1, Math.max(0, (clientY - rect.top) / rect.height));
+    const doc = document.documentElement;
+    window.scrollTo({ top: frac * (doc.scrollHeight - window.innerHeight) });
+    setScrubLabel(currentMonthLabel());
   };
 
   return (
@@ -234,23 +257,37 @@ export function Timeline({
         </div>
       </div>
 
-      {/* Draggable-year rail — jump across the archive without endless scrolling. */}
+      {/* Draggable time scrubber — drag across the years without endless
+          scrolling; a live label shows the month you land on. */}
       {years.length > 1 ? (
-        <nav
-          aria-label="Jaren"
-          className="fixed right-1 top-1/2 z-20 hidden -translate-y-1/2 flex-col items-end gap-1 lg:flex"
+        <div
+          ref={railRef}
+          aria-label="Tijdbalk"
+          onPointerDown={(e) => {
+            scrubbing.current = true;
+            e.currentTarget.setPointerCapture(e.pointerId);
+            scrubTo(e.clientY);
+          }}
+          onPointerMove={(e) => {
+            if (scrubbing.current) scrubTo(e.clientY);
+          }}
+          onPointerUp={() => {
+            scrubbing.current = false;
+            setScrubLabel(null);
+          }}
+          className="fixed right-0 top-1/2 z-20 hidden h-[60vh] w-10 -translate-y-1/2 cursor-ns-resize touch-none select-none flex-col items-end justify-between py-2 pr-1 lg:flex"
         >
           {years.map((y) => (
-            <button
-              key={y}
-              type="button"
-              onClick={() => jumpToYear(y)}
-              className="text-ink-soft hover:text-forest text-caption rounded px-1.5 py-0.5 font-medium hover:bg-white/70"
-            >
+            <span key={y} className="text-ink-soft text-caption pointer-events-none font-medium">
               {y}
-            </button>
+            </span>
           ))}
-        </nav>
+          {scrubLabel ? (
+            <span className="bg-forest rounded-button text-small absolute right-8 top-1/2 -translate-y-1/2 whitespace-nowrap px-3 py-1 font-medium text-white shadow-lg">
+              {scrubLabel}
+            </span>
+          ) : null}
+        </div>
       ) : null}
 
       {groups.map((group) => {
