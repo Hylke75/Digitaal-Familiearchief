@@ -10,7 +10,7 @@ import { rateLimit, clientIp } from '@/lib/security/rate-limit';
 import { getConnectProvider } from '@/lib/connectors/connect-registry';
 import { getPortabilityProvider } from '@/lib/connectors/portability-providers';
 import { encryptRefreshToken } from '@/lib/connectors/token';
-import { OAUTH_COOKIE } from '../start/route';
+import { OAUTH_COOKIE } from '@/lib/connectors/oauth-cookie';
 
 const globalFetch = fetch as unknown as FetchLike;
 
