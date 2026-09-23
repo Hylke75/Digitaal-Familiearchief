@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Download, FileText, Play, Star } from 'lucide-react';
 import type { MediaCard } from '@/lib/archive/queries';
 import { formatDuration, stripExtension } from '@/lib/archive/display';
+import { AutoRefreshImage } from '@/components/archive/AutoRefreshImage';
 
 /**
  * Presentational archive tile. Renderable images/posters fill the tile with no
@@ -17,11 +18,10 @@ export function MediaTile({ item, locale: _locale }: { item: MediaCard; locale: 
   if (item.thumbUrl) {
     return (
       <div className="bg-warm group relative aspect-square overflow-hidden rounded-[4px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <AutoRefreshImage
+          itemId={item.id}
           src={item.thumbUrl}
           alt={title}
-          loading="lazy"
           className="h-full w-full object-cover duration-300 motion-safe:transition-transform motion-safe:group-hover:scale-[1.03]"
         />
         <Link href={href} className="absolute inset-0" aria-label={title} />

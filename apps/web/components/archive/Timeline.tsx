@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from
 import { useTranslations } from 'next-intl';
 import { CheckSquare, Download, Images, Star, X } from 'lucide-react';
 import { JustifiedGrid } from '@/components/archive/JustifiedGrid';
+import { AutoRefreshImage } from '@/components/archive/AutoRefreshImage';
 import { Lightbox } from '@/components/archive/Lightbox';
 import {
   bulkFavouriteAction,
@@ -314,10 +315,11 @@ export function Timeline({
                   selecting && selected.has(cover.id) ? 'ring-forest ring-2 ring-offset-1' : ''
                 }`}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <AutoRefreshImage
+                  itemId={cover.id}
                   src={cover.thumbUrl}
                   alt={cover.filename}
+                  loading="eager"
                   className="h-full w-full object-cover duration-300 motion-safe:transition-transform motion-safe:group-hover:scale-[1.02]"
                 />
               </button>

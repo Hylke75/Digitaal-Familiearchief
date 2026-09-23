@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { AppShell } from '@/components/app-shell/AppShell';
 import { DemoBanner } from '@/components/app-shell/DemoBanner';
+import { DemoCTA } from '@/components/app-shell/DemoCTA';
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentUser } from '@/lib/supabase/current-user';
 import { isDemoUser } from '@/lib/demo-account';
@@ -28,6 +29,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     <AppShell userName={userName}>
       {isDemoUser(user.id) ? <DemoBanner /> : null}
       {children}
+      {isDemoUser(user.id) ? <DemoCTA /> : null}
     </AppShell>
   );
 }

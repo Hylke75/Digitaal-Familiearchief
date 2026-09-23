@@ -369,6 +369,10 @@ const en: AppMessages = {
     banner: 'You’re viewing the Bewora demo with sample data. Changes aren’t saved.',
     startOwn: 'Start your own archive',
     exit: 'Leave demo',
+    ctaTitle: 'This could be your archive too',
+    ctaBody:
+      'What you see here is sample data. Connect your own sources and Bewora preserves your photos, videos and documents automatically — for you and your family.',
+    ctaButton: 'Start your own archive',
   },
   settings: {
     title: 'Settings',
@@ -384,6 +388,10 @@ const en: AppMessages = {
     deleteBody:
       'Want your account and archive deleted? Send a request and we’ll handle it carefully. Disconnecting sources never deletes anything already preserved.',
     deleteButton: 'Request deletion',
+    signOutTitle: 'Session',
+    signOutBody: 'You stay signed in on this device until you sign out.',
+    signOut: 'Sign out',
+    languageChange: 'Change language',
   },
 } as const;
 

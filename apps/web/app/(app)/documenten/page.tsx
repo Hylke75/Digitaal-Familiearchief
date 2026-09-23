@@ -6,6 +6,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ButtonLink } from '@/components/ui/Button';
 import { listDocuments } from '@/lib/archive/documents';
 import { expiryStatus } from '@/lib/archive/expiry';
+import { AutoRefreshImage } from '@/components/archive/AutoRefreshImage';
 
 export const metadata = { title: 'Documenten' };
 
@@ -61,11 +62,10 @@ export default async function DocumentsPage() {
                     >
                       <span className="bg-warm relative flex aspect-[3/4] items-center justify-center overflow-hidden">
                         {doc.previewUrl ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
+                          <AutoRefreshImage
+                            itemId={doc.id}
                             src={doc.previewUrl}
                             alt=""
-                            loading="lazy"
                             className="h-full w-full bg-white object-cover object-top"
                           />
                         ) : (
