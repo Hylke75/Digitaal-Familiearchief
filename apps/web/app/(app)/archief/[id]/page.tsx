@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getFormatter, getTranslations } from 'next-intl/server';
-import { ArrowLeft, Download, FileText } from 'lucide-react';
+import { ArrowLeft, Download, FileText, Pencil } from 'lucide-react';
 import { formatBytes } from '@dla/shared';
 import { Card, CardBody } from '@/components/ui/Card';
 import { ButtonLink } from '@/components/ui/Button';
@@ -9,6 +9,7 @@ import { FavouriteButton } from '@/components/archive/FavouriteButton';
 import { AddToAlbum } from '@/components/archive/AddToAlbum';
 import { MembershipPicker } from '@/components/archive/MembershipPicker';
 import { getItemDetail } from '@/lib/archive/queries';
+import { updateItemAction } from '@/lib/archive/item-actions';
 import { formatDuration, stripExtension } from '@/lib/archive/display';
 import { getAlbumMembership } from '@/lib/archive/albums';
 import { getPersonMembership } from '@/lib/archive/people';
@@ -143,6 +144,40 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
           </dl>
         </CardBody>
       </Card>
+
+      <details className="mt-4">
+        <summary className="text-ink-soft hover:text-ink text-small inline-flex cursor-pointer list-none items-center gap-2 font-medium">
+          <Pencil className="h-4 w-4" aria-hidden="true" />
+          {t('edit')}
+        </summary>
+        <form action={updateItemAction} className="mt-3 max-w-md space-y-3">
+          <input type="hidden" name="id" value={item.id} />
+          <label className="block">
+            <span className="text-small text-ink-soft mb-1 block">{t('titleLabel')}</span>
+            <input
+              name="title"
+              defaultValue={stripExtension(item.filename)}
+              maxLength={200}
+              className="border-border rounded-button focus:border-forest text-body w-full border px-3 py-2 outline-none"
+            />
+          </label>
+          <label className="block">
+            <span className="text-small text-ink-soft mb-1 block">{t('metaDate')}</span>
+            <input
+              type="date"
+              name="takenAt"
+              defaultValue={item.effectiveDate ? item.effectiveDate.slice(0, 10) : ''}
+              className="border-border rounded-button focus:border-forest text-body border px-3 py-2 outline-none"
+            />
+          </label>
+          <button
+            type="submit"
+            className="rounded-button bg-forest text-small px-4 py-2 font-medium text-white transition-opacity hover:opacity-90"
+          >
+            {t('save')}
+          </button>
+        </form>
+      </details>
     </div>
   );
 }

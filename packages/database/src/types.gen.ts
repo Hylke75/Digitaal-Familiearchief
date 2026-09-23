@@ -1003,6 +1003,16 @@ export type Database = {
         Returns: number
       }
       archive_summary: { Args: never; Returns: Json }
+      archive_update_item: {
+        Args: {
+          p_clear_taken_at?: boolean
+          p_id: string
+          p_metadata?: Json
+          p_original_filename?: string
+          p_taken_at?: string
+        }
+        Returns: undefined
+      }
       claim_due_jobs: {
         Args: { p_limit: number; p_worker: string }
         Returns: {
