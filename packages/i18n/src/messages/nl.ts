@@ -259,6 +259,8 @@ const nl = {
     deselect: 'Wissen',
     addToAlbum: 'Aan album',
     chooseAlbum: 'Kies een album',
+    tagPerson: 'Persoon taggen',
+    noPeopleYet: 'Nog geen personen',
     onThisDay: 'Op deze dag',
     favouritesTitle: 'Favorieten',
     loadMore: 'Meer laden',

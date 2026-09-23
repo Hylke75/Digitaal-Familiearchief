@@ -12,6 +12,28 @@ import { normalizeTitle } from '@/lib/archive/album-utils';
  * only — no face recognition (§59, §62). All writes are owner-scoped by RLS.
  */
 
+/** The owner's people (id + name) for a picker. */
+export async function listPersonTitlesAction(): Promise<Array<{ id: string; title: string }>> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('archive_people')
+    .select('id, display_name')
+    .order('display_name', { ascending: true });
+  return (data ?? []).map((p) => ({ id: p.id, title: p.display_name }));
+}
+
+/** Tag many items with one person at once (selection mode). No-op for the demo. */
+export async function bulkTagPersonAction(personId: string, ids: string[]): Promise<void> {
+  if (!personId || ids.length === 0) return;
+  const supabase = createClient();
+  if (await isDemoSession(supabase)) return;
+  await supabase.from('archive_item_people').upsert(
+    ids.map((id) => ({ person_id: personId, archive_item_id: id })),
+    { onConflict: 'person_id,archive_item_id', ignoreDuplicates: true },
+  );
+  revalidatePath(`/personen/${personId}`);
+}
+
 export async function createPersonAction(formData: FormData): Promise<void> {
   const name = normalizeTitle(String(formData.get('name') ?? ''));
   if (!name) return;
