@@ -4,8 +4,7 @@ import { generatePkce, randomToken } from '@dla/security';
 import { buildAuthorizeUrl } from '@dla/oauth';
 import { createClient } from '@/lib/supabase/server';
 import { getConnectProvider } from '@/lib/connectors/connect-registry';
-
-export const OAUTH_COOKIE = 'bewora_oauth';
+import { OAUTH_COOKIE } from '@/lib/connectors/oauth-cookie';
 
 /** Begin an OAuth connect flow: set a short-lived httpOnly state+PKCE cookie and
  * redirect to the provider (docs/connectors/ARCHITECTURE.md §2). */

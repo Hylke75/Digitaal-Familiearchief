@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Check, FileText, Play, Star } from 'lucide-react';
+import { AudioLines, Check, FileText, Play, Star } from 'lucide-react';
 import { justifiedLayout } from '@/lib/archive/justified';
 import { formatDuration, stripExtension } from '@/lib/archive/display';
 import { AutoRefreshImage } from '@/components/archive/AutoRefreshImage';
@@ -134,6 +134,15 @@ function Cell({
       {item.favourite ? (
         <span className="text-brass absolute left-1.5 top-1.5 drop-shadow">
           <Star className="h-4 w-4 fill-current" aria-hidden="true" />
+        </span>
+      ) : null}
+
+      {item.hasStory ? (
+        <span
+          className="pointer-events-none absolute bottom-1.5 left-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-black/45 text-white backdrop-blur"
+          title="Verhaal"
+        >
+          <AudioLines className="h-3 w-3" aria-hidden="true" />
         </span>
       ) : null}
 

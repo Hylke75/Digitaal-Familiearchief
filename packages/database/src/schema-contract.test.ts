@@ -41,6 +41,7 @@ describe('database enum contract', () => {
       'incremental_import',
       'export',
       'integrity_check',
+      'transcribe',
     ]);
     expect(Constants.public.Enums.job_status).toEqual([
       'queued',

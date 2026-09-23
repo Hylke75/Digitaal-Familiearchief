@@ -691,6 +691,82 @@ export type Database = {
         }
         Relationships: []
       }
+      archive_stories: {
+        Row: {
+          album_id: string | null
+          approved: boolean
+          archive_item_id: string | null
+          audio_mime_type: string
+          audio_storage_key: string
+          created_at: string
+          duration_ms: number | null
+          id: string
+          narrator_name: string | null
+          narrator_person_id: string | null
+          owner_id: string
+          source: Database["public"]["Enums"]["story_source"]
+          transcript: string | null
+          transcript_status: Database["public"]["Enums"]["transcript_status"]
+          updated_at: string
+        }
+        Insert: {
+          album_id?: string | null
+          approved?: boolean
+          archive_item_id?: string | null
+          audio_mime_type: string
+          audio_storage_key: string
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          narrator_name?: string | null
+          narrator_person_id?: string | null
+          owner_id: string
+          source?: Database["public"]["Enums"]["story_source"]
+          transcript?: string | null
+          transcript_status?: Database["public"]["Enums"]["transcript_status"]
+          updated_at?: string
+        }
+        Update: {
+          album_id?: string | null
+          approved?: boolean
+          archive_item_id?: string | null
+          audio_mime_type?: string
+          audio_storage_key?: string
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          narrator_name?: string | null
+          narrator_person_id?: string | null
+          owner_id?: string
+          source?: Database["public"]["Enums"]["story_source"]
+          transcript?: string | null
+          transcript_status?: Database["public"]["Enums"]["transcript_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_stories_album_id_fkey"
+            columns: ["album_id"]
+            isOneToOne: false
+            referencedRelation: "archive_albums"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "archive_stories_archive_item_id_fkey"
+            columns: ["archive_item_id"]
+            isOneToOne: false
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "archive_stories_narrator_person_id_fkey"
+            columns: ["narrator_person_id"]
+            isOneToOne: false
+            referencedRelation: "archive_people"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       connector_accounts: {
         Row: {
           archive_frequency: Database["public"]["Enums"]["archive_frequency"]
@@ -1059,6 +1135,18 @@ export type Database = {
         }
         Returns: undefined
       }
+      archive_register_story: {
+        Args: {
+          p_album_id: string
+          p_archive_item_id: string
+          p_audio_mime_type: string
+          p_audio_storage_key: string
+          p_duration_ms?: number
+          p_narrator_name?: string
+          p_narrator_person_id?: string
+        }
+        Returns: string
+      }
       archive_summary: { Args: never; Returns: Json }
       archive_update_item: {
         Args: {
@@ -1192,6 +1280,9 @@ export type Database = {
         | "incremental_import"
         | "export"
         | "integrity_check"
+        | "transcribe"
+      story_source: "owner" | "guest"
+      transcript_status: "pending" | "processing" | "done" | "failed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1365,7 +1456,10 @@ export const Constants = {
         "incremental_import",
         "export",
         "integrity_check",
+        "transcribe",
       ],
+      story_source: ["owner", "guest"],
+      transcript_status: ["pending", "processing", "done", "failed"],
     },
   },
 } as const

@@ -35,6 +35,8 @@ export interface MediaCard {
   durationMs: number | null;
   latitude: number | null;
   longitude: number | null;
+  /** True when an approved spoken story is attached (shows a speaker icon). */
+  hasStory: boolean;
 }
 
 export interface MediaPage {
@@ -84,9 +86,10 @@ type ItemRow = {
 async function toCards(supabase: SupabaseClient<Database>, rows: ItemRow[]): Promise<MediaCard[]> {
   const ids = rows.map((r) => r.id);
   const favourites = new Set<string>();
+  const withStory = new Set<string>();
   const thumbKeys = new Map<string, string>();
   if (ids.length > 0) {
-    const [{ data: flags }, { data: derivs }] = await Promise.all([
+    const [{ data: flags }, { data: derivs }, { data: stories }] = await Promise.all([
       supabase
         .from('archive_item_flags')
         .select('archive_item_id')
@@ -97,10 +100,18 @@ async function toCards(supabase: SupabaseClient<Database>, rows: ItemRow[]): Pro
         .select('archive_item_id, storage_key, kind')
         .in('kind', ['thumb', 'poster'])
         .in('archive_item_id', ids),
+      supabase
+        .from('archive_stories')
+        .select('archive_item_id')
+        .eq('approved', true)
+        .in('archive_item_id', ids),
     ]);
     (flags ?? []).forEach((r) => favourites.add(r.archive_item_id));
     // A photo has a 'thumb', a video a 'poster'; either becomes the tile image.
     (derivs ?? []).forEach((d) => thumbKeys.set(d.archive_item_id, d.storage_key));
+    (stories ?? []).forEach((s) => {
+      if (s.archive_item_id) withStory.add(s.archive_item_id);
+    });
   }
 
   // Sign every persisted-derivative key in ONE request instead of one HTTP
@@ -142,6 +153,7 @@ async function toCards(supabase: SupabaseClient<Database>, rows: ItemRow[]): Pro
         durationMs: r.duration_ms,
         latitude: r.latitude,
         longitude: r.longitude,
+        hasStory: withStory.has(r.id),
       };
     }),
   );
@@ -193,9 +205,21 @@ export async function listMedia(
   if (opts.type) query = query.eq('type', opts.type);
   else if (opts.visualOnly) query = query.in('type', ['photo', 'video']);
   if (q) {
-    // Match the file name OR the extracted document text (content search, §B).
+    // Match the file name, the extracted document text, OR a story transcript —
+    // "fiets" should also find a photo someone told a story about (§B, §verhalen).
     const esc = escapeLike(q);
-    query = query.or(`original_filename.ilike.*${esc}*,metadata_json->>text.ilike.*${esc}*`);
+    const { data: storyMatches } = await supabase
+      .from('archive_stories')
+      .select('archive_item_id')
+      .eq('approved', true)
+      .not('archive_item_id', 'is', null)
+      .ilike('transcript', `%${esc}%`);
+    const storyIds = [
+      ...new Set((storyMatches ?? []).map((s) => s.archive_item_id).filter(Boolean)),
+    ];
+    const ors = [`original_filename.ilike.*${esc}*`, `metadata_json->>text.ilike.*${esc}*`];
+    if (storyIds.length > 0) ors.push(`id.in.(${storyIds.join(',')})`);
+    query = query.or(ors.join(','));
   }
   if (hidden.length > 0) query = query.not('id', 'in', `(${hidden.join(',')})`);
   query = orderNewest(query).range(from, from + pageSize); // one extra row → hasMore
@@ -374,6 +398,7 @@ export async function getItemDetail(id: string): Promise<ItemDetail | null> {
     durationMs: row.duration_ms,
     latitude: row.latitude,
     longitude: row.longitude,
+    hasStory: false,
     camera: row.camera,
     archivedAt: row.archived_at,
     previewUrl,
