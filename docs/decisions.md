@@ -91,3 +91,47 @@ anon/publishable key.
 **Decision.** Create the Supabase project in eu-central-1.
 
 **Consequences.** EU data residency for database, auth and initial storage.
+
+## ADR-0007 — Hardening round: audit trail, rate limiting, CSP, signed-URL TTL
+
+**Date:** 2026-09-23 · **Status:** Accepted
+
+**Context.** A broad review surfaced gaps against §42/§47: `security_audit_events`
+existed but was never written, there was no rate limiting, no `Content-Security-Policy`
+header (despite a comment claiming one), and thumbnail signed URLs lived for 24h.
+
+**Decision.**
+- Audit trail via an owner-scoped `SECURITY DEFINER` `audit_log` RPC (migration
+  0013), called best-effort so auditing never breaks a user flow. Events: login,
+  logout, export requested, connector connected/reauthorised/disconnected.
+- In-memory fixed-window rate limiter as a per-instance backstop on the export
+  route, all mobile endpoints, and the OAuth callback. A shared store (Upstash)
+  is the later upgrade behind the same call sites.
+- Real CSP derived from `NEXT_PUBLIC_SUPABASE_URL` (img/media/connect scoped to
+  the Supabase origin incl. `wss:`); `'unsafe-inline'` on script-src stays until
+  Next.js inline bootstrap moves to nonces.
+- Thumbnail/preview signed-URL TTL cut from 24h to 4h; downloads stay at 60s.
+
+**Consequences.** The audit table is now populated where it matters; abusive
+bursts are throttled; a copied thumbnail URL grants hours, not a day. No verified
+issue was found for token encryption (`AesGcmTokenEncryption` already ships) or
+credential cascade (`on delete cascade` already present) — both were false alarms
+and left unchanged.
+
+## ADR-0008 — Document first-page previews rendered at seed time (demo)
+
+**Date:** 2026-09-23 · **Status:** Accepted
+
+**Context.** PDFs can't be rendered by the on-the-fly image transform, so a
+first-page preview needs pre-rendering. `pdfjs`-in-node renders non-embedded
+standard fonts unreliably (blank pages); a serverless renderer would need native
+`@napi-rs/canvas` + font tracing on Vercel = deploy risk.
+
+**Decision.** Render document previews locally at seed time via macOS Quick Look
+(system PDFKit — perfect fonts), store them as a `preview` derivative, and let the
+owner register it through a new owner-scoped `archive_register_derivative` RPC
+(migration 0011). Runtime never renders; there is no new runtime dependency.
+
+**Consequences.** Demo documents show authentic first pages with zero serverless
+deploy risk. Production user-uploaded PDFs keep the metadata card + searchable
+text until a serverless renderer is justified.

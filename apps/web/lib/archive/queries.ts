@@ -10,9 +10,10 @@ export type ArchiveItemType = Enums<'archive_item_type'>;
 const BUCKET = 'archief';
 export const MEDIA_PAGE_SIZE = 60;
 
-// Signed thumbnail/preview URLs live for a day so a tab left open doesn't show
-// broken images after an hour (design advice §D7). Downloads stay short-lived.
-const SIGNED_TTL = 60 * 60 * 24;
+// Signed thumbnail/preview URLs live for a few hours: long enough to survive a
+// browsing session without breaking, short enough that a copied URL doesn't grant
+// day-long access (§42). Downloads stay far shorter-lived (60s).
+const SIGNED_TTL = 60 * 60 * 4;
 
 // Types the browser can render as a real thumbnail via a transform; everything
 // else (HEIC, video, documents) falls back to a file card until slice 4 adds

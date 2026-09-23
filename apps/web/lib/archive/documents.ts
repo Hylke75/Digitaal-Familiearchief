@@ -27,8 +27,8 @@ type DocRow = {
 };
 
 const BUCKET = 'archief';
-// A day-long signed preview so a tab left open still shows the tile image.
-const SIGNED_TTL = 60 * 60 * 24;
+// A few-hours signed preview: survives a browsing session, not a day (§42).
+const SIGNED_TTL = 60 * 60 * 4;
 
 const str = (v: unknown): string | null => (typeof v === 'string' && v.trim() ? v.trim() : null);
 

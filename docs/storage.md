@@ -47,3 +47,15 @@ interface ArchiveStorageProvider {
   archive engine and connectors without any external backend. Not for production.
 - Supabase Storage adapter (Phase 5): first production adapter.
 - EU S3-compatible adapter (future): drop-in replacement for scale.
+
+## Derivative & signed-URL lifecycle
+
+- **Originals** are immutable (§32). Derivatives never overwrite them.
+- **Derivatives** live in the same bucket under the owner's uid folder
+  (`archive/<owner>/thumb|poster|docpreview/…`), so storage RLS covers them. They
+  are regenerable and safe to prune. Document previews are registered via the
+  owner-scoped `archive_register_derivative` RPC (migration 0011); the cron worker
+  writes photo thumbnails/video posters under the service role.
+- **Signed access** is short-lived (§42): thumbnails/previews 4h (a browsing
+  session, not a day), original downloads 60s. Multiple keys are batch-signed in
+  one request (`createSignedUrls`) to avoid a round-trip per tile.

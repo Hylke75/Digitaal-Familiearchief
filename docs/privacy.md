@@ -35,3 +35,19 @@ Privacy by design from day one (CLAUDE.md §48).
 Supabase (database, auth, storage, EU region) and Vercel (hosting) are the initial
 processors. A processor register + DPAs are maintained as the product moves toward
 production.
+
+## Data retention
+
+- **Archived content** is retained for the life of the account — that is the
+  product's purpose (§4: source deletion never deletes the archived copy). The
+  user removes items explicitly; there is no silent expiry.
+- **Derivatives** (thumbnails, posters, document previews) are cache-like: they
+  can be regenerated from the original and may be pruned without data loss.
+- **Security audit events** (§47) record operational metadata only (event type,
+  timestamp, user id, non-sensitive context) — never archived content or tokens.
+  Retained for security/forensics; a bounded retention window is set before
+  production.
+- **Operational logs** are redacted of secrets and private content (§49) and are
+  short-lived per the hosting platform's defaults.
+- **Account deletion** (§41) follows a documented request process; disconnecting
+  a source is separate and never deletes archived content.

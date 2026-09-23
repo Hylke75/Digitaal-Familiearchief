@@ -56,6 +56,41 @@ jobs:
       - name: Build
         run: pnpm build
 
+  migrations:
+    name: Migrations
+    runs-on: ubuntu-latest
+    # Job-level env so the step `if` can read it (secrets aren't available in a
+    # step-level `if` directly). Empty when the secret isn't configured.
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Cheap, secret-free guard: no two migrations may share a number
+      # (NNNN_*.sql). A duplicate silently shadows/reorders a migration — the
+      # real footgun. Gaps are harmless (Supabase applies in filename order).
+      - name: Validate migration numbering
+        run: |
+          set -euo pipefail
+          nums=$(ls supabase/migrations/*.sql | sed -E 's#.*/([0-9]+)_.*#\1#' | sort)
+          dupes=$(echo "$nums" | uniq -d)
+          if [ -n "$dupes" ]; then
+            echo "Duplicate migration numbers: $dupes"; exit 1
+          fi
+          echo "Migration numbering OK ($(echo "$nums" | wc -l | tr -d ' ') files, no duplicates)."
+
+      # Schema-drift gate against the linked project. Runs only when the Supabase
+      # access token is configured as a repo secret; otherwise it's skipped so
+      # the workflow stays green until the credential is provisioned.
+      - name: Supabase schema dry-run
+        if: ${{ env.SUPABASE_ACCESS_TOKEN != '' }}
+        run: |
+          set -euo pipefail
+          npx --yes supabase@latest link --project-ref "$SUPABASE_PROJECT_REF"
+          npx --yes supabase@latest db push --dry-run
+
   security:
     name: Dependency audit
     runs-on: ubuntu-latest

@@ -3,7 +3,7 @@ import { streamZip, type ZipEntry } from '@dla/import';
 import { createClient } from '@/lib/supabase/server';
 import { auditLog } from '@/lib/security/audit';
 import { rateLimit } from '@/lib/security/rate-limit';
-import { SupabaseStorageProvider } from '@/lib/archive/supabase-storage';
+import { createArchiveStorage } from '@/lib/archive/storage-factory';
 import { buildManifest, exportEntryName, type ExportItem } from '@/lib/archive/export-utils';
 
 export const runtime = 'nodejs';
@@ -98,7 +98,7 @@ export async function GET(request: NextRequest): Promise<NextResponse | Response
     selection: ids ? 'subset' : 'full',
   });
 
-  const storage = new SupabaseStorageProvider(supabase);
+  const storage = createArchiveStorage(supabase);
   const manifest = buildManifest(items, new Date().toISOString(), truncated);
   const enc = new TextEncoder();
 
