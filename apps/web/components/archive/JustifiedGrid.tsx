@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { FileText, Play, Star } from 'lucide-react';
+import { Check, FileText, Play, Star } from 'lucide-react';
 import { justifiedLayout } from '@/lib/archive/justified';
 import { formatDuration, stripExtension } from '@/lib/archive/display';
 import type { MediaCard } from '@/lib/archive/queries';
@@ -9,19 +9,26 @@ import type { MediaCard } from '@/lib/archive/queries';
 /**
  * Uncropped, full-width justified grid (design advice, Advice A). Images keep
  * their aspect ratio and each row fills the container exactly; clicking a tile
- * opens the lightbox. Falls back to a labelled file tile for items without a
- * preview (documents), until they get their own environment.
+ * opens the lightbox — or, in selection mode, toggles the tile (shift-click
+ * selects a range). Falls back to a labelled file tile for items without a
+ * preview.
  */
 export function JustifiedGrid({
   items,
   onOpen,
   targetHeight = 200,
   gap = 3,
+  selectionMode = false,
+  selectedIds,
+  onToggle,
 }: {
   items: MediaCard[];
   onOpen: (index: number) => void;
   targetHeight?: number;
   gap?: number;
+  selectionMode?: boolean;
+  selectedIds?: Set<string>;
+  onToggle?: (index: number, shiftKey: boolean) => void;
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState(0);
@@ -49,7 +56,11 @@ export function JustifiedGrid({
                 item={it}
                 width={cell.width}
                 height={cell.height}
-                onClick={() => onOpen(cell.index)}
+                selectionMode={selectionMode}
+                selected={selectedIds?.has(it.id) ?? false}
+                onClick={(shiftKey) =>
+                  selectionMode ? onToggle?.(cell.index, shiftKey) : onOpen(cell.index)
+                }
               />
             );
           })}
@@ -66,20 +77,27 @@ function Cell({
   width,
   height,
   onClick,
+  selectionMode,
+  selected,
 }: {
   item: MediaCard;
   width: number;
   height: number;
-  onClick: () => void;
+  onClick: (shiftKey: boolean) => void;
+  selectionMode: boolean;
+  selected: boolean;
 }) {
   const title = stripExtension(item.filename);
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={(e) => onClick(e.shiftKey)}
       style={{ width, height }}
       aria-label={title}
-      className="bg-warm group relative shrink-0 overflow-hidden rounded-[3px]"
+      aria-pressed={selectionMode ? selected : undefined}
+      className={`bg-warm group relative shrink-0 overflow-hidden rounded-[3px] ${
+        selected ? 'ring-forest ring-2 ring-offset-1' : ''
+      }`}
     >
       {item.thumbUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -114,6 +132,17 @@ function Cell({
       {item.favourite ? (
         <span className="text-brass absolute left-1.5 top-1.5 drop-shadow">
           <Star className="h-4 w-4 fill-current" aria-hidden="true" />
+        </span>
+      ) : null}
+
+      {selectionMode ? (
+        <span
+          className={`absolute right-1.5 top-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full border-2 ${
+            selected ? 'border-forest bg-forest text-white' : 'border-white/90 bg-black/20'
+          }`}
+          aria-hidden="true"
+        >
+          {selected ? <Check className="h-3.5 w-3.5" /> : null}
         </span>
       ) : null}
     </button>
