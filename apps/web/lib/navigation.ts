@@ -1,4 +1,5 @@
 import {
+  Clapperboard,
   Clock,
   FileText,
   Home,
@@ -34,6 +35,7 @@ export const NAV_GROUPS: NavItem[][] = [
     { key: 'albums', href: '/albums', icon: Images },
     { key: 'people', href: '/personen', icon: Users },
     { key: 'places', href: '/plaatsen', icon: MapPin },
+    { key: 'mediaMoments', href: '/media-momenten', icon: Clapperboard },
   ],
   [{ key: 'sources', href: '/bronnen', icon: Link2 }],
 ];

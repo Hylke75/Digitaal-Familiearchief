@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from '@dla/database';
+import type { Database, Json } from '@dla/database';
 
 /** Security event types we record (§47). Kept as a union so call sites stay consistent. */
 export type AuditEventType =
@@ -23,13 +23,7 @@ export async function auditLog(
   context: Record<string, unknown> = {},
 ): Promise<void> {
   try {
-    // Cast: audit_log ships in migration 0013; until types are regenerated
-    // against a database that has it, its name isn't in the generated union.
-    const rpc = supabase.rpc as unknown as (
-      fn: string,
-      args: Record<string, unknown>,
-    ) => Promise<unknown>;
-    await rpc('audit_log', { p_type: type, p_context: context });
+    await supabase.rpc('audit_log', { p_type: type, p_context: context as Json });
   } catch {
     // Never surface auditing failures to the caller.
   }
