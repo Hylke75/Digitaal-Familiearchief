@@ -31,6 +31,8 @@ export interface MediaCard {
   width: number | null;
   height: number | null;
   durationMs: number | null;
+  latitude: number | null;
+  longitude: number | null;
 }
 
 export interface MediaPage {
@@ -73,6 +75,8 @@ type ItemRow = {
   width: number | null;
   height: number | null;
   duration_ms: number | null;
+  latitude: number | null;
+  longitude: number | null;
 };
 
 async function toCards(supabase: SupabaseClient<Database>, rows: ItemRow[]): Promise<MediaCard[]> {
@@ -120,13 +124,15 @@ async function toCards(supabase: SupabaseClient<Database>, rows: ItemRow[]): Pro
         width: r.width,
         height: r.height,
         durationMs: r.duration_ms,
+        latitude: r.latitude,
+        longitude: r.longitude,
       };
     }),
   );
 }
 
 const SELECT =
-  'id, original_filename, type, mime_type, file_size, taken_at, created_at_source, archived_at, storage_key, width, height, duration_ms';
+  'id, original_filename, type, mime_type, file_size, taken_at, created_at_source, archived_at, storage_key, width, height, duration_ms, latitude, longitude';
 
 // Newest first by effective date. taken_at is preferred but nearly always null
 // today (connectors don't yet extract EXIF), so ordering collapses to
@@ -309,6 +315,8 @@ export async function getItemDetail(id: string): Promise<ItemDetail | null> {
     width: row.width,
     height: row.height,
     durationMs: row.duration_ms,
+    latitude: row.latitude,
+    longitude: row.longitude,
     camera: row.camera,
     archivedAt: row.archived_at,
     previewUrl,
