@@ -6,6 +6,7 @@ import { JustifiedGrid } from '@/components/archive/JustifiedGrid';
 import { Lightbox } from '@/components/archive/Lightbox';
 import { loadTimelineFilterAction, type TimelineFilter } from '@/lib/archive/media-actions';
 import { groupByMonth } from '@/lib/archive/grouping';
+import { clusterMoments } from '@/lib/archive/moments';
 import type { MediaCard } from '@/lib/archive/queries';
 
 /**
@@ -48,6 +49,7 @@ export function Timeline({
     () => new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }),
     [locale],
   );
+  const dayLabel = useMemo(() => new Intl.DateTimeFormat(locale, { dateStyle: 'long' }), [locale]);
 
   const load = useCallback(async () => {
     if (loading || !hasMore) return;
@@ -122,14 +124,53 @@ export function Timeline({
         })}
       </div>
 
-      {groups.map((group) => (
-        <section key={group.key}>
-          <h2 className="text-h3 text-ink mb-3 capitalize">
-            {group.monthStart ? monthLabel.format(new Date(group.monthStart)) : labels.unknownDate}
-          </h2>
-          <JustifiedGrid items={group.items} onOpen={openLocal(group.items)} />
-        </section>
-      ))}
+      {groups.map((group) => {
+        const cover = group.items[0];
+        const moments = clusterMoments(group.items);
+        return (
+          <section key={group.key}>
+            <h2 className="text-h3 text-ink mb-3 capitalize">
+              {group.monthStart
+                ? monthLabel.format(new Date(group.monthStart))
+                : labels.unknownDate}
+            </h2>
+
+            {/* Opening image for the period — one large beeld, not fifteen equal tiles. */}
+            {cover?.thumbUrl ? (
+              <button
+                type="button"
+                onClick={() => openLocal(group.items)(0)}
+                aria-label={cover.filename}
+                className="bg-warm group mb-2 block h-56 w-full overflow-hidden rounded-[4px] sm:h-72"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={cover.thumbUrl}
+                  alt={cover.filename}
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                />
+              </button>
+            ) : null}
+
+            {moments.map((moment, mi) => {
+              const gridItems = mi === 0 ? moment.slice(1) : moment;
+              if (gridItems.length === 0) return null;
+              const first = moment[0]?.effectiveDate;
+              return (
+                <div key={mi} className="mt-3">
+                  {first ? (
+                    <h3 className="text-ink-soft text-small mb-2 font-medium capitalize">
+                      {dayLabel.format(new Date(first))}
+                      {moment.length > 1 ? ` · ${moment.length}` : ''}
+                    </h3>
+                  ) : null}
+                  <JustifiedGrid items={gridItems} onOpen={openLocal(gridItems)} />
+                </div>
+              );
+            })}
+          </section>
+        );
+      })}
 
       {hasMore ? (
         <div ref={sentinel} className="flex justify-center">
