@@ -11,11 +11,10 @@ const PROTECTED_PREFIXES = [
   '/fotos',
   '/videos',
   '/documenten',
-  '/social',
+  '/media-momenten',
   '/personen',
   '/plaatsen',
   '/bronnen',
-  '/familie',
   '/instellingen',
   '/meer',
 ];
@@ -58,7 +57,12 @@ export async function updateSession(request: NextRequest) {
   const isProtected = PROTECTED_PREFIXES.some((p) => path === p || path.startsWith(`${p}/`));
   const isAuthPage = AUTH_PAGES.includes(path);
 
-  if (!user && isProtected) {
+  // Demo mode: a safe, file-backed showcase session (no Supabase user, no DB
+  // writes, production data untouched). The `bewora_demo` cookie set at /demo
+  // satisfies the auth boundary for the app area.
+  const isDemo = request.cookies.get('bewora_demo')?.value === '1';
+
+  if (!user && !isDemo && isProtected) {
     const url = request.nextUrl.clone();
     url.pathname = '/inloggen';
     url.searchParams.set('next', path);
