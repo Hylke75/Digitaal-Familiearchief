@@ -371,6 +371,10 @@ const nl = {
     banner: 'Je bekijkt de Bewora-demo met voorbeelddata. Wijzigingen worden niet bewaard.',
     startOwn: 'Start je eigen archief',
     exit: 'Demo verlaten',
+    ctaTitle: 'Dit kan ook jouw archief zijn',
+    ctaBody:
+      'Wat je hier ziet, is voorbeelddata. Koppel je eigen bronnen en Bewora stelt je foto’s, video’s en documenten automatisch veilig — voor jou en je familie.',
+    ctaButton: 'Begin je eigen archief',
   },
   settings: {
     title: 'Instellingen',

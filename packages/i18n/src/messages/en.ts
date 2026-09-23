@@ -369,6 +369,10 @@ const en: AppMessages = {
     banner: 'You’re viewing the Bewora demo with sample data. Changes aren’t saved.',
     startOwn: 'Start your own archive',
     exit: 'Leave demo',
+    ctaTitle: 'This could be your archive too',
+    ctaBody:
+      'What you see here is sample data. Connect your own sources and Bewora preserves your photos, videos and documents automatically — for you and your family.',
+    ctaButton: 'Start your own archive',
   },
   settings: {
     title: 'Settings',
