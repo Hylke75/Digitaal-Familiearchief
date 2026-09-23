@@ -178,7 +178,11 @@ export async function listMedia(
   let query = supabase.from('archive_items').select(SELECT);
   if (opts.type) query = query.eq('type', opts.type);
   else if (opts.visualOnly) query = query.in('type', ['photo', 'video']);
-  if (q) query = query.ilike('original_filename', `%${escapeLike(q)}%`);
+  if (q) {
+    // Match the file name OR the extracted document text (content search, §B).
+    const esc = escapeLike(q);
+    query = query.or(`original_filename.ilike.*${esc}*,metadata_json->>text.ilike.*${esc}*`);
+  }
   if (hidden.length > 0) query = query.not('id', 'in', `(${hidden.join(',')})`);
   query = orderNewest(query).range(from, from + pageSize); // one extra row → hasMore
 

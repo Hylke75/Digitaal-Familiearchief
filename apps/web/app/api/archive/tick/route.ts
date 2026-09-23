@@ -13,6 +13,7 @@ import { contentStorageKey, sha256Hex } from '@dla/archive';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { SupabaseStorageProvider } from '@/lib/archive/supabase-storage';
 import { generateThumbnailBatch, generateVideoPosterBatch } from '@/lib/archive/derivatives';
+import { extractDocumentTextBatch } from '@/lib/archive/pdf-text';
 import { getLiveProvider } from '@/lib/connectors/live-providers';
 import { getPortabilityProvider } from '@/lib/connectors/portability-providers';
 import { getAccessToken } from '@/lib/connectors/token';
@@ -93,6 +94,7 @@ async function handle(request: NextRequest) {
   // bounded, idempotent, and skipped when we're near the wall.
   let thumbnails = 0;
   let posters = 0;
+  let docText = 0;
   if (Date.now() < deadline) {
     try {
       thumbnails = await generateThumbnailBatch(admin, 12);
@@ -104,6 +106,11 @@ async function handle(request: NextRequest) {
     } catch {
       // Poster generation is best-effort (ffmpeg may be unavailable).
     }
+    try {
+      docText = await extractDocumentTextBatch(admin, 6);
+    } catch {
+      // Document text extraction is best-effort.
+    }
   }
 
   return NextResponse.json({
@@ -112,6 +119,7 @@ async function handle(request: NextRequest) {
     processed,
     thumbnails,
     posters,
+    docText,
   });
 }
 
