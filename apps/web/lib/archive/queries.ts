@@ -1,6 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database, Enums } from '@dla/database';
 import { createClient } from '@/lib/supabase/server';
+import { getCurrentUser } from '@/lib/supabase/current-user';
 import { escapeLike } from '@/lib/archive/search-utils';
 import { isOnThisDay } from '@/lib/archive/grouping';
 
@@ -100,6 +101,21 @@ async function toCards(supabase: SupabaseClient<Database>, rows: ItemRow[]): Pro
     // A photo has a 'thumb', a video a 'poster'; either becomes the tile image.
     (derivs ?? []).forEach((d) => thumbKeys.set(d.archive_item_id, d.storage_key));
   }
+
+  // Sign every persisted-derivative key in ONE request instead of one HTTP
+  // round-trip per tile (the on-the-fly transform path below still signs
+  // per-key because createSignedUrls can't carry per-key transform options).
+  const signedByKey = new Map<string, string>();
+  const derivKeyList = [...new Set(thumbKeys.values())];
+  if (derivKeyList.length > 0) {
+    const { data: signed } = await supabase.storage
+      .from(BUCKET)
+      .createSignedUrls(derivKeyList, SIGNED_TTL);
+    (signed ?? []).forEach((s) => {
+      if (s.signedUrl && s.path) signedByKey.set(s.path, s.signedUrl);
+    });
+  }
+
   return Promise.all(
     rows.map(async (r) => {
       // Prefer a persisted thumbnail (the only way HEIC/other non-transformable
@@ -107,8 +123,7 @@ async function toCards(supabase: SupabaseClient<Database>, rows: ItemRow[]): Pro
       const derivKey = thumbKeys.get(r.id);
       let thumbUrl: string | null = null;
       if (derivKey) {
-        const { data } = await supabase.storage.from(BUCKET).createSignedUrl(derivKey, SIGNED_TTL);
-        thumbUrl = data?.signedUrl ?? null;
+        thumbUrl = signedByKey.get(derivKey) ?? null;
       } else if (RENDERABLE.has(r.mime_type)) {
         thumbUrl = await signThumb(supabase, r.storage_key);
       }
@@ -164,9 +179,7 @@ export async function listMedia(
   } = {},
 ): Promise<MediaPage> {
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
   if (!user) return EMPTY;
 
   const pageSize = opts.pageSize ?? MEDIA_PAGE_SIZE;
@@ -198,9 +211,7 @@ export async function listFavourites(
   opts: { page?: number; pageSize?: number } = {},
 ): Promise<MediaPage> {
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
   if (!user) return EMPTY;
 
   const { data: flags } = await supabase
@@ -231,11 +242,25 @@ export async function listRecent(limit = 12): Promise<MediaCard[]> {
 
 /** Photos/videos taken on today's calendar day in earlier years (Vandaag). */
 export async function listOnThisDay(limit = 12): Promise<MediaCard[]> {
-  const { items } = await listMedia({ visualOnly: true, pageSize: 500 });
+  const supabase = createClient();
+  const user = await getCurrentUser();
+  if (!user) return [];
+
+  // Scan recent rows (metadata only — no signing yet), filter to today's
+  // day-of-year, and only THEN sign the handful we keep. Previously this signed
+  // ~500 thumbnails to display 12.
+  const hidden = await hiddenIds(supabase);
+  let query = supabase.from('archive_items').select(SELECT).in('type', ['photo', 'video']);
+  if (hidden.length > 0) query = query.not('id', 'in', `(${hidden.join(',')})`);
+  const { data } = await orderNewest(query).range(0, 999);
+
   const now = new Date();
   const month = now.getMonth() + 1;
   const day = now.getDate();
-  return items.filter((i) => isOnThisDay(i.effectiveDate, month, day)).slice(0, limit);
+  const matches = ((data ?? []) as ItemRow[])
+    .filter((r) => isOnThisDay(r.taken_at ?? r.created_at_source ?? r.archived_at, month, day))
+    .slice(0, limit);
+  return toCards(supabase, matches);
 }
 
 /** Build media cards for a specific set of ids (newest first). Used by albums/
@@ -243,9 +268,7 @@ export async function listOnThisDay(limit = 12): Promise<MediaCard[]> {
 export async function mediaCardsByIds(ids: string[]): Promise<MediaCard[]> {
   if (ids.length === 0) return [];
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
   if (!user) return [];
   const { data } = await orderNewest(
     supabase.from('archive_items').select(SELECT).in('id', ids.slice(0, 500)),
