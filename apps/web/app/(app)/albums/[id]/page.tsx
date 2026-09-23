@@ -5,6 +5,7 @@ import { ArrowLeft, Images, Settings2, X } from 'lucide-react';
 import { PageHeader } from '@/components/app-shell/PageHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { MediaTile } from '@/components/archive/MediaTile';
+import { StoryPanel } from '@/components/stories/StoryPanel';
 import { getAlbum } from '@/lib/archive/albums';
 import {
   deleteAlbumAction,
@@ -99,6 +100,8 @@ export default async function AlbumDetailPage({ params }: { params: { id: string
           ))}
         </ul>
       )}
+
+      <StoryPanel albumId={album.id} />
     </div>
   );
 }

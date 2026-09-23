@@ -46,11 +46,23 @@ function toView(row: StoryRow, audioUrl: string | null): StoryView {
  * on `approved` separately.
  */
 export async function listStoriesForItem(itemId: string): Promise<StoryView[]> {
+  return listStoriesWhere('archive_item_id', itemId);
+}
+
+/** The owner's stories for a whole album/period, newest first. */
+export async function listStoriesForAlbum(albumId: string): Promise<StoryView[]> {
+  return listStoriesWhere('album_id', albumId);
+}
+
+async function listStoriesWhere(
+  column: 'archive_item_id' | 'album_id',
+  value: string,
+): Promise<StoryView[]> {
   const supabase = createClient();
   const { data } = await supabase
     .from('archive_stories')
     .select('*')
-    .eq('archive_item_id', itemId)
+    .eq(column, value)
     .order('created_at', { ascending: false });
   const rows = (data ?? []) as StoryRow[];
   if (rows.length === 0) return [];

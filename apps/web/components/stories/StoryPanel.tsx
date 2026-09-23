@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { Mic, Trash2 } from 'lucide-react';
-import { listStoriesForItem } from '@/lib/archive/stories';
+import { listStoriesForAlbum, listStoriesForItem } from '@/lib/archive/stories';
 import { StoryRecorder } from '@/components/stories/StoryRecorder';
 import { StoryAudio } from '@/components/stories/StoryAudio';
 import { StoryTranscript } from '@/components/stories/StoryTranscript';
@@ -15,9 +15,9 @@ import {
  * spoken story with its player, narrator and written-out text. The audio is the
  * archive piece; the transcript follows in the background and is correctable.
  */
-export async function StoryPanel({ itemId }: { itemId: string }) {
+export async function StoryPanel({ itemId, albumId }: { itemId?: string; albumId?: string }) {
   const t = await getTranslations('stories');
-  const stories = await listStoriesForItem(itemId);
+  const stories = albumId ? await listStoriesForAlbum(albumId) : await listStoriesForItem(itemId!);
 
   return (
     <section className="mt-8">
@@ -27,7 +27,7 @@ export async function StoryPanel({ itemId }: { itemId: string }) {
       </h2>
       <p className="text-body text-ink-soft mb-4">{t('intro')}</p>
 
-      <StoryRecorder itemId={itemId} />
+      <StoryRecorder itemId={itemId} albumId={albumId} />
 
       {stories.length > 0 ? (
         <ul className="mt-6 space-y-6">
