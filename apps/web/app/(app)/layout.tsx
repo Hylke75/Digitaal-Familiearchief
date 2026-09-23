@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { AppShell } from '@/components/app-shell/AppShell';
 import { DemoBanner } from '@/components/app-shell/DemoBanner';
 import { createClient } from '@/lib/supabase/server';
+import { getCurrentUser } from '@/lib/supabase/current-user';
 import { isDemoUser } from '@/lib/demo-account';
 
 /**
@@ -11,9 +12,7 @@ import { isDemoUser } from '@/lib/demo-account';
  */
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) redirect('/inloggen');
 

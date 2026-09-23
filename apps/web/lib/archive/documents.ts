@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { getCurrentUser } from '@/lib/supabase/current-user';
 import { stripExtension } from '@/lib/archive/display';
 import { sortAreas, toArea } from '@/lib/archive/document-areas';
 
@@ -40,9 +41,7 @@ const str = (v: unknown): string | null => (typeof v === 'string' && v.trim() ? 
  */
 export async function listDocuments(): Promise<DocumentArea[]> {
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
   if (!user) return [];
 
   const { data } = await supabase
@@ -55,7 +54,8 @@ export async function listDocuments(): Promise<DocumentArea[]> {
 
   const rows = (data ?? []) as DocRow[];
 
-  // One batched lookup for every first-page preview, then a signed URL each.
+  // One batched lookup for every first-page preview, then ONE batch-sign request
+  // for all of them (instead of a round-trip per document).
   const previewUrls = new Map<string, string>();
   if (rows.length > 0) {
     const { data: derivs } = await supabase
@@ -66,14 +66,17 @@ export async function listDocuments(): Promise<DocumentArea[]> {
         'archive_item_id',
         rows.map((r) => r.id),
       );
-    await Promise.all(
-      (derivs ?? []).map(async (d) => {
-        const { data: signed } = await supabase.storage
-          .from(BUCKET)
-          .createSignedUrl(d.storage_key, SIGNED_TTL);
-        if (signed?.signedUrl) previewUrls.set(d.archive_item_id, signed.signedUrl);
-      }),
-    );
+    const keyToItem = new Map((derivs ?? []).map((d) => [d.storage_key, d.archive_item_id]));
+    const keys = [...keyToItem.keys()];
+    if (keys.length > 0) {
+      const { data: signed } = await supabase.storage
+        .from(BUCKET)
+        .createSignedUrls(keys, SIGNED_TTL);
+      (signed ?? []).forEach((s) => {
+        const itemId = s.path ? keyToItem.get(s.path) : undefined;
+        if (s.signedUrl && itemId) previewUrls.set(itemId, s.signedUrl);
+      });
+    }
   }
 
   const byArea = new Map<string, DocumentCard[]>();
