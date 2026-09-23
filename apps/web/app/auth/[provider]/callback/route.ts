@@ -5,6 +5,8 @@ import { exchangeCode, type FetchLike } from '@dla/oauth';
 import { getConnector } from '@dla/connectors';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { auditLog } from '@/lib/security/audit';
+import { rateLimit, clientIp } from '@/lib/security/rate-limit';
 import { getConnectProvider } from '@/lib/connectors/connect-registry';
 import { getPortabilityProvider } from '@/lib/connectors/portability-providers';
 import { encryptRefreshToken } from '@/lib/connectors/token';
@@ -19,6 +21,16 @@ const globalFetch = fetch as unknown as FetchLike;
  */
 export async function GET(request: NextRequest, { params }: { params: { provider: string } }) {
   const provider = params.provider;
+
+  // Throttle callback hits per IP (defends the code-exchange endpoint).
+  const rl = rateLimit(`oauth-cb:${clientIp(request.headers)}`, 20, 60_000);
+  if (!rl.ok) {
+    return new NextResponse('Even geduld.', {
+      status: 429,
+      headers: { 'retry-after': String(rl.retryAfter) },
+    });
+  }
+
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
   const returnedState = url.searchParams.get('state');
@@ -98,6 +110,11 @@ export async function GET(request: NextRequest, { params }: { params: { provider
     p_ciphertext: secret.ciphertext,
   });
   if (credErr) return fail();
+
+  await auditLog(supabase, existing ? 'connector_reauthorised' : 'connector_connected', {
+    provider,
+    portability: isPortability,
+  });
 
   // Enqueue the initial discovery job (privileged — worker table). If the service
   // role isn't configured yet, the account is still connected; the scheduler will
