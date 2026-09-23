@@ -1,11 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { ChevronLeft, ChevronRight, Download, Info, X } from 'lucide-react';
 import type { MediaCard } from '@/lib/archive/queries';
-import { stripExtension } from '@/lib/archive/display';
+import { formatDuration, stripExtension } from '@/lib/archive/display';
 
 /**
  * Full-screen viewer over the grid (design advice, Advice A "lichtbak"): the
@@ -32,9 +32,11 @@ export function Lightbox({
     prev: t('prev'),
     next: t('next'),
   };
+  const f = useFormatter();
   const item = items[index];
   const touchX = useRef<number | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
+  const [showInfo, setShowInfo] = useState(false);
 
   const go = useCallback(
     (delta: number) => {
@@ -43,6 +45,32 @@ export function Lightbox({
     },
     [index, items.length, onIndex],
   );
+
+  // Reflect the open item in the URL (/archief/[id]) so sharing and the browser
+  // back button work — without leaving the timeline (the overlay stays mounted).
+  // One history entry is pushed for the whole session and updated as you page;
+  // closing pops it, and browser-back closes the overlay.
+  useEffect(() => {
+    const origin = window.location.pathname + window.location.search;
+    let popped = false;
+    window.history.pushState({ lightbox: true }, '', `/archief/${items[index]?.id ?? ''}`);
+    const onPop = () => {
+      popped = true;
+      onClose();
+    };
+    window.addEventListener('popstate', onPop);
+    return () => {
+      window.removeEventListener('popstate', onPop);
+      if (!popped) window.history.pushState(null, '', origin);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Keep the URL on the currently-viewed item while paging (same history entry).
+  useEffect(() => {
+    const it = items[index];
+    if (it) window.history.replaceState({ lightbox: true }, '', `/archief/${it.id}`);
+  }, [index, items]);
 
   // Arrow/Escape navigation — re-bound when the index changes so it always
   // pages from the current position.
@@ -101,6 +129,21 @@ export function Lightbox({
   const src = `/archief/download/${item.id}`;
   const title = stripExtension(item.filename);
 
+  // Panel fields — deliberately WITHOUT file size (that belongs only on the
+  // detail page). Location is shown as coordinates; a named place is future work.
+  const infoRows: [string, string][] = [];
+  if (item.effectiveDate) {
+    infoRows.push([t('metaDate'), f.dateTime(new Date(item.effectiveDate), { dateStyle: 'full' })]);
+  }
+  infoRows.push([t('metaType'), t(item.type)]);
+  if (item.width && item.height) {
+    infoRows.push([t('metaDimensions'), `${item.width} × ${item.height}`]);
+  }
+  if (item.durationMs) infoRows.push([t('metaDuration'), formatDuration(item.durationMs)]);
+  if (item.latitude != null && item.longitude != null) {
+    infoRows.push([t('metaLocation'), `${item.latitude.toFixed(4)}, ${item.longitude.toFixed(4)}`]);
+  }
+
   return (
     <div
       ref={dialogRef}
@@ -136,14 +179,19 @@ export function Lightbox({
           >
             <Download className="h-5 w-5" aria-hidden="true" />
           </a>
-          <Link
-            href={`/archief/${item.id}`}
-            className="rounded-full p-2 text-white/85 hover:bg-white/10 hover:text-white"
-            aria-label={labels.details}
-            title={labels.details}
+          <button
+            type="button"
+            onClick={() => setShowInfo((v) => !v)}
+            aria-expanded={showInfo}
+            aria-controls="lightbox-info"
+            className={`rounded-full p-2 hover:bg-white/10 hover:text-white ${
+              showInfo ? 'bg-white/15 text-white' : 'text-white/85'
+            }`}
+            aria-label={t('info')}
+            title={t('info')}
           >
             <Info className="h-5 w-5" aria-hidden="true" />
-          </Link>
+          </button>
           <button
             type="button"
             onClick={onClose}
@@ -189,6 +237,30 @@ export function Lightbox({
           >
             <ChevronRight className="h-6 w-6" aria-hidden="true" />
           </button>
+        ) : null}
+
+        {showInfo ? (
+          <aside
+            id="lightbox-info"
+            className="absolute right-0 top-0 z-20 h-full w-80 max-w-[85vw] overflow-y-auto bg-black/85 p-5 text-white backdrop-blur"
+          >
+            <h2 className="mb-4 break-words font-medium">{title}</h2>
+            <dl className="space-y-3">
+              {infoRows.map(([label, value]) => (
+                <div key={label}>
+                  <dt className="text-caption text-white/60">{label}</dt>
+                  <dd className="text-small text-white/90">{value}</dd>
+                </div>
+              ))}
+            </dl>
+            <Link
+              href={`/archief/${item.id}`}
+              className="rounded-button mt-5 inline-flex items-center gap-1.5 bg-white/10 px-3 py-2 text-white/90 hover:bg-white/20"
+            >
+              <Info className="h-4 w-4" aria-hidden="true" />
+              {t('fullPage')}
+            </Link>
+          </aside>
         ) : null}
       </div>
     </div>
