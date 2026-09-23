@@ -42,9 +42,19 @@ export async function GET(request: NextRequest): Promise<NextResponse | Response
   } = await supabase.auth.getUser();
   if (!user) return NextResponse.redirect(new URL('/inloggen', request.url));
 
-  const { data } = await supabase
-    .from('archive_items')
-    .select(SELECT)
+  // Optional `?ids=` selects a subset (bulk download of selected memories).
+  const idsParam = request.nextUrl.searchParams.get('ids');
+  const ids = idsParam
+    ? idsParam
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .slice(0, MAX_ITEMS)
+    : null;
+
+  let base = supabase.from('archive_items').select(SELECT);
+  if (ids && ids.length > 0) base = base.in('id', ids);
+  const { data } = await base
     .order('taken_at', { ascending: true, nullsFirst: false })
     .order('created_at_source', { ascending: true, nullsFirst: false })
     .order('archived_at', { ascending: true })

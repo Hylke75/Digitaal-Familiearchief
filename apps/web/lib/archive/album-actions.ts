@@ -7,6 +7,28 @@ import { isDemoUser } from '@/lib/demo-account';
 import { isDemoSession } from '@/lib/demo-guard';
 import { normalizeTitle } from '@/lib/archive/album-utils';
 
+/** The owner's albums (id + title) for a picker. */
+export async function listAlbumTitlesAction(): Promise<Array<{ id: string; title: string }>> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('archive_albums')
+    .select('id, title')
+    .order('created_at', { ascending: false });
+  return data ?? [];
+}
+
+/** Add many items to an album at once (selection mode). No-op for the demo. */
+export async function bulkAddToAlbumAction(albumId: string, ids: string[]): Promise<void> {
+  if (!albumId || ids.length === 0) return;
+  const supabase = createClient();
+  if (await isDemoSession(supabase)) return;
+  await supabase.from('archive_album_items').upsert(
+    ids.map((id) => ({ album_id: albumId, archive_item_id: id })),
+    { onConflict: 'album_id,archive_item_id', ignoreDuplicates: true },
+  );
+  revalidatePath(`/albums/${albumId}`);
+}
+
 /**
  * Album mutations. All writes are owner-scoped by RLS (archive_albums CRUD-own,
  * archive_album_items authorised via parent album + item ownership), so no

@@ -10,6 +10,22 @@ import {
   type MediaPage,
 } from '@/lib/archive/queries';
 
+/** Bulk-favourite a set of memories (selection mode). No-op for the demo. */
+export async function bulkFavouriteAction(ids: string[]): Promise<void> {
+  if (ids.length === 0) return;
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user || isDemoUser(user.id)) return;
+  await supabase.from('archive_item_flags').upsert(
+    ids.map((id) => ({ owner_id: user.id, archive_item_id: id, favourite: true })),
+    { onConflict: 'owner_id,archive_item_id' },
+  );
+  revalidatePath('/favorieten');
+  revalidatePath('/mijn-leven');
+}
+
 /** Fetch the next page for the infinite-scroll grid (called from the client). */
 export async function loadMoreMediaAction(
   type: ArchiveItemType | null,
