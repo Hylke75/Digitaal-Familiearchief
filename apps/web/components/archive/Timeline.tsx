@@ -200,8 +200,45 @@ export function Timeline({
     setScrubLabel(currentMonthLabel());
   };
 
+  // Pinch-to-zoom on mobile: two fingers spreading zooms in (year → month →
+  // day), pinching together zooms out. The zoom buttons stay for desktop and
+  // keyboard, so this is an enhancement, never the only way.
+  const ZOOM_ORDER: Zoom[] = ['year', 'month', 'day'];
+  const pinchStart = useRef<number | null>(null);
+  const twoFingerDist = (touches: React.TouchList): number => {
+    const a = touches[0];
+    const b = touches[1];
+    if (!a || !b) return 0;
+    return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+  };
+  const stepZoom = (dir: 1 | -1) =>
+    setZoom((z) => {
+      const i = ZOOM_ORDER.indexOf(z);
+      return ZOOM_ORDER[Math.min(ZOOM_ORDER.length - 1, Math.max(0, i + dir))]!;
+    });
+
   return (
-    <div className="relative space-y-10">
+    <div
+      className="relative space-y-10"
+      onTouchStart={(e) => {
+        if (e.touches.length === 2) pinchStart.current = twoFingerDist(e.touches);
+      }}
+      onTouchMove={(e) => {
+        if (e.touches.length !== 2 || pinchStart.current == null) return;
+        const d = twoFingerDist(e.touches);
+        const ratio = d / pinchStart.current;
+        if (ratio > 1.3) {
+          stepZoom(1);
+          pinchStart.current = d;
+        } else if (ratio < 0.77) {
+          stepZoom(-1);
+          pinchStart.current = d;
+        }
+      }}
+      onTouchEnd={() => {
+        pinchStart.current = null;
+      }}
+    >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2">
           {chips.map((chip) => {
