@@ -21,6 +21,21 @@ import { createRequire } from 'node:module';
 const requireFromApp = createRequire(new URL('../apps/web/package.json', import.meta.url));
 const { createClient } = requireFromApp('@supabase/supabase-js');
 
+// unpdf is ESM-only — resolve its path from the app, then dynamic-import it.
+const { extractText, getDocumentProxy } = await import(requireFromApp.resolve('unpdf'));
+async function extractPdfText(bytes) {
+  try {
+    const pdf = await getDocumentProxy(new Uint8Array(bytes));
+    const { text } = await extractText(pdf, { mergePages: true });
+    return String(text ?? '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 40000);
+  } catch {
+    return '';
+  }
+}
+
 function loadEnv() {
   const file = 'apps/web/.env.local';
   if (!existsSync(file)) return;
@@ -125,6 +140,7 @@ async function ingest(accountId, uid, item) {
       documentDate: item.documentDate ?? null,
       expiresAt: item.expiresAt ?? null,
       labels: item.labels ?? null,
+      text: item.text ?? null,
     },
   });
   if (error) throw error;
@@ -239,6 +255,7 @@ async function main() {
       verzekIdx++;
     }
     const soort = (d.labels || '').split(/[;,]/)[0]?.trim() || null;
+    const text = await extractPdfText(bytes);
     await ingest(accountByName.get(d.bron), uid, {
       bytes,
       type: 'document',
@@ -251,6 +268,7 @@ async function main() {
       documentDate: docDate,
       expiresAt,
       labels: d.labels || null,
+      text,
     });
   }
 
