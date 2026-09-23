@@ -14,6 +14,7 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { SupabaseStorageProvider } from '@/lib/archive/supabase-storage';
 import { generateThumbnailBatch, generateVideoPosterBatch } from '@/lib/archive/derivatives';
 import { extractDocumentTextBatch } from '@/lib/archive/pdf-text';
+import { transcribeJob } from '@/lib/archive/transcribe';
 import { getLiveProvider } from '@/lib/connectors/live-providers';
 import { getPortabilityProvider } from '@/lib/connectors/portability-providers';
 import { getAccessToken } from '@/lib/connectors/token';
@@ -84,6 +85,12 @@ async function handle(request: NextRequest) {
   for (const job of (jobs ?? []) as JobRow[]) {
     if (Date.now() >= deadline) {
       await requeue(admin, job.id, 0);
+      continue;
+    }
+    // Transcription jobs carry a story id in the cursor, not a connector account.
+    if (job.job_type === 'transcribe') {
+      await transcribeJob(admin, job);
+      processed += 1;
       continue;
     }
     await processJob(admin, job, worker, deadline);

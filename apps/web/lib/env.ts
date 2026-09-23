@@ -40,6 +40,9 @@ export function appUrl(path = '/'): string {
 const serverSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   TOKEN_ENCRYPTION_KEY: z.string().optional(),
+  // Speech-to-text for story transcription (OpenAI). Optional: without it the
+  // audio is still preserved and transcripts stay retryable.
+  OPENAI_API_KEY: z.string().optional(),
 });
 
 /**
