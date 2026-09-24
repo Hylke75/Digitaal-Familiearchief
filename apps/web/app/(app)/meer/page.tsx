@@ -1,6 +1,14 @@
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { ChevronRight, FileText, Images, MapPin, Settings, Users } from 'lucide-react';
+import {
+  CalendarHeart,
+  ChevronRight,
+  FileText,
+  Images,
+  MapPin,
+  Settings,
+  Users,
+} from 'lucide-react';
 import { PageHeader } from '@/components/app-shell/PageHeader';
 import { Card } from '@/components/ui/Card';
 
@@ -9,6 +17,7 @@ const MORE_ITEMS = [
   { key: 'albums', href: '/albums', icon: Images },
   { key: 'people', href: '/personen', icon: Users },
   { key: 'places', href: '/plaatsen', icon: MapPin },
+  { key: 'events', href: '/gebeurtenissen', icon: CalendarHeart },
   { key: 'settings', href: '/instellingen', icon: Settings },
 ];
 
