@@ -7,6 +7,7 @@ import {
   Images,
   MapPin,
   Settings,
+  Sparkles,
   Users,
 } from 'lucide-react';
 import { PageHeader } from '@/components/app-shell/PageHeader';
@@ -18,6 +19,7 @@ const MORE_ITEMS = [
   { key: 'people', href: '/personen', icon: Users },
   { key: 'places', href: '/plaatsen', icon: MapPin },
   { key: 'events', href: '/gebeurtenissen', icon: CalendarHeart },
+  { key: 'anniversaries', href: '/jubilea', icon: Sparkles },
   { key: 'settings', href: '/instellingen', icon: Settings },
 ];
 

@@ -7,7 +7,8 @@ import { MediaGallery } from '@/components/archive/MediaGallery';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
-import { listOnThisDay, listRecent } from '@/lib/archive/queries';
+import { listRecent } from '@/lib/archive/queries';
+import { anniversariesForToday, type PhotoAnniversary } from '@/lib/archive/anniversaries';
 import { preservedSummary } from '@/lib/archive/preserved';
 
 /**
@@ -20,6 +21,7 @@ export default async function TodayPage() {
   const tHealth = await getTranslations('health');
   const tSources = await getTranslations('sources');
   const tPreserved = await getTranslations('preserved');
+  const tAnn = await getTranslations('anniversaries');
   const f = await getFormatter();
 
   const supabase = createClient();
@@ -27,22 +29,39 @@ export default async function TodayPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: profile }, { data: accounts }, onThisDay, recent, preserved] = await Promise.all([
-    user
-      ? supabase.from('profiles').select('first_name').eq('id', user.id).maybeSingle()
-      : Promise.resolve({ data: null }),
-    supabase
-      .from('connector_accounts')
-      .select('last_successful_archive_at')
-      .order('last_successful_archive_at', { ascending: false })
-      .limit(1),
-    listOnThisDay(),
-    listRecent(),
-    preservedSummary(),
-  ]);
+  const [{ data: profile }, { data: accounts }, anniversaries, recent, preserved] =
+    await Promise.all([
+      user
+        ? supabase.from('profiles').select('first_name').eq('id', user.id).maybeSingle()
+        : Promise.resolve({ data: null }),
+      supabase
+        .from('connector_accounts')
+        .select('last_successful_archive_at')
+        .order('last_successful_archive_at', { ascending: false })
+        .limit(1),
+      anniversariesForToday(),
+      listRecent(),
+      preservedSummary(),
+    ]);
 
   const name = profile?.first_name?.trim() || user?.email?.split('@')[0] || 'Jij';
   const lastUpdate = accounts?.[0]?.last_successful_archive_at ?? null;
+
+  // Op Vandaag tonen we het rijkste beeldjubileum groot (meeste herinneringen,
+  // bij gelijkspel het jubileum dat het langst geleden is). De rest — andere
+  // jaren, personen, gebeurtenissen — staat op /jubilea.
+  const heroAnniversary = anniversaries.photo.reduce<PhotoAnniversary | null>(
+    (best, a) =>
+      !best ||
+      a.items.length > best.items.length ||
+      (a.items.length === best.items.length && a.yearsAgo > best.yearsAgo)
+        ? a
+        : best,
+    null,
+  );
+  const anniversaryTotal =
+    anniversaries.photo.length + anniversaries.people.length + anniversaries.events.length;
+  const hasMoreAnniversaries = anniversaryTotal > (heroAnniversary ? 1 : 0);
 
   return (
     <div className="space-y-8">
@@ -80,7 +99,7 @@ export default async function TodayPage() {
         </section>
       ) : null}
 
-      {onThisDay.length === 0 && recent.length === 0 ? (
+      {!heroAnniversary && recent.length === 0 ? (
         <EmptyState
           icon={<Sparkles className="h-8 w-8" aria-hidden="true" />}
           title={t('memoriesSafe')}
@@ -89,10 +108,28 @@ export default async function TodayPage() {
         />
       ) : (
         <>
-          {onThisDay.length > 0 ? (
+          {heroAnniversary ? (
             <section>
-              <h2 className="text-h3 text-ink mb-3">{t('recentTitle')}</h2>
-              <MediaGallery items={onThisDay} targetHeight={260} />
+              <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+                <div>
+                  <h2 className="text-h3 text-ink">
+                    {tAnn('todayYearsAgo', { count: heroAnniversary.yearsAgo })}
+                  </h2>
+                  {heroAnniversary.place ? (
+                    <p className="text-body text-ink-soft mt-0.5">{heroAnniversary.place}</p>
+                  ) : null}
+                </div>
+                {hasMoreAnniversaries ? (
+                  <Link
+                    href="/jubilea"
+                    className="text-forest inline-flex items-center gap-1.5 text-sm font-medium hover:underline"
+                  >
+                    {tAnn('viewAll')}
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                ) : null}
+              </div>
+              <MediaGallery items={heroAnniversary.items} targetHeight={260} />
             </section>
           ) : null}
 
