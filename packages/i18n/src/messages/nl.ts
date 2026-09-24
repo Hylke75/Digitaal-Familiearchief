@@ -261,6 +261,8 @@ const nl = {
     chooseAlbum: 'Kies een album',
     tagPerson: 'Persoon taggen',
     noPeopleYet: 'Nog geen personen',
+    source: 'Bron',
+    allSources: 'Alle bronnen',
     onThisDay: 'Op deze dag',
     favouritesTitle: 'Favorieten',
     loadMore: 'Meer laden',

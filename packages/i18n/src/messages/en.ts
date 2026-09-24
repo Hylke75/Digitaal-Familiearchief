@@ -259,6 +259,8 @@ const en: AppMessages = {
     chooseAlbum: 'Choose an album',
     tagPerson: 'Tag person',
     noPeopleYet: 'No people yet',
+    source: 'Source',
+    allSources: 'All sources',
     onThisDay: 'On this day',
     favouritesTitle: 'Favourites',
     loadMore: 'Load more',

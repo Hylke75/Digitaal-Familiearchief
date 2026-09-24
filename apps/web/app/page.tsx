@@ -10,6 +10,7 @@ import { Logo } from '@/components/brand/Logo';
 import { SiteHeader } from '@/components/marketing/SiteHeader';
 import { SiteFooter } from '@/components/marketing/SiteFooter';
 import { ProductPreview } from '@/components/marketing/ProductPreview';
+import { SourceLogo } from '@/components/marketing/SourceLogo';
 import { getAssistedGuide } from '@/lib/connectors/assisted';
 import { marketingNl as m } from '@/content/marketing.nl';
 import { PRICING_DECIDED, PRICING_PLANS } from '@/config/pricing';
@@ -45,6 +46,7 @@ const PLATFORM_ORDER = [
   'dropbox',
   'instagram',
   'facebook',
+  'whatsapp',
   'tiktok',
 ];
 
@@ -100,9 +102,7 @@ export default async function HomePage() {
               key={c.connectorKey}
               className="border-border bg-surface text-ink text-small inline-flex items-center gap-2 rounded-full border px-3.5 py-2"
             >
-              <span className="bg-warm text-caption flex h-6 w-6 items-center justify-center rounded-md font-semibold">
-                {c.displayName.charAt(0)}
-              </span>
+              <SourceLogo connectorKey={c.connectorKey} fallback={c.displayName} />
               {c.displayName}
               <span className="text-ink-soft border-border text-caption ml-1 border-l pl-2">
                 {capabilityLabel(c)}
