@@ -1,5 +1,6 @@
 import { headers } from 'next/headers';
 import { getTranslations } from 'next-intl/server';
+import { ScanLine } from 'lucide-react';
 import {
   connectorsByCategory,
   onboardingAction,
@@ -31,6 +32,7 @@ export default async function SourcesPage({
   const t = await getTranslations('sources');
   const tActions = await getTranslations('actions');
   const tHealth = await getTranslations('health');
+  const tScan = await getTranslations('scan');
 
   const supabase = createClient();
   const { data: accounts } = await supabase
@@ -147,6 +149,25 @@ export default async function SourcesPage({
           </Card>
         </div>
       ) : null}
+
+      <div className="mb-8">
+        <Card>
+          <CardBody className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-3">
+              <span className="bg-warm text-forest flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
+                <ScanLine className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <div className="min-w-0">
+                <p className="text-ink font-semibold">{tScan('title')}</p>
+                <p className="text-small text-ink-soft">{tScan('subtitle')}</p>
+              </div>
+            </div>
+            <ButtonLink href="/scannen" className="shrink-0">
+              {tScan('choose')}
+            </ButtonLink>
+          </CardBody>
+        </Card>
+      </div>
 
       {/* Connected sources (includes the internal test source). */}
       <section className="mb-8">

@@ -6,6 +6,7 @@ import {
   FileText,
   Images,
   MapPin,
+  ScanLine,
   Settings,
   Sparkles,
   Users,
@@ -20,6 +21,7 @@ const MORE_ITEMS = [
   { key: 'places', href: '/plaatsen', icon: MapPin },
   { key: 'events', href: '/gebeurtenissen', icon: CalendarHeart },
   { key: 'anniversaries', href: '/jubilea', icon: Sparkles },
+  { key: 'scan', href: '/scannen', icon: ScanLine },
   { key: 'settings', href: '/instellingen', icon: Settings },
 ];
 
