@@ -252,6 +252,136 @@ export type Database = {
           },
         ]
       }
+      archive_event_invites: {
+        Row: {
+          created_at: string
+          event_id: string
+          expires_at: string
+          id: string
+          owner_id: string
+          recipient_label: string | null
+          revoked_at: string | null
+          token_hash: string
+          used_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          expires_at?: string
+          id?: string
+          owner_id: string
+          recipient_label?: string | null
+          revoked_at?: string | null
+          token_hash: string
+          used_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          expires_at?: string
+          id?: string
+          owner_id?: string
+          recipient_label?: string | null
+          revoked_at?: string | null
+          token_hash?: string
+          used_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_event_invites_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "archive_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      archive_event_items: {
+        Row: {
+          added_at: string
+          approved: boolean
+          archive_item_id: string
+          contributed_by_label: string | null
+          event_id: string
+          id: string
+        }
+        Insert: {
+          added_at?: string
+          approved?: boolean
+          archive_item_id: string
+          contributed_by_label?: string | null
+          event_id: string
+          id?: string
+        }
+        Update: {
+          added_at?: string
+          approved?: boolean
+          archive_item_id?: string
+          contributed_by_label?: string | null
+          event_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_event_items_archive_item_id_fkey"
+            columns: ["archive_item_id"]
+            isOneToOne: false
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "archive_event_items_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "archive_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      archive_events: {
+        Row: {
+          cover_item_id: string | null
+          created_at: string
+          description: string | null
+          guests_see_photos: boolean
+          happened_on: string | null
+          id: string
+          owner_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          cover_item_id?: string | null
+          created_at?: string
+          description?: string | null
+          guests_see_photos?: boolean
+          happened_on?: string | null
+          id?: string
+          owner_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          cover_item_id?: string | null
+          created_at?: string
+          description?: string | null
+          guests_see_photos?: boolean
+          happened_on?: string | null
+          id?: string
+          owner_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_events_cover_item_id_fkey"
+            columns: ["cover_item_id"]
+            isOneToOne: false
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       archive_external_references: {
         Row: {
           broadcast_note: string | null
