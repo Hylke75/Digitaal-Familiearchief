@@ -714,26 +714,35 @@ export type Database = {
       }
       archive_people: {
         Row: {
+          birth_date: string | null
           cover_item_id: string | null
           created_at: string
+          death_date: string | null
           display_name: string
           id: string
+          note: string | null
           owner_id: string
           updated_at: string
         }
         Insert: {
+          birth_date?: string | null
           cover_item_id?: string | null
           created_at?: string
+          death_date?: string | null
           display_name: string
           id?: string
+          note?: string | null
           owner_id: string
           updated_at?: string
         }
         Update: {
+          birth_date?: string | null
           cover_item_id?: string | null
           created_at?: string
+          death_date?: string | null
           display_name?: string
           id?: string
+          note?: string | null
           owner_id?: string
           updated_at?: string
         }
@@ -743,6 +752,48 @@ export type Database = {
             columns: ["cover_item_id"]
             isOneToOne: false
             referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      archive_person_relations: {
+        Row: {
+          created_at: string
+          id: string
+          owner_id: string
+          person_id: string
+          related_person_id: string
+          relation: Database["public"]["Enums"]["person_relation"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          owner_id: string
+          person_id: string
+          related_person_id: string
+          relation: Database["public"]["Enums"]["person_relation"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          owner_id?: string
+          person_id?: string
+          related_person_id?: string
+          relation?: Database["public"]["Enums"]["person_relation"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_person_relations_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "archive_people"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "archive_person_relations_related_person_id_fkey"
+            columns: ["related_person_id"]
+            isOneToOne: false
+            referencedRelation: "archive_people"
             referencedColumns: ["id"]
           },
         ]
@@ -1368,6 +1419,7 @@ export type Database = {
         | "integrity_check"
         | "transcribe"
         | "deduplication"
+      person_relation: "ouder_van" | "partner_van" | "broer_zus_van"
       story_source: "owner" | "guest"
       transcript_status: "pending" | "processing" | "done" | "failed"
     }
@@ -1546,6 +1598,7 @@ export const Constants = {
         "transcribe",
         "deduplication",
       ],
+      person_relation: ["ouder_van", "partner_van", "broer_zus_van"],
       story_source: ["owner", "guest"],
       transcript_status: ["pending", "processing", "done", "failed"],
     },
