@@ -119,6 +119,50 @@ export type Database = {
           },
         ]
       }
+      archive_chapters: {
+        Row: {
+          cover_item_id: string | null
+          created_at: string
+          description: string | null
+          ends_on: string | null
+          id: string
+          owner_id: string
+          starts_on: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          cover_item_id?: string | null
+          created_at?: string
+          description?: string | null
+          ends_on?: string | null
+          id?: string
+          owner_id: string
+          starts_on: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          cover_item_id?: string | null
+          created_at?: string
+          description?: string | null
+          ends_on?: string | null
+          id?: string
+          owner_id?: string
+          starts_on?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_chapters_cover_item_id_fkey"
+            columns: ["cover_item_id"]
+            isOneToOne: false
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       archive_dedup_pending: {
         Row: {
           archive_item_id: string
