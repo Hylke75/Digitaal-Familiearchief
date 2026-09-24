@@ -40,11 +40,26 @@ export type TimelineFilter = 'all' | 'photo' | 'video' | 'favourites';
 export async function loadTimelineFilterAction(
   filter: TimelineFilter,
   page: number,
+  sourceAccountId?: string,
 ): Promise<MediaPage> {
+  const source = sourceAccountId || undefined;
   if (filter === 'favourites') return listFavourites({ page });
-  if (filter === 'photo') return listMedia({ type: 'photo', page });
-  if (filter === 'video') return listMedia({ type: 'video', page });
-  return listMedia({ visualOnly: true, page });
+  if (filter === 'photo') return listMedia({ type: 'photo', page, sourceAccountId: source });
+  if (filter === 'video') return listMedia({ type: 'video', page, sourceAccountId: source });
+  return listMedia({ visualOnly: true, page, sourceAccountId: source });
+}
+
+/** The user's connected sources (id + name) for the "Bron"-filter in Mijn leven.
+ * Only sources that actually have visual items are worth offering. */
+export async function listTimelineSourcesAction(): Promise<Array<{ id: string; label: string }>> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('connector_accounts')
+    .select('id, display_name, connector_key')
+    .order('display_name', { ascending: true });
+  return (data ?? [])
+    .filter((a) => a.connector_key !== 'mock')
+    .map((a) => ({ id: a.id, label: a.display_name ?? a.connector_key }));
 }
 
 /** Fetch the next page of favourites for the infinite-scroll grid. */

@@ -187,6 +187,8 @@ export async function listMedia(
     /** Timeline: only photos and videos (documents get their own place, §B). */
     visualOnly?: boolean;
     q?: string;
+    /** Filter to items from one connected source (connector_account id). */
+    sourceAccountId?: string;
     page?: number;
     pageSize?: number;
   } = {},
@@ -201,7 +203,16 @@ export async function listMedia(
   const hidden = await hiddenIds(supabase);
   const q = opts.q?.trim();
 
-  let query = supabase.from('archive_items').select(SELECT);
+  // Filtering by source uses an inner embed so it stays server-side and paginated
+  // (one row per item; no id-list in the URL).
+  let query = supabase
+    .from('archive_items')
+    .select(
+      opts.sourceAccountId ? `${SELECT}, archive_item_sources!inner(connector_account_id)` : SELECT,
+    );
+  if (opts.sourceAccountId) {
+    query = query.eq('archive_item_sources.connector_account_id', opts.sourceAccountId);
+  }
   if (opts.type) query = query.eq('type', opts.type);
   else if (opts.visualOnly) query = query.in('type', ['photo', 'video']);
   if (q) {
@@ -225,7 +236,8 @@ export async function listMedia(
   query = orderNewest(query).range(from, from + pageSize); // one extra row → hasMore
 
   const { data } = await query;
-  const rows = (data ?? []) as ItemRow[];
+  // The dynamic source embed makes the select untyped; cast through unknown.
+  const rows = (data ?? []) as unknown as ItemRow[];
   const hasMore = rows.length > pageSize;
   const pageRows = hasMore ? rows.slice(0, pageSize) : rows;
   return { items: await toCards(supabase, pageRows), hasMore, nextPage: page + 1 };

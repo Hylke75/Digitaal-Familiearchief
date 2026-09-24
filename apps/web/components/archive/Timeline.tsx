@@ -2,12 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
-import { BookOpen, CheckSquare, Download, Images, Star, UserPlus, X } from 'lucide-react';
+import { BookOpen, CheckSquare, Download, Images, Link2, Star, UserPlus, X } from 'lucide-react';
 import { JustifiedGrid } from '@/components/archive/JustifiedGrid';
 import { AutoRefreshImage } from '@/components/archive/AutoRefreshImage';
 import { Lightbox } from '@/components/archive/Lightbox';
 import {
   bulkFavouriteAction,
+  listTimelineSourcesAction,
   loadTimelineFilterAction,
   type TimelineFilter,
 } from '@/lib/archive/media-actions';
@@ -65,6 +66,8 @@ export function Timeline({
   const [showAlbumPicker, setShowAlbumPicker] = useState(false);
   const [peopleForPicker, setPeopleForPicker] = useState<Array<{ id: string; title: string }>>([]);
   const [showPersonPicker, setShowPersonPicker] = useState(false);
+  const [source, setSource] = useState<string | null>(null);
+  const [sources, setSources] = useState<Array<{ id: string; label: string }>>([]);
   const [pending, startTransition] = useTransition();
   const lastGi = useRef<number | null>(null);
   const sentinel = useRef<HTMLDivElement | null>(null);
@@ -92,7 +95,7 @@ export function Timeline({
     if (loading || !hasMore) return;
     setLoading(true);
     try {
-      const next = await loadTimelineFilterAction(filter, page + 1);
+      const next = await loadTimelineFilterAction(filter, page + 1, source ?? undefined);
       setItems((prev) => {
         const seen = new Set(prev.map((i) => i.id));
         return [...prev, ...next.items.filter((i) => !seen.has(i.id))];
@@ -102,14 +105,16 @@ export function Timeline({
     } finally {
       setLoading(false);
     }
-  }, [loading, hasMore, page, filter]);
+  }, [loading, hasMore, page, filter, source]);
 
-  const applyFilter = useCallback(async (next: TimelineFilter) => {
-    setFilter(next);
+  // Reload page 0 for a new type-filter and/or source. Keeps the other axis.
+  const reload = useCallback(async (nextFilter: TimelineFilter, nextSource: string | null) => {
+    setFilter(nextFilter);
+    setSource(nextSource);
     setLoading(true);
     setOpen(null);
     try {
-      const res = await loadTimelineFilterAction(next, 0);
+      const res = await loadTimelineFilterAction(nextFilter, 0, nextSource ?? undefined);
       setItems(res.items);
       setPage(0);
       setHasMore(res.hasMore);
@@ -117,6 +122,8 @@ export function Timeline({
       setLoading(false);
     }
   }, []);
+  const applyFilter = useCallback((next: TimelineFilter) => reload(next, source), [reload, source]);
+  const applySource = useCallback((next: string | null) => reload(filter, next), [reload, filter]);
 
   useEffect(() => {
     const el = sentinel.current;
@@ -308,6 +315,46 @@ export function Timeline({
               </button>
             );
           })}
+          <details
+            className="relative"
+            onToggle={(e) => {
+              if ((e.target as HTMLDetailsElement).open && sources.length === 0) {
+                void listTimelineSourcesAction().then(setSources);
+              }
+            }}
+          >
+            <summary
+              className={`rounded-pill text-small inline-flex cursor-pointer list-none items-center gap-1 border px-3 py-1 font-medium transition-colors [&::-webkit-details-marker]:hidden ${
+                source
+                  ? 'border-forest bg-forest text-white'
+                  : 'border-border text-ink-soft hover:bg-warm'
+              }`}
+            >
+              <Link2 className="h-3.5 w-3.5" aria-hidden="true" />
+              {source
+                ? (sources.find((s) => s.id === source)?.label ?? t('archive.source'))
+                : t('archive.source')}
+            </summary>
+            <div className="border-border rounded-card absolute z-20 mt-2 max-h-64 w-56 overflow-auto border bg-white p-1 shadow-lg">
+              <button
+                type="button"
+                onClick={() => void applySource(null)}
+                className={`hover:bg-warm text-body w-full rounded-[8px] px-2 py-1.5 text-left ${!source ? 'text-forest font-semibold' : ''}`}
+              >
+                {t('archive.allSources')}
+              </button>
+              {sources.map((s) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => void applySource(s.id)}
+                  className={`hover:bg-warm text-body w-full truncate rounded-[8px] px-2 py-1.5 text-left ${source === s.id ? 'text-forest font-semibold' : ''}`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          </details>
         </div>
         <div className="flex items-center gap-2">
           <button
