@@ -119,6 +119,48 @@ export type Database = {
           },
         ]
       }
+      archive_dedup_pending: {
+        Row: {
+          archive_item_id: string
+          created_at: string
+          id: string
+          merged_into_id: string | null
+          owner_id: string
+          purge_after: string
+        }
+        Insert: {
+          archive_item_id: string
+          created_at?: string
+          id?: string
+          merged_into_id?: string | null
+          owner_id: string
+          purge_after?: string
+        }
+        Update: {
+          archive_item_id?: string
+          created_at?: string
+          id?: string
+          merged_into_id?: string | null
+          owner_id?: string
+          purge_after?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_dedup_pending_archive_item_id_fkey"
+            columns: ["archive_item_id"]
+            isOneToOne: true
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "archive_dedup_pending_merged_into_id_fkey"
+            columns: ["merged_into_id"]
+            isOneToOne: false
+            referencedRelation: "archive_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       archive_derivatives: {
         Row: {
           archive_item_id: string
@@ -1281,6 +1323,7 @@ export type Database = {
         | "export"
         | "integrity_check"
         | "transcribe"
+        | "deduplication"
       story_source: "owner" | "guest"
       transcript_status: "pending" | "processing" | "done" | "failed"
     }
@@ -1457,6 +1500,7 @@ export const Constants = {
         "export",
         "integrity_check",
         "transcribe",
+        "deduplication",
       ],
       story_source: ["owner", "guest"],
       transcript_status: ["pending", "processing", "done", "failed"],
