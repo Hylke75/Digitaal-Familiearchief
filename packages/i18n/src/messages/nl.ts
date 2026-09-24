@@ -371,6 +371,26 @@ const nl = {
     loadMore: 'Meer laden',
     loading: 'Laden…',
   },
+  dedup: {
+    title: 'Opruimen',
+    subtitle: 'Je archief kleiner en beter maken',
+    countFound:
+      '{count, plural, =0 {Geen dubbelingen gevonden} one {# dubbeling gevonden} other {# dubbelingen gevonden}}',
+    identicalTitle: 'Identiek',
+    identicalHint: 'Zelfde bestand — veilig samen te voegen.',
+    nearTitle: 'Vrijwel identiek',
+    nearHint: 'Zelfde afmetingen, vlak na elkaar gemaakt. Bekijk het even.',
+    seriesTitle: 'Series',
+    seriesHint: 'Een reeks opnames vlak achter elkaar — samen bewaard, niets weg.',
+    merge: 'Samenvoegen',
+    mergeAllIdentical: 'Alle identieke samenvoegen',
+    keep: 'Behouden',
+    pendingTitle: 'Recent samengevoegd',
+    pendingHint: 'Binnen 30 dagen terug te draaien.',
+    undo: 'Terugdraaien',
+    empty: 'Alles opgeruimd — geen dubbelingen.',
+    seriesCount: '{count} opnames',
+  },
   preserved: {
     blockTitle:
       '{count, plural, one {# herinnering die bij de bron is verdwenen, staat hier nog} other {# herinneringen die bij de bron zijn verdwenen, staan hier nog}}',

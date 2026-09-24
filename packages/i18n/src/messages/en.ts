@@ -369,6 +369,26 @@ const en: AppMessages = {
     loadMore: 'Load more',
     loading: 'Loading…',
   },
+  dedup: {
+    title: 'Tidy up',
+    subtitle: 'Make your archive smaller and better',
+    countFound:
+      '{count, plural, =0 {No duplicates found} one {# duplicate found} other {# duplicates found}}',
+    identicalTitle: 'Identical',
+    identicalHint: 'The same file — safe to merge.',
+    nearTitle: 'Near-identical',
+    nearHint: 'Same dimensions, taken moments apart. Take a look.',
+    seriesTitle: 'Series',
+    seriesHint: 'A burst of shots — kept together, nothing removed.',
+    merge: 'Merge',
+    mergeAllIdentical: 'Merge all identical',
+    keep: 'Keep',
+    pendingTitle: 'Recently merged',
+    pendingHint: 'Reversible within 30 days.',
+    undo: 'Undo',
+    empty: 'All tidy — no duplicates.',
+    seriesCount: '{count} shots',
+  },
   preserved: {
     blockTitle:
       '{count, plural, one {# memory that disappeared at the source is still here} other {# memories that disappeared at the source are still here}}',
