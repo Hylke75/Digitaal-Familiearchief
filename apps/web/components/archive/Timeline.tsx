@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
-import { CheckSquare, Download, Images, Star, UserPlus, X } from 'lucide-react';
+import { BookOpen, CheckSquare, Download, Images, Star, UserPlus, X } from 'lucide-react';
 import { JustifiedGrid } from '@/components/archive/JustifiedGrid';
 import { AutoRefreshImage } from '@/components/archive/AutoRefreshImage';
 import { Lightbox } from '@/components/archive/Lightbox';
@@ -13,6 +13,7 @@ import {
 } from '@/lib/archive/media-actions';
 import { bulkAddToAlbumAction, listAlbumTitlesAction } from '@/lib/archive/album-actions';
 import { bulkTagPersonAction, listPersonTitlesAction } from '@/lib/archive/people-actions';
+import { createChapterAction } from '@/lib/archive/chapters-actions';
 import { groupByMonth } from '@/lib/archive/grouping';
 import { clusterMoments } from '@/lib/archive/moments';
 import type { MediaCard } from '@/lib/archive/queries';
@@ -24,11 +25,21 @@ type Zoom = 'day' | 'month' | 'year';
  * chips (Alles/Foto's/Video's/Favorieten). Holds loaded items in client state
  * and re-groups as further pages stream in. On-this-day lives on Vandaag (§D8).
  */
+export interface TimelineChapter {
+  id: string;
+  title: string;
+  startsOn: string;
+  endsOn: string | null;
+  coverUrl: string | null;
+  coverId: string | null;
+}
+
 export function Timeline({
   initial,
   hasMore: initialHasMore,
   locale,
   labels,
+  chapters = [],
 }: {
   initial: MediaCard[];
   hasMore: boolean;
@@ -38,6 +49,7 @@ export function Timeline({
     loading: string;
     unknownDate: string;
   };
+  chapters?: TimelineChapter[];
 }) {
   const t = useTranslations();
   const [items, setItems] = useState<MediaCard[]>(initial);
@@ -121,6 +133,29 @@ export function Timeline({
 
   const indexById = useMemo(() => new Map(items.map((it, i) => [it.id, i])), [items]);
   const groups = groupByMonth(items);
+
+  // Which chapter (if any) contains a given month. Overlapping chapters resolve
+  // to the one with the latest start. Used to place a broad chapter header at
+  // the top of its span in the newest-first timeline.
+  const chapterOf = (monthStart: string | null): TimelineChapter | null => {
+    if (!monthStart) return null;
+    const monthEnd = `${monthStart.slice(0, 7)}-31`;
+    let best: TimelineChapter | null = null;
+    for (const c of chapters) {
+      if (c.startsOn <= monthEnd && (c.endsOn == null || c.endsOn >= monthStart)) {
+        if (!best || c.startsOn > best.startsOn) best = c;
+      }
+    }
+    return best;
+  };
+  const groupChapters = groups.map((g) => chapterOf(g.monthStart));
+  const chapterYear = new Intl.DateTimeFormat(locale, { year: 'numeric' });
+  const chapterPeriod = (c: TimelineChapter): string => {
+    const start = chapterYear.format(new Date(c.startsOn));
+    const end = c.endsOn ? chapterYear.format(new Date(c.endsOn)) : t('chapters.ongoing');
+    return start === end ? start : `${start} – ${end}`;
+  };
+
   const openLocal = (list: MediaCard[]) => (local: number) => {
     const id = list[local]?.id;
     if (id != null) setOpen(indexById.get(id) ?? null);
@@ -342,64 +377,128 @@ export function Timeline({
         </div>
       ) : null}
 
-      {groups.map((group) => {
+      {groups.map((group, gi) => {
         const cover = group.items[0];
         const moments = clusterMoments(group.items);
+        const chap = groupChapters[gi];
+        const showChapter = chap && chap.id !== groupChapters[gi - 1]?.id;
         return (
-          <section key={group.key} id={`sec-${group.key}`} className="scroll-mt-4">
-            <h2 className="text-h3 text-ink mb-3 capitalize">
-              {group.monthStart
-                ? monthLabel.format(new Date(group.monthStart))
-                : labels.unknownDate}
-            </h2>
-
-            {/* Opening image for the period — one large beeld, not fifteen equal tiles. */}
-            {cover?.thumbUrl ? (
-              <button
-                type="button"
-                onClick={(e) =>
-                  selecting ? toggleSelect(group.items)(0, e.shiftKey) : openLocal(group.items)(0)
-                }
-                aria-label={cover.filename}
-                aria-pressed={selecting ? selected.has(cover.id) : undefined}
-                className={`bg-warm group relative mb-2 block h-56 w-full overflow-hidden rounded-[4px] sm:h-72 ${
-                  selecting && selected.has(cover.id) ? 'ring-forest ring-2 ring-offset-1' : ''
-                }`}
+          <div key={group.key}>
+            {showChapter && chap ? (
+              <section
+                id={`hoofdstuk-${chap.id}`}
+                className="scroll-mt-4 pt-4"
+                aria-label={chap.title}
               >
-                <AutoRefreshImage
-                  itemId={cover.id}
-                  src={cover.thumbUrl}
-                  alt={cover.filename}
-                  loading="eager"
-                  className="h-full w-full object-cover duration-300 motion-safe:transition-transform motion-safe:group-hover:scale-[1.02]"
-                />
-              </button>
+                {chap.coverUrl ? (
+                  <div className="bg-warm relative mb-3 h-40 w-full overflow-hidden rounded-[6px] sm:h-56">
+                    <AutoRefreshImage
+                      itemId={chap.coverId ?? ''}
+                      src={chap.coverUrl}
+                      alt=""
+                      loading="eager"
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/60 to-transparent p-4">
+                      <h2 className="text-h2 font-semibold text-white">{chap.title}</h2>
+                      <p className="text-small text-white/85">{chapterPeriod(chap)}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="border-forest/30 mb-3 border-l-4 pl-3">
+                    <h2 className="text-ink text-h2 font-semibold">{chap.title}</h2>
+                    <p className="text-ink-soft text-small">{chapterPeriod(chap)}</p>
+                  </div>
+                )}
+              </section>
             ) : null}
 
-            {moments.map((moment, mi) => {
-              const gridItems = mi === 0 ? moment.slice(1) : moment;
-              if (gridItems.length === 0) return null;
-              const first = moment[0]?.effectiveDate;
-              return (
-                <div key={mi} className="mt-3">
-                  {first ? (
-                    <h3 className="text-ink-soft text-small mb-2 font-medium capitalize">
-                      {dayLabel.format(new Date(first))}
-                      {moment.length > 1 ? ` · ${moment.length}` : ''}
-                    </h3>
-                  ) : null}
-                  <JustifiedGrid
-                    items={gridItems}
-                    onOpen={openLocal(gridItems)}
-                    targetHeight={targetHeight}
-                    selectionMode={selecting}
-                    selectedIds={selected}
-                    onToggle={toggleSelect(gridItems)}
+            <section id={`sec-${group.key}`} className="scroll-mt-4">
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-h3 text-ink capitalize">
+                  {group.monthStart
+                    ? monthLabel.format(new Date(group.monthStart))
+                    : labels.unknownDate}
+                </h2>
+                {group.monthStart ? (
+                  <details className="group/chap relative">
+                    <summary className="text-ink-soft hover:text-ink text-caption inline-flex cursor-pointer list-none items-center gap-1 font-medium [&::-webkit-details-marker]:hidden">
+                      <BookOpen className="h-3.5 w-3.5" aria-hidden="true" />
+                      {t('chapters.startHere')}
+                    </summary>
+                    <form
+                      action={createChapterAction}
+                      className="border-border rounded-card absolute right-0 z-20 mt-2 w-72 space-y-2 border bg-white p-3 shadow-lg"
+                    >
+                      <input type="hidden" name="startsOn" value={group.monthStart} />
+                      <label className="text-caption text-ink-soft block">
+                        {t('chapters.titleLabel')}
+                        <input
+                          name="title"
+                          required
+                          placeholder={t('chapters.titlePlaceholder')}
+                          className="rounded-input border-border text-body focus-visible:border-forest mt-1 w-full border px-3 py-2 outline-none"
+                        />
+                      </label>
+                      <button
+                        type="submit"
+                        className="bg-forest rounded-button text-small w-full py-1.5 font-semibold text-white"
+                      >
+                        {t('chapters.create')}
+                      </button>
+                    </form>
+                  </details>
+                ) : null}
+              </div>
+
+              {/* Opening image for the period — one large beeld, not fifteen equal tiles. */}
+              {cover?.thumbUrl ? (
+                <button
+                  type="button"
+                  onClick={(e) =>
+                    selecting ? toggleSelect(group.items)(0, e.shiftKey) : openLocal(group.items)(0)
+                  }
+                  aria-label={cover.filename}
+                  aria-pressed={selecting ? selected.has(cover.id) : undefined}
+                  className={`bg-warm group relative mb-2 block h-56 w-full overflow-hidden rounded-[4px] sm:h-72 ${
+                    selecting && selected.has(cover.id) ? 'ring-forest ring-2 ring-offset-1' : ''
+                  }`}
+                >
+                  <AutoRefreshImage
+                    itemId={cover.id}
+                    src={cover.thumbUrl}
+                    alt={cover.filename}
+                    loading="eager"
+                    className="h-full w-full object-cover duration-300 motion-safe:transition-transform motion-safe:group-hover:scale-[1.02]"
                   />
-                </div>
-              );
-            })}
-          </section>
+                </button>
+              ) : null}
+
+              {moments.map((moment, mi) => {
+                const gridItems = mi === 0 ? moment.slice(1) : moment;
+                if (gridItems.length === 0) return null;
+                const first = moment[0]?.effectiveDate;
+                return (
+                  <div key={mi} className="mt-3">
+                    {first ? (
+                      <h3 className="text-ink-soft text-small mb-2 font-medium capitalize">
+                        {dayLabel.format(new Date(first))}
+                        {moment.length > 1 ? ` · ${moment.length}` : ''}
+                      </h3>
+                    ) : null}
+                    <JustifiedGrid
+                      items={gridItems}
+                      onOpen={openLocal(gridItems)}
+                      targetHeight={targetHeight}
+                      selectionMode={selecting}
+                      selectedIds={selected}
+                      onToggle={toggleSelect(gridItems)}
+                    />
+                  </div>
+                );
+              })}
+            </section>
+          </div>
         );
       })}
 
