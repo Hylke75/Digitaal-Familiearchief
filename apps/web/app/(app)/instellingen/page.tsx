@@ -1,5 +1,5 @@
 import { getLocale, getTranslations } from 'next-intl/server';
-import { Download, Globe, LogOut, Mail, ShieldAlert } from 'lucide-react';
+import { Download, Globe, LogOut, Mail, ShieldAlert, Sparkles } from 'lucide-react';
 import { PageHeader } from '@/components/app-shell/PageHeader';
 import { Card, CardBody } from '@/components/ui/Card';
 import { Button, ButtonLink } from '@/components/ui/Button';
@@ -11,6 +11,7 @@ export const metadata = { title: 'Instellingen' };
 
 export default async function SettingsPage() {
   const t = await getTranslations('settings');
+  const tDedup = await getTranslations('dedup');
   const locale = await getLocale();
   const user = await getCurrentUser();
   const isNl = locale.startsWith('nl');
@@ -53,6 +54,17 @@ export default async function SettingsPage() {
             {t('exportButton')}
           </ButtonLink>
           <p className="text-small text-ink-soft">{t('exportNote')}</p>
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardBody className="space-y-3">
+          <h2 className="text-ink font-semibold">{tDedup('title')}</h2>
+          <p className="text-body text-ink-soft">{tDedup('subtitle')}</p>
+          <ButtonLink href="/opruimen" variant="secondary">
+            <Sparkles className="h-4 w-4" aria-hidden="true" />
+            {tDedup('title')}
+          </ButtonLink>
         </CardBody>
       </Card>
 
