@@ -205,6 +205,20 @@ export const CONNECTOR_REGISTRY: readonly ConnectorCapability[] = [
     implementationStatus: 'beta',
   }),
   def({
+    connectorKey: 'scan',
+    displayName: 'Scan',
+    category: 'photo_video',
+    featureFlag: 'LOCAL_UPLOAD_ENABLED',
+    type: 'archive_importer',
+    connectionType: 'archive_import',
+    description: 'Digitaliseer papieren en oude foto’s met je camera.',
+    historicalImport: true,
+    originalMediaAvailable: true,
+    metadataAvailable: true,
+    archiveImportSupported: true,
+    implementationStatus: 'beta',
+  }),
+  def({
     // WhatsApp: one source, per-platform ingestion (docs/connectors/whatsapp.md).
     // iOS = via Apple Foto's + chat-export import; Android = native app (later);
     // today the working path everywhere is a user-initiated chat export.
