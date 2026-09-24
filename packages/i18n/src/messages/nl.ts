@@ -371,6 +371,15 @@ const nl = {
     loadMore: 'Meer laden',
     loading: 'Laden…',
   },
+  preserved: {
+    blockTitle:
+      '{count, plural, one {# herinnering die bij de bron is verdwenen, staat hier nog} other {# herinneringen die bij de bron zijn verdwenen, staan hier nog}}',
+    viewAll: 'Bekijk alles',
+    pageTitle: 'Bewaard gebleven',
+    pageSubtitle: 'Verdwenen bij de bron, hier nog veilig',
+    sinceDate: 'Verdwenen sinds {date}',
+    detailLine: 'Niet meer aanwezig bij {source} sinds {date}. Deze kopie blijft bewaard.',
+  },
   stories: {
     title: 'Verhalen',
     heading: 'Vertel het verhaal bij deze foto',

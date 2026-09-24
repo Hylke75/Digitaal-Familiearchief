@@ -369,6 +369,15 @@ const en: AppMessages = {
     loadMore: 'Load more',
     loading: 'Loading…',
   },
+  preserved: {
+    blockTitle:
+      '{count, plural, one {# memory that disappeared at the source is still here} other {# memories that disappeared at the source are still here}}',
+    viewAll: 'View all',
+    pageTitle: 'Still preserved',
+    pageSubtitle: 'Gone at the source, still safe here',
+    sinceDate: 'Gone since {date}',
+    detailLine: 'No longer present at {source} since {date}. This copy stays preserved.',
+  },
   stories: {
     title: 'Stories',
     heading: 'Tell the story behind this photo',

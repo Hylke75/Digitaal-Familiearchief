@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getFormatter, getTranslations } from 'next-intl/server';
-import { ArrowLeft, Download, FileText, Pencil } from 'lucide-react';
+import { ArrowLeft, Download, FileText, Pencil, Shield } from 'lucide-react';
 import { formatBytes } from '@dla/shared';
 import { Card, CardBody } from '@/components/ui/Card';
 import { ButtonLink } from '@/components/ui/Button';
@@ -18,6 +18,7 @@ import { toggleItemPersonAction } from '@/lib/archive/people-actions';
 import { getPlaceMembership } from '@/lib/archive/places';
 import { toggleItemPlaceAction } from '@/lib/archive/places-actions';
 import { StoryPanel } from '@/components/stories/StoryPanel';
+import { itemDeletedSource } from '@/lib/archive/preserved';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const item = await getItemDetail(params.id);
@@ -33,10 +34,12 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
   const tAlbums = await getTranslations('albums');
   const tPeople = await getTranslations('people');
   const tPlaces = await getTranslations('places');
-  const [membership, personMembership, placeMembership] = await Promise.all([
+  const tPreserved = await getTranslations('preserved');
+  const [membership, personMembership, placeMembership, deletedSource] = await Promise.all([
     getAlbumMembership(item.id),
     getPersonMembership(item.id),
     getPlaceMembership(item.id),
+    itemDeletedSource(item.id),
   ]);
 
   const rows: Array<[string, string]> = [];
@@ -90,6 +93,16 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
           </div>
         )}
       </div>
+
+      {deletedSource ? (
+        <p className="bg-warm/60 rounded-input text-small text-ink-soft mb-5 inline-flex items-center gap-2 px-3 py-2">
+          <Shield className="text-forest h-4 w-4 shrink-0" aria-hidden="true" />
+          {tPreserved('detailLine', {
+            source: deletedSource.sourceName,
+            date: f.dateTime(new Date(deletedSource.deletedAt), { dateStyle: 'long' }),
+          })}
+        </p>
+      ) : null}
 
       <div className="mb-5 flex flex-wrap items-center gap-3">
         <h1 className="text-h3 text-ink min-w-0 flex-1 font-semibold">
