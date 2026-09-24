@@ -37,6 +37,7 @@ const nl = {
     search: 'Zoeken',
     mediaMoments: 'Media-momenten',
     events: 'Gebeurtenissen',
+    anniversaries: 'Jubilea',
   },
   mediaMoments: {
     title: 'Media-momenten',
@@ -504,6 +505,23 @@ const nl = {
     guestError: 'Er ging iets mis. Probeer het opnieuw.',
     guestTooLarge: 'Dit bestand is te groot (max 50 MB).',
     guestNotAllowed: 'Alleen foto’s en video’s kunnen worden toegevoegd.',
+  },
+  anniversaries: {
+    title: 'Jubilea',
+    subtitle: 'Wat er vandaag speelde in eerdere jaren',
+    yearsAgo: '{count, plural, one {# jaar geleden} other {# jaar geleden}}',
+    todayYearsAgo: 'Vandaag, {count, plural, one {# jaar geleden} other {# jaar geleden}}',
+    empty: 'Vandaag geen jubilea',
+    emptyBody:
+      'Zodra je herinneringen van deze dag uit eerdere jaren hebt, verschijnen ze hier vanzelf.',
+    photoTitle: 'Op deze dag',
+    peopleTitle: 'Personen',
+    eventsTitle: 'Gebeurtenissen',
+    viewAll: 'Alle jubilea',
+    memoriesCount: '{count, plural, one {# herinnering} other {# herinneringen}}',
+    birthdayLabel: 'Verjaardag',
+    memorialLabel: 'Gedenkdag',
+    personAge: '{count, plural, one {# jaar} other {# jaar}}',
   },
   stories: {
     title: 'Verhalen',
