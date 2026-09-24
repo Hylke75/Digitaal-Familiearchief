@@ -13,6 +13,7 @@ const PROTECTED_PREFIXES = [
   '/documenten',
   '/media-momenten',
   '/bewaard-gebleven',
+  '/opruimen',
   '/personen',
   '/plaatsen',
   '/bronnen',

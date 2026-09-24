@@ -15,6 +15,7 @@ import { SupabaseStorageProvider } from '@/lib/archive/supabase-storage';
 import { generateThumbnailBatch, generateVideoPosterBatch } from '@/lib/archive/derivatives';
 import { extractDocumentTextBatch } from '@/lib/archive/pdf-text';
 import { transcribeJob } from '@/lib/archive/transcribe';
+import { purgeDedupBatch } from '@/lib/archive/dedup-purge';
 import { getLiveProvider } from '@/lib/connectors/live-providers';
 import { getPortabilityProvider } from '@/lib/connectors/portability-providers';
 import { getAccessToken } from '@/lib/connectors/token';
@@ -117,6 +118,11 @@ async function handle(request: NextRequest) {
       docText = await extractDocumentTextBatch(admin, 6);
     } catch {
       // Document text extraction is best-effort.
+    }
+    try {
+      await purgeDedupBatch(admin, 20);
+    } catch {
+      // Dedup purge is best-effort; a later tick retries.
     }
   }
 
