@@ -43,7 +43,8 @@ export function SiteFooter() {
       <div className="max-w-content mx-auto grid gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-6">
         <div className="lg:col-span-2">
           <Logo size="md" />
-          <p className="text-ink-soft text-small mt-3 max-w-xs">{BRAND.taglineNl}</p>
+          <p className="text-forest text-small mt-3 font-semibold">{BRAND.descriptorNl}</p>
+          <p className="text-ink-soft text-small mt-1 max-w-xs">{BRAND.taglineNl}</p>
         </div>
         {COLUMNS.map((col) => (
           <nav key={col.title} aria-label={col.title}>

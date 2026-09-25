@@ -15,6 +15,9 @@ export const BRAND = {
   // Brand lines
   taglineNl: 'Bewaar wat van jou is.',
   taglineEn: 'Keep what’s yours.',
+  /** Positioning descriptor — Bewora als onafhankelijke, Nederlandse bewaarplek. */
+  descriptorNl: 'De Nederlandse Datakluis',
+  descriptorEn: 'The Dutch data vault',
   heroHeadlineNl: ['Instagram bewaart Instagram.', 'Google bewaart Google.', 'Bewora bewaart jou.'],
   heroBodyNl:
     "Koppel je foto's, sociale media en documenten één keer. Bewora verzamelt ze automatisch in een onafhankelijk digitaal archief dat van jou blijft.",
