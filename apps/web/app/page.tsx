@@ -63,6 +63,9 @@ export default async function HomePage() {
       {/* 1 — Hero */}
       <section className="max-w-content mx-auto grid items-center gap-12 px-6 pb-16 pt-12 sm:pt-16 lg:grid-cols-2">
         <div className="space-y-6">
+          <p className="text-forest text-small font-semibold uppercase tracking-wide">
+            {BRAND.descriptorNl}
+          </p>
           <h1 className="text-ink text-balance text-[2.5rem] font-semibold leading-[1.08] tracking-tight sm:text-[3.25rem]">
             {m.hero.headline[0]}
             <br />
