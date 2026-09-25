@@ -4,6 +4,7 @@ import {
   CalendarHeart,
   ChevronRight,
   FileText,
+  HeartHandshake,
   Images,
   MapPin,
   ScanLine,
@@ -22,6 +23,7 @@ const MORE_ITEMS = [
   { key: 'events', href: '/gebeurtenissen', icon: CalendarHeart },
   { key: 'anniversaries', href: '/jubilea', icon: Sparkles },
   { key: 'scan', href: '/scannen', icon: ScanLine },
+  { key: 'legacy', href: '/nalatenschap', icon: HeartHandshake },
   { key: 'settings', href: '/instellingen', icon: Settings },
 ];
 
