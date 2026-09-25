@@ -549,6 +549,16 @@ const nl = {
     errNotAllowed: 'Kies een foto (afbeelding).',
     errGeneric: 'Toevoegen is niet gelukt. Probeer het opnieuw.',
   },
+  map: {
+    title: 'Plaatsen',
+    subtitle: 'Waar je herinneringen zijn gemaakt',
+    empty: 'Nog geen plaatsen',
+    emptyBody:
+      'Tag een herinnering met een plaats, of voeg foto’s met locatie toe — dan verschijnen ze hier op de kaart.',
+    listTitle: 'Jouw plaatsen',
+    photo: 'Foto',
+    photoCount: '{count, plural, one {# foto} other {# foto’s}}',
+  },
   stories: {
     title: 'Verhalen',
     heading: 'Vertel het verhaal bij deze foto',
