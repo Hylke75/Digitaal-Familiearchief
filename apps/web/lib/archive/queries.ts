@@ -330,6 +330,8 @@ export interface ItemDetail extends MediaCard {
   originalUrl: string | null;
   /** Document fields from metadata_json (only for type='document'). */
   doc: DocumentFields | null;
+  /** Herkende/handmatige tekst uit metadata_json (o.a. handschrift), indien aanwezig. */
+  text: string | null;
 }
 
 /** Full detail for one item (RLS restricts to the owner). */
@@ -416,6 +418,7 @@ export async function getItemDetail(id: string): Promise<ItemDetail | null> {
     previewUrl,
     originalUrl,
     doc: row.type === 'document' ? documentFields(row.metadata_json) : null,
+    text: asStr(row.metadata_json?.text),
   };
 }
 
