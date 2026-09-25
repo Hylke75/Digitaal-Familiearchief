@@ -1034,6 +1034,57 @@ export type Database = {
           },
         ]
       }
+      archive_trusted_people: {
+        Row: {
+          confirmed_at: string | null
+          confirmed_contact: string | null
+          confirmed_name: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          owner_id: string
+          scope_documents: boolean
+          scope_family: boolean
+          scope_photos: boolean
+          scope_social: boolean
+          token_hash: string | null
+          updated_at: string
+        }
+        Insert: {
+          confirmed_at?: string | null
+          confirmed_contact?: string | null
+          confirmed_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          owner_id: string
+          scope_documents?: boolean
+          scope_family?: boolean
+          scope_photos?: boolean
+          scope_social?: boolean
+          token_hash?: string | null
+          updated_at?: string
+        }
+        Update: {
+          confirmed_at?: string | null
+          confirmed_contact?: string | null
+          confirmed_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          owner_id?: string
+          scope_documents?: boolean
+          scope_family?: boolean
+          scope_photos?: boolean
+          scope_social?: boolean
+          token_hash?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       connector_accounts: {
         Row: {
           archive_frequency: Database["public"]["Enums"]["archive_frequency"]
