@@ -544,6 +544,16 @@ const en: AppMessages = {
     errNotAllowed: 'Please choose a photo (image).',
     errGeneric: 'Could not add it. Please try again.',
   },
+  map: {
+    title: 'Places',
+    subtitle: 'Where your memories were made',
+    empty: 'No places yet',
+    emptyBody:
+      'Tag a memory with a place, or add photos with location — they will appear here on the map.',
+    listTitle: 'Your places',
+    photo: 'Photo',
+    photoCount: '{count, plural, one {# photo} other {# photos}}',
+  },
   stories: {
     title: 'Stories',
     heading: 'Tell the story behind this photo',
