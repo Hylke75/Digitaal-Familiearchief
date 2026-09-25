@@ -559,6 +559,18 @@ const nl = {
     photo: 'Foto',
     photoCount: '{count, plural, one {# foto} other {# foto’s}}',
   },
+  handwriting: {
+    title: 'Handschrift lezen',
+    hint: 'Zet de tekst op deze foto (brief, kaart, notitie) om naar leesbare, doorzoekbare tekst.',
+    read: 'Lees handschrift',
+    reread: 'Opnieuw lezen',
+    reading: 'Aan het lezen…',
+    copy: 'Tekst kopiëren',
+    copied: 'Gekopieerd',
+    errNotConfigured: 'Handschrift lezen is nog niet beschikbaar.',
+    errEmpty: 'We konden geen leesbare tekst vinden op deze foto.',
+    errGeneric: 'Het lezen is niet gelukt. Probeer het opnieuw.',
+  },
   stories: {
     title: 'Verhalen',
     heading: 'Vertel het verhaal bij deze foto',

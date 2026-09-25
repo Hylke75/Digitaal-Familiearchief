@@ -18,6 +18,7 @@ import { toggleItemPersonAction } from '@/lib/archive/people-actions';
 import { getPlaceMembership } from '@/lib/archive/places';
 import { toggleItemPlaceAction } from '@/lib/archive/places-actions';
 import { StoryPanel } from '@/components/stories/StoryPanel';
+import { HandwritingPanel } from '@/components/archive/HandwritingPanel';
 import { itemDeletedSource } from '@/lib/archive/preserved';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
@@ -263,6 +264,12 @@ export default async function ItemDetailPage({ params }: { params: { id: string 
           </button>
         </form>
       </details>
+
+      {item.type === 'photo' ? (
+        <div className="mt-6">
+          <HandwritingPanel itemId={item.id} initialText={item.text} />
+        </div>
+      ) : null}
 
       <StoryPanel itemId={item.id} />
     </div>

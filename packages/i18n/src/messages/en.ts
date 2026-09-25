@@ -554,6 +554,18 @@ const en: AppMessages = {
     photo: 'Photo',
     photoCount: '{count, plural, one {# photo} other {# photos}}',
   },
+  handwriting: {
+    title: 'Read handwriting',
+    hint: 'Turn the text on this photo (letter, card, note) into readable, searchable text.',
+    read: 'Read handwriting',
+    reread: 'Read again',
+    reading: 'Reading…',
+    copy: 'Copy text',
+    copied: 'Copied',
+    errNotConfigured: 'Reading handwriting is not available yet.',
+    errEmpty: 'We could not find readable text on this photo.',
+    errGeneric: 'Reading failed. Please try again.',
+  },
   stories: {
     title: 'Stories',
     heading: 'Tell the story behind this photo',
