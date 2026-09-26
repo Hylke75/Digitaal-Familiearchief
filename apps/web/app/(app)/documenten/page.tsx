@@ -1,28 +1,36 @@
 import Link from 'next/link';
 import { getFormatter, getTranslations } from 'next-intl/server';
-import { FileText } from 'lucide-react';
+import { ChevronRight, FileText, Folder, House } from 'lucide-react';
 import { PageHeader } from '@/components/app-shell/PageHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ButtonLink } from '@/components/ui/Button';
-import { listDocuments } from '@/lib/archive/documents';
+import { listDocumentCards } from '@/lib/archive/documents';
+import {
+  breadcrumbs,
+  decodePath,
+  encodePath,
+  folderView,
+  type SubFolder,
+} from '@/lib/archive/document-tree';
 import { expiryStatus } from '@/lib/archive/expiry';
 import { AutoRefreshImage } from '@/components/archive/AutoRefreshImage';
 
 export const metadata = { title: 'Documenten' };
 
+const folderHref = (path: string[]) =>
+  path.length ? `/documenten?pad=${encodeURIComponent(encodePath(path))}` : '/documenten';
+
 /**
- * Documents get their own environment, ordered by life area rather than by date
- * (design advice, Advice B): you look up the bike warranty under "Aankopen",
- * not under "May 2026". Each card shows the sender + document date, not a file
- * size.
+ * Documenten als mappenboom, net als Google Drive: mappen om in te klikken,
+ * bestanden in de huidige map, en een kruimelpad om terug te navigeren. De boom
+ * komt uit het bronpad van elk document (waar het bij de bron stond).
  */
-export default async function DocumentsPage() {
+export default async function DocumentsPage({ searchParams }: { searchParams: { pad?: string } }) {
   const t = await getTranslations();
   const f = await getFormatter();
-  const areas = await listDocuments();
-  const total = areas.reduce((n, a) => n + a.documents.length, 0);
+  const cards = await listDocumentCards();
 
-  if (total === 0) {
+  if (cards.length === 0) {
     return (
       <div>
         <PageHeader title={t('nav.documents')} />
@@ -36,15 +44,77 @@ export default async function DocumentsPage() {
     );
   }
 
+  const current = decodePath(searchParams.pad);
+  const { folders, files } = folderView(cards, current);
+  const crumbs = breadcrumbs(current);
+
   return (
     <div>
-      <PageHeader title={t('nav.documents')} subtitle={t('archive.memories', { count: total })} />
-      <div className="space-y-8">
-        {areas.map(({ area, documents }) => (
-          <section key={area}>
-            <h2 className="text-h3 text-ink mb-3">{area}</h2>
+      <PageHeader
+        title={t('nav.documents')}
+        subtitle={t('archive.memories', { count: cards.length })}
+      />
+
+      {/* Kruimelpad */}
+      <nav aria-label="Mappad" className="text-small mb-5 flex flex-wrap items-center gap-1">
+        <Link
+          href="/documenten"
+          className={`hover:bg-warm inline-flex items-center gap-1.5 rounded-md px-2 py-1 ${
+            current.length === 0 ? 'text-ink font-medium' : 'text-ink-soft'
+          }`}
+        >
+          <House className="h-4 w-4" aria-hidden="true" />
+          {t('nav.documents')}
+        </Link>
+        {crumbs.map((c, i) => (
+          <span key={c.path.join('/')} className="inline-flex items-center gap-1">
+            <ChevronRight className="text-ink-soft h-4 w-4" aria-hidden="true" />
+            <Link
+              href={folderHref(c.path)}
+              className={`hover:bg-warm rounded-md px-2 py-1 ${
+                i === crumbs.length - 1 ? 'text-ink font-medium' : 'text-ink-soft'
+              }`}
+            >
+              {c.name}
+            </Link>
+          </span>
+        ))}
+      </nav>
+
+      {folders.length === 0 && files.length === 0 ? (
+        <EmptyState
+          icon={<Folder className="h-8 w-8" aria-hidden="true" />}
+          title={t('documents.emptyFolder')}
+          description={t('documents.emptyFolderBody')}
+        />
+      ) : (
+        <div className="space-y-8">
+          {/* Mappen */}
+          {folders.length > 0 ? (
+            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {folders.map((folder: SubFolder) => (
+                <li key={folder.name}>
+                  <Link
+                    href={folderHref(folder.path)}
+                    className="border-border rounded-card hover:border-forest/40 hover:bg-warm flex items-center gap-3 border p-4 transition-colors"
+                  >
+                    <Folder className="text-forest h-8 w-8 shrink-0" aria-hidden="true" />
+                    <span className="min-w-0">
+                      <span className="text-ink block truncate font-medium">{folder.name}</span>
+                      <span className="text-small text-ink-soft block">
+                        {t('documents.folderItems', { count: folder.count })}
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+
+          {/* Bestanden in deze map */}
+          {files.length > 0 ? (
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {documents.map((doc) => {
+              {files.map((doc) => {
                 const meta = [
                   doc.sender,
                   doc.documentDate
@@ -98,9 +168,9 @@ export default async function DocumentsPage() {
                 );
               })}
             </ul>
-          </section>
-        ))}
-      </div>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 }

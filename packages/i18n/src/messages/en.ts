@@ -555,6 +555,11 @@ const en: AppMessages = {
     photo: 'Photo',
     photoCount: '{count, plural, one {# photo} other {# photos}}',
   },
+  documents: {
+    folderItems: '{count, plural, one {# item} other {# items}}',
+    emptyFolder: 'This folder is empty',
+    emptyFolderBody: 'There are no documents or subfolders here.',
+  },
   handwriting: {
     title: 'Read handwriting',
     hint: 'Turn the text on this photo (letter, card, note) into readable, searchable text.',

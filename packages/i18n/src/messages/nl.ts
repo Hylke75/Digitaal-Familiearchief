@@ -560,6 +560,11 @@ const nl = {
     photo: 'Foto',
     photoCount: '{count, plural, one {# foto} other {# foto’s}}',
   },
+  documents: {
+    folderItems: '{count, plural, one {# item} other {# items}}',
+    emptyFolder: 'Deze map is leeg',
+    emptyFolderBody: 'Er staan hier geen documenten of submappen.',
+  },
   handwriting: {
     title: 'Handschrift lezen',
     hint: 'Zet de tekst op deze foto (brief, kaart, notitie) om naar leesbare, doorzoekbare tekst.',
