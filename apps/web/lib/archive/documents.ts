@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { getCurrentUser } from '@/lib/supabase/current-user';
 import { stripExtension } from '@/lib/archive/display';
 import { sortAreas, toArea } from '@/lib/archive/document-areas';
+import { parseFolderSegments } from '@/lib/archive/document-tree';
 
 export interface DocumentCard {
   id: string;
@@ -11,6 +12,10 @@ export interface DocumentCard {
   expiresAt: string | null;
   /** Signed URL to a pre-rendered first-page image, or null (no preview yet). */
   previewUrl: string | null;
+  /** Life area from metadata (still shown on the card/detail). */
+  area: string;
+  /** Source folder path segments (Mijn Drive/Privé/…), empty when unknown. */
+  folderPath: string[];
 }
 
 export interface DocumentArea {
@@ -33,13 +38,12 @@ const SIGNED_TTL = 60 * 60 * 4;
 const str = (v: unknown): string | null => (typeof v === 'string' && v.trim() ? v.trim() : null);
 
 /**
- * The owner's documents grouped by life area, newest first within each area
- * (design advice, Advice B). Sender/area come from the retained metadata_json;
- * documents that predate metadata simply land in "Overig". PDFs carry a
- * pre-rendered first-page preview (a persisted derivative) so the tile shows the
- * actual document rather than a generic icon.
+ * All of the owner's documents as flat cards, newest first, each with its source
+ * folder path and life area. Sender/area/path come from the retained
+ * metadata_json; PDFs carry a pre-rendered first-page preview (a persisted
+ * derivative) so the tile shows the actual document rather than a generic icon.
  */
-export async function listDocuments(): Promise<DocumentArea[]> {
+async function fetchDocumentCards(): Promise<DocumentCard[]> {
   const supabase = createClient();
   const user = await getCurrentUser();
   if (!user) return [];
@@ -79,20 +83,33 @@ export async function listDocuments(): Promise<DocumentArea[]> {
     }
   }
 
-  const byArea = new Map<string, DocumentCard[]>();
-  for (const r of rows) {
+  return rows.map((r) => {
     const meta = (r.metadata_json ?? {}) as Record<string, unknown>;
-    const area = toArea(str(meta.gebied));
-    const card: DocumentCard = {
+    return {
       id: r.id,
       title: stripExtension(r.original_filename),
       sender: str(meta.afzender),
       documentDate: str(meta.documentDate) ?? r.created_at_source ?? r.archived_at,
       expiresAt: str(meta.expiresAt),
       previewUrl: previewUrls.get(r.id) ?? null,
-    };
-    (byArea.get(area) ?? byArea.set(area, []).get(area)!).push(card);
-  }
+      area: toArea(str(meta.gebied)),
+      folderPath: parseFolderSegments(meta),
+    } satisfies DocumentCard;
+  });
+}
 
+/** Documents grouped by life area (retained for callers that want the area view). */
+export async function listDocuments(): Promise<DocumentArea[]> {
+  const cards = await fetchDocumentCards();
+  const byArea = new Map<string, DocumentCard[]>();
+  for (const card of cards) {
+    (byArea.get(card.area) ?? byArea.set(card.area, []).get(card.area)!).push(card);
+  }
   return sortAreas([...byArea.keys()]).map((area) => ({ area, documents: byArea.get(area)! }));
+}
+
+/** All document cards, flat (with a source folder path) — the Drive-like folder
+ * browser builds its tree from these. */
+export async function listDocumentCards(): Promise<DocumentCard[]> {
+  return fetchDocumentCards();
 }
