@@ -24,6 +24,8 @@ export function parseFolderSegments(meta: Record<string, unknown> | null | undef
 
 export interface FolderTreeItem {
   folderPath: string[];
+  /** Bronlabel van het item (afzender), voor het bronlogo per map. */
+  source?: string | null;
 }
 
 export interface SubFolder {
@@ -32,6 +34,8 @@ export interface SubFolder {
   path: string[];
   /** Aantal documenten in deze map én al zijn submappen. */
   count: number;
+  /** Meest voorkomende bron in deze map (of null), voor het bronlogo. */
+  source: string | null;
 }
 
 export interface FolderView<T> {
@@ -51,6 +55,7 @@ function isUnder(path: string[], prefix: string[]): boolean {
  */
 export function folderView<T extends FolderTreeItem>(items: T[], current: string[]): FolderView<T> {
   const counts = new Map<string, number>();
+  const sources = new Map<string, Map<string, number>>();
   const files: T[] = [];
   for (const it of items) {
     if (!isUnder(it.folderPath, current)) continue;
@@ -60,12 +65,38 @@ export function folderView<T extends FolderTreeItem>(items: T[], current: string
       files.push(it);
     } else {
       counts.set(next, (counts.get(next) ?? 0) + 1);
+      const src = it.source?.trim();
+      if (src) {
+        const tally = sources.get(next) ?? new Map<string, number>();
+        tally.set(src, (tally.get(src) ?? 0) + 1);
+        sources.set(next, tally);
+      }
     }
   }
   const folders: SubFolder[] = [...counts.entries()]
-    .map(([name, count]) => ({ name, path: [...current, name], count }))
-    .sort((a, b) => a.name.localeCompare(b.name, 'nl'));
+    .map(([name, count]) => ({
+      name,
+      path: [...current, name],
+      count,
+      source: dominant(sources.get(name)),
+    }))
+    // Grootste mappen eerst, bij gelijk aantal alfabetisch.
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'nl'));
   return { folders, files };
+}
+
+/** Meest voorkomende sleutel in een tally (of null). */
+function dominant(tally: Map<string, number> | undefined): string | null {
+  if (!tally) return null;
+  let best: string | null = null;
+  let bestN = 0;
+  for (const [key, n] of tally) {
+    if (n > bestN) {
+      bestN = n;
+      best = key;
+    }
+  }
+  return best;
 }
 
 /** Kruimelpad-segmenten met hun cumulatieve pad, voor de navigatiebalk. */

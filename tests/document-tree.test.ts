@@ -34,27 +34,34 @@ describe('parseFolderSegments', () => {
 
 describe('folderView', () => {
   const docs = [
-    { id: 'a', folderPath: ['Mijn Drive', 'Privé', 'Belastingen'] },
-    { id: 'b', folderPath: ['Mijn Drive', 'Privé', 'Huis'] },
-    { id: 'c', folderPath: ['Mijn Drive', 'Privé', 'Huis'] },
-    { id: 'd', folderPath: ['Documenten'] },
-    { id: 'e', folderPath: [] }, // los in de wortel
+    { id: 'a', folderPath: ['Mijn Drive', 'Privé', 'Belastingen'], source: 'Google Drive' },
+    { id: 'b', folderPath: ['Mijn Drive', 'Privé', 'Huis'], source: 'Google Drive' },
+    { id: 'c', folderPath: ['Mijn Drive', 'Privé', 'Huis'], source: 'OneDrive' },
+    { id: 'd', folderPath: ['Documenten'], source: 'Dropbox' },
+    { id: 'e', folderPath: [], source: null }, // los in de wortel
   ];
 
-  it('at the root lists top folders with recursive counts and loose files', () => {
+  it('at the root sorts folders by count (desc), with recursive counts and loose files', () => {
     const v = folderView(docs, []);
-    expect(v.folders).toEqual([
-      { name: 'Documenten', path: ['Documenten'], count: 1 },
-      { name: 'Mijn Drive', path: ['Mijn Drive'], count: 3 },
+    expect(v.folders.map((f) => [f.name, f.count])).toEqual([
+      ['Mijn Drive', 3],
+      ['Documenten', 1],
     ]);
     expect(v.files.map((f) => f.id)).toEqual(['e']);
   });
 
-  it('descends into a subfolder', () => {
+  it('descends into a subfolder (bigger folder first)', () => {
     const v = folderView(docs, ['Mijn Drive', 'Privé']);
-    expect(v.folders.map((f) => f.name)).toEqual(['Belastingen', 'Huis']);
+    expect(v.folders.map((f) => f.name)).toEqual(['Huis', 'Belastingen']);
     expect(v.folders.find((f) => f.name === 'Huis')?.count).toBe(2);
     expect(v.files).toEqual([]);
+  });
+
+  it('reports the dominant source per folder', () => {
+    const v = folderView(docs, []);
+    // Mijn Drive: 2× Google Drive vs 1× OneDrive → Google Drive wint.
+    expect(v.folders.find((f) => f.name === 'Mijn Drive')?.source).toBe('Google Drive');
+    expect(v.folders.find((f) => f.name === 'Documenten')?.source).toBe('Dropbox');
   });
 
   it('lists files that sit directly in the folder', () => {

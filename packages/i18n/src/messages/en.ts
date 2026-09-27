@@ -559,6 +559,7 @@ const en: AppMessages = {
     folderItems: '{count, plural, one {# item} other {# items}}',
     emptyFolder: 'This folder is empty',
     emptyFolderBody: 'There are no documents or subfolders here.',
+    up: 'Up',
   },
   handwriting: {
     title: 'Read handwriting',
