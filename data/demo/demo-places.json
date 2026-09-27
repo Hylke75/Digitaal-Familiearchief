@@ -1,0 +1,68 @@
+{
+  "centroids": {
+    "Den Haag": {
+      "lat": 52.0767,
+      "lng": 4.3007
+    },
+    "Scheveningen": {
+      "lat": 52.1081,
+      "lng": 4.2756
+    },
+    "Madeira": {
+      "lat": 32.7607,
+      "lng": -17
+    },
+    "Parijs": {
+      "lat": 48.8566,
+      "lng": 2.3522
+    },
+    "San Francisco": {
+      "lat": 37.8199,
+      "lng": -122.4783
+    },
+    "Nevada": {
+      "lat": 36.1699,
+      "lng": -115.1398
+    },
+    "Yosemite": {
+      "lat": 37.8651,
+      "lng": -119.5383
+    },
+    "Hilversum": {
+      "lat": 52.2292,
+      "lng": 5.1669
+    },
+    "Amsterdam": {
+      "lat": 52.3676,
+      "lng": 4.9041
+    },
+    "Grand Canyon": {
+      "lat": 36.1069,
+      "lng": -112.1129
+    },
+    "Las Vegas": {
+      "lat": 36.1147,
+      "lng": -115.1728
+    },
+    "Californië": {
+      "lat": 41.2132,
+      "lng": -124.0046
+    },
+    "Barcelona": {
+      "lat": 41.3874,
+      "lng": 2.1686
+    },
+    "Londen": {
+      "lat": 51.5074,
+      "lng": -0.1278
+    },
+    "Rotterdam": {
+      "lat": 51.9244,
+      "lng": 4.4777
+    },
+    "Utrecht": {
+      "lat": 52.0907,
+      "lng": 5.1214
+    }
+  }
+}

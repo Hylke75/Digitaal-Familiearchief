@@ -1,0 +1,241 @@
+{
+  "albums": [
+    {
+      "id": "demo-album-001",
+      "title": "Gezin",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-002",
+      "title": "Zomer",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-003",
+      "title": "Scheveningen",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-004",
+      "title": "Thuis",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-005",
+      "title": "Dagelijks leven",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-006",
+      "title": "Verjaardag",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-007",
+      "title": "Samen",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-008",
+      "title": "Madeira 2026",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-009",
+      "title": "Sport",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-010",
+      "title": "Hiken",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-011",
+      "title": "Eten",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-012",
+      "title": "Parijs",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-013",
+      "title": "VS Roadtrip",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-014",
+      "title": "Familiearchief",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-015",
+      "title": "Trouwen",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-016",
+      "title": "Schooltijd",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-017",
+      "title": "Wonen",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-018",
+      "title": "Werk & events",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-019",
+      "title": "Werk",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-020",
+      "title": "Koffie & stad",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-021",
+      "title": "Strand",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-022",
+      "title": "Documenten",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-023",
+      "title": "Buiten",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-024",
+      "title": "Natuur",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-025",
+      "title": "Barcelona 2024",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-026",
+      "title": "Londen 2025",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-027",
+      "title": "Herfst",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-028",
+      "title": "Koken",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-029",
+      "title": "Kerst",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-030",
+      "title": "Sinterklaas",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-031",
+      "title": "Concert",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-032",
+      "title": "Stedentrip",
+      "type": "user",
+      "is_demo": true
+    },
+    {
+      "id": "demo-album-033",
+      "title": "Winter",
+      "type": "user",
+      "is_demo": true
+    }
+  ],
+  "smartAlbums": [
+    {
+      "id": "smart-whatsapp-2025",
+      "title": "WhatsApp 2025",
+      "rule": {
+        "source": "whatsapp",
+        "year": 2025
+      },
+      "type": "smart",
+      "is_demo": true
+    },
+    {
+      "id": "smart-madeira",
+      "title": "Madeira",
+      "rule": {
+        "placeContains": "Madeira"
+      },
+      "type": "smart",
+      "is_demo": true
+    },
+    {
+      "id": "smart-favorieten",
+      "title": "Favorieten",
+      "rule": {
+        "favorite": true
+      },
+      "type": "smart",
+      "is_demo": true
+    },
+    {
+      "id": "smart-oude-familiefotos",
+      "title": "Oude familiefoto's",
+      "rule": {
+        "beforeYear": 1990
+      },
+      "type": "smart",
+      "is_demo": true
+    }
+  ]
+}

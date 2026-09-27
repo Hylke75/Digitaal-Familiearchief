@@ -15,6 +15,11 @@
     "typecheck": "tsc -p tsconfig.json --noEmit && pnpm --filter @dla/web typecheck",
     "test": "vitest run",
     "test:watch": "vitest",
+    "seed:demo": "node scripts/demo/build-demo-data.mjs",
+    "seed:demo:reset": "node scripts/demo/reset-demo.mjs",
+    "seed:demo:placeholders": "node scripts/demo/generate-demo-placeholders.mjs",
+    "fetch:demo-photos": "node scripts/demo/fetch-pexels.mjs",
+    "seed:demo:live": "node scripts/seed-demo-live.mjs",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,css}\""
   },

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4032 3024" width="1600" height="1200" role="img" aria-label="Nieuwjaar met vuurwerk">
+  <rect width="4032" height="3024" fill="#FAF6F1"/>
+  <rect width="4032" height="3024" fill="#25D366" opacity="0.06"/>
+  <rect x="0" y="0" width="4032" height="423" fill="#25D366" opacity="0.9"/>
+  <text x="161" y="262" font-family="Inter, system-ui, sans-serif" font-size="178" font-weight="700" fill="#ffffff">Bewora</text>
+  <text x="2016" y="1572" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="847" font-weight="800" fill="#25D366" opacity="0.12">2025</text>
+  <text x="2016" y="1996" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="187" font-weight="700" fill="#1B211D">Nieuwjaar met vuurwerk</text>
+  <text x="2016" y="2238" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="121" fill="#1D3D2A">WhatsApp · 2025</text>
+  <text x="2016" y="2843" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="91" fill="#59635C">Demo-placeholder · vervang door echte foto</text>
+</svg>

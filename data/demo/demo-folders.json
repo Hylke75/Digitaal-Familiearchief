@@ -1,0 +1,43 @@
+{
+  "folders": {
+    "google_drive": {
+      "label": "Google Drive",
+      "root": "Mijn Drive",
+      "tree": {
+        "Mijn Drive": {
+          "Privé": {
+            "Huis": {
+              "Hypotheek": {},
+              "Verzekeringen": {},
+              "Verbouwing": {}
+            },
+            "Belastingen": {},
+            "Opleiding": {}
+          },
+          "Werk": {}
+        }
+      }
+    },
+    "onedrive": {
+      "label": "OneDrive",
+      "root": "Documenten",
+      "tree": {
+        "Documenten": {
+          "Financieel": {},
+          "Contracten": {},
+          "Persoonlijk": {}
+        }
+      }
+    },
+    "dropbox": {
+      "label": "Dropbox",
+      "root": "Persoonlijk",
+      "tree": {
+        "Persoonlijk": {
+          "Huis": {},
+          "Administratie": {}
+        }
+      }
+    }
+  }
+}

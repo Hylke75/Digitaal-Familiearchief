@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3024 4032" width="1200" height="1600" role="img" aria-label="Big Ben">
+  <rect width="3024" height="4032" fill="#FAF6F1"/>
+  <rect width="3024" height="4032" fill="#333333" opacity="0.06"/>
+  <rect x="0" y="0" width="3024" height="564" fill="#333333" opacity="0.9"/>
+  <text x="121" y="350" font-family="Inter, system-ui, sans-serif" font-size="237" font-weight="700" fill="#ffffff">Bewora</text>
+  <text x="1512" y="2097" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="1129" font-weight="800" fill="#333333" opacity="0.12">2025</text>
+  <text x="1512" y="2661" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="250" font-weight="700" fill="#1B211D">Big Ben</text>
+  <text x="1512" y="2984" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="161" fill="#1D3D2A">Apple Foto's · 2025</text>
+  <text x="1512" y="3790" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="121" fill="#59635C">Demo-placeholder · vervang door echte foto</text>
+</svg>

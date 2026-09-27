@@ -1,0 +1,103 @@
+{
+  "count": 14,
+  "people": [
+    {
+      "id": "demo-person-001",
+      "name": "Vader",
+      "role": "Archiefeigenaar",
+      "color": "#1D3D2A",
+      "is_demo": true
+    },
+    {
+      "id": "demo-person-002",
+      "name": "Partner",
+      "role": "Partner",
+      "color": "#9B5B19",
+      "is_demo": true
+    },
+    {
+      "id": "demo-person-003",
+      "name": "Zoon 1",
+      "role": "Zoon",
+      "color": "#2F6F4F",
+      "is_demo": true
+    },
+    {
+      "id": "demo-person-004",
+      "name": "Zoon 2",
+      "role": "Zoon",
+      "color": "#3B7D8C",
+      "is_demo": true
+    },
+    {
+      "id": "demo-person-005",
+      "name": "Familie",
+      "role": "Familie",
+      "color": "#8A6D3B",
+      "is_demo": true
+    },
+    {
+      "id": "demo-person-006",
+      "name": "Collega 1",
+      "role": "Collega",
+      "color": "#5B6B7B",
+      "is_demo": true
+    },
+    {
+      "id": "demo-person-007",
+      "name": "Collega 2",
+      "role": "Collega",
+      "color": "#7B5B6B",
+      "is_demo": true
+    },
+    {
+      "id": "demo-person-008",
+      "name": "Bruidegom",
+      "role": "Familiearchief",
+      "color": "#444444",
+      "is_demo": true
+    },
+    {
+      "id": "demo-person-009",
+      "name": "Bruid",
+      "role": "Familiearchief",
+      "color": "#6B4A5B",
+      "is_demo": true
+    },
+    {
+      "id": "demo-person-010",
+      "name": "Oma",
+      "role": "Familie",
+      "color": "#7A5C3B",
+      "is_demo": true
+    },
+    {
+      "id": "demo-person-011",
+      "name": "Opa",
+      "role": "Familie",
+      "color": "#4B5B45",
+      "is_demo": true
+    },
+    {
+      "id": "demo-person-012",
+      "name": "Zus",
+      "role": "Familie",
+      "color": "#9B4B6B",
+      "is_demo": true
+    },
+    {
+      "id": "demo-person-013",
+      "name": "Vriend 1",
+      "role": "Vriend",
+      "color": "#3B6B7B",
+      "is_demo": true
+    },
+    {
+      "id": "demo-person-014",
+      "name": "Vriend 2",
+      "role": "Vriend",
+      "color": "#6B6B3B",
+      "is_demo": true
+    }
+  ]
+}

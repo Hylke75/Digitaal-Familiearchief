@@ -1,0 +1,3858 @@
+{
+  "generatedBy": "scripts/demo/build-demo-data.mjs",
+  "count": 90,
+  "photos": [
+    {
+      "id": "demo-photo-001",
+      "type": "photo",
+      "n": 1,
+      "filename": "01_gezin_strand_scheveningen.jpg",
+      "title": "Gezin op het strand",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        },
+        {
+          "key": "google_photos",
+          "label": "Google Photos",
+          "primary": false,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [
+        {
+          "id": "demo-photo-001-version-1",
+          "filename": "01_gezin_strand_scheveningen_whatsapp.jpg",
+          "label": "WhatsApp-versie",
+          "note": "Gecomprimeerd",
+          "sourceKey": "whatsapp",
+          "sourceLabel": "WhatsApp",
+          "relationship": "WHATSAPP_COMPRESSED_VERSION"
+        }
+      ],
+      "capturedAt": "2026-08-14T19:42:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Scheveningen",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.1081,
+      "lng": 4.2756,
+      "locationSource": "EXIF",
+      "region": "Scheveningen",
+      "albums": [
+        "Gezin",
+        "Zomer",
+        "Scheveningen"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "strand",
+        "gezin",
+        "zonsondergang",
+        "zomer"
+      ],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-002",
+      "type": "photo",
+      "n": 2,
+      "filename": "02_koffie_keukentafel.jpg",
+      "title": "Koffie aan de keukentafel",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-02-11T08:12:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Thuis",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.0705,
+      "lng": 4.3007,
+      "locationSource": "USER",
+      "region": "Den Haag",
+      "albums": [
+        "Thuis",
+        "Dagelijks leven"
+      ],
+      "people": [
+        "Vader"
+      ],
+      "tags": [
+        "koffie",
+        "thuis",
+        "ochtend",
+        "werk"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-003",
+      "type": "photo",
+      "n": 3,
+      "filename": "03_zonen_fiets.jpg",
+      "title": "Twee zoons op de fiets",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-04-06T15:35:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Woonwijk",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.082,
+      "lng": 4.317,
+      "locationSource": "EXIF",
+      "region": "Den Haag",
+      "albums": [
+        "Gezin",
+        "Buiten"
+      ],
+      "people": [
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "fiets",
+        "kinderen",
+        "lente"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-004",
+      "type": "photo",
+      "n": 4,
+      "filename": "04_verjaardagsdiner_thuis.jpg",
+      "title": "Verjaardagsdiner thuis",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-09-11T20:08:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Thuis",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Verjaardag",
+        "Gezin"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "verjaardag",
+        "eten",
+        "familie"
+      ],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-005",
+      "type": "photo",
+      "n": 5,
+      "filename": "05_selfie_wandeling.jpg",
+      "title": "Selfie tijdens wandeling",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-03-22T11:04:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Park",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Samen",
+        "Dagelijks leven"
+      ],
+      "people": [
+        "Vader",
+        "Partner"
+      ],
+      "tags": [
+        "selfie",
+        "park",
+        "wandeling"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-006",
+      "type": "photo",
+      "n": 6,
+      "filename": "06_tennis_madeira.jpg",
+      "title": "Tennisbaan in Madeira",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-07-27T10:48:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Tennisclub Calheta",
+      "providerPlace": "Calheta",
+      "city": "Calheta",
+      "country": "Portugal",
+      "lat": 32.7216,
+      "lng": -17.1687,
+      "locationSource": "EXIF",
+      "region": "Madeira",
+      "albums": [
+        "Madeira 2026",
+        "Sport"
+      ],
+      "people": [
+        "Vader"
+      ],
+      "tags": [
+        "tennis",
+        "madeira",
+        "sport"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": true,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-007",
+      "type": "photo",
+      "n": 7,
+      "filename": "07_uitzichtpunt_madeira.jpg",
+      "title": "Uitzichtpunt Madeira",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        },
+        {
+          "key": "google_photos",
+          "label": "Google Photos",
+          "primary": false,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-07-21T14:18:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Madeira",
+      "providerPlace": null,
+      "city": null,
+      "country": "Portugal",
+      "lat": 32.7607,
+      "lng": -17.2112,
+      "locationSource": "EXIF",
+      "region": "Madeira",
+      "albums": [
+        "Madeira 2026"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "madeira",
+        "uitzicht",
+        "reis",
+        "gezin"
+      ],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-008",
+      "type": "photo",
+      "n": 8,
+      "filename": "08_levada_wandeling.jpg",
+      "title": "Levada-wandeling",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        },
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": false,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-07-24T12:02:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Levada Trail",
+      "providerPlace": null,
+      "city": "Madeira",
+      "country": "Portugal",
+      "lat": 32.7519,
+      "lng": -17.052,
+      "locationSource": "EXIF",
+      "region": "Madeira",
+      "albums": [
+        "Madeira 2026",
+        "Hiken"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "hiken",
+        "madeira",
+        "natuur"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-009",
+      "type": "photo",
+      "n": 9,
+      "filename": "09_diner_funchal.jpg",
+      "title": "Diner op terras in Funchal",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-07-23T20:36:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Funchal",
+      "providerPlace": null,
+      "city": "Funchal",
+      "country": "Portugal",
+      "lat": 32.6496,
+      "lng": -16.9098,
+      "locationSource": "PROVIDER",
+      "region": "Madeira",
+      "albums": [
+        "Madeira 2026",
+        "Eten"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-010",
+      "type": "photo",
+      "n": 10,
+      "filename": "10_fanal_forest.jpg",
+      "title": "Hiken in Fanal Forest",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-07-21T09:54:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Fanal Forest",
+      "providerPlace": null,
+      "city": "Madeira",
+      "country": "Portugal",
+      "lat": 32.812,
+      "lng": -17.1422,
+      "locationSource": "EXIF",
+      "region": "Madeira",
+      "albums": [
+        "Madeira 2026",
+        "Hiken"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-011",
+      "type": "photo",
+      "n": 11,
+      "filename": "11_parijs_straatbeeld.jpg",
+      "title": "Parijs straatbeeld",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-08-14T10:16:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Parijs",
+      "country": "Frankrijk",
+      "lat": 48.8566,
+      "lng": 2.3522,
+      "locationSource": "EXIF",
+      "region": "Parijs",
+      "albums": [
+        "Parijs"
+      ],
+      "people": [
+        "Vader",
+        "Partner"
+      ],
+      "tags": [],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-012",
+      "type": "photo",
+      "n": 12,
+      "filename": "12_hotelkamer_parijs.jpg",
+      "title": "Hotelkamer in Parijs",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-08-14T08:22:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Hotel",
+      "providerPlace": null,
+      "city": "Parijs",
+      "country": "Frankrijk",
+      "lat": 48.8452,
+      "lng": 2.3258,
+      "locationSource": "EXIF",
+      "region": "Parijs",
+      "albums": [
+        "Parijs"
+      ],
+      "people": [],
+      "tags": [],
+      "favorite": false,
+      "width": 3024,
+      "height": 4032,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-013",
+      "type": "photo",
+      "n": 13,
+      "filename": "13_golden_gate_gezin.jpg",
+      "title": "Gezin bij Golden Gate Bridge",
+      "originSource": "google_photos",
+      "sources": [
+        {
+          "key": "google_photos",
+          "label": "Google Photos",
+          "primary": true,
+          "sourceDeletedAt": null
+        },
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": false,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-08-22T13:17:00-07:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Golden Gate Bridge",
+      "providerPlace": null,
+      "city": "San Francisco",
+      "country": "VS",
+      "lat": 37.8199,
+      "lng": -122.4783,
+      "locationSource": "EXIF",
+      "region": "San Francisco",
+      "albums": [
+        "VS Roadtrip"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-014",
+      "type": "photo",
+      "n": 14,
+      "filename": "14_roadtrip_woestijn.jpg",
+      "title": "Roadtrip-auto in de woestijn",
+      "originSource": "google_photos",
+      "sources": [
+        {
+          "key": "google_photos",
+          "label": "Google Photos",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-08-26T16:01:00-07:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Nevada Desert",
+      "providerPlace": null,
+      "city": null,
+      "country": "VS",
+      "lat": 36.1699,
+      "lng": -115.1398,
+      "locationSource": "EXIF",
+      "region": "Nevada",
+      "albums": [
+        "VS Roadtrip"
+      ],
+      "people": [],
+      "tags": [],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-015",
+      "type": "photo",
+      "n": 15,
+      "filename": "15_yosemite_wandeling.jpg",
+      "title": "Wandeling in Yosemite",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-08-28T11:46:00-07:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Yosemite National Park",
+      "providerPlace": null,
+      "city": null,
+      "country": "VS",
+      "lat": 37.8651,
+      "lng": -119.5383,
+      "locationSource": "EXIF",
+      "region": "Yosemite",
+      "albums": [
+        "VS Roadtrip",
+        "Hiken"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-016",
+      "type": "photo",
+      "n": 16,
+      "filename": "16_scan_tuin_1978.jpg",
+      "title": "Familiefoto in de tuin",
+      "originSource": "manual_upload",
+      "sources": [
+        {
+          "key": "manual_upload",
+          "label": "Handmatig toegevoegd",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "1978-01-01",
+      "datePrecision": "YEAR",
+      "place": "Achtertuin",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Familiearchief"
+      ],
+      "people": [],
+      "tags": [
+        "scan",
+        "familie",
+        "1978",
+        "archief"
+      ],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-017",
+      "type": "photo",
+      "n": 17,
+      "filename": "17_trouwfoto_1964_bw.jpg",
+      "title": "Zwart-wit trouwfoto",
+      "originSource": "manual_upload",
+      "sources": [
+        {
+          "key": "manual_upload",
+          "label": "Handmatig toegevoegd",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "1964-01-01",
+      "datePrecision": "YEAR",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Familiearchief",
+        "Trouwen"
+      ],
+      "people": [
+        "Bruidegom",
+        "Bruid"
+      ],
+      "tags": [],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-018",
+      "type": "photo",
+      "n": 18,
+      "filename": "18_schoolfoto_1985.jpg",
+      "title": "Schoolfoto jaren 80",
+      "originSource": "manual_upload",
+      "sources": [
+        {
+          "key": "manual_upload",
+          "label": "Handmatig toegevoegd",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "1985-01-01",
+      "datePrecision": "YEAR",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Familiearchief",
+        "Schooltijd"
+      ],
+      "people": [],
+      "tags": [],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-019",
+      "type": "photo",
+      "n": 19,
+      "filename": "19_woning_buitenkant.jpg",
+      "title": "Nieuwe woning buitenkant",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        },
+        {
+          "key": "google_photos",
+          "label": "Google Photos",
+          "primary": false,
+          "sourceDeletedAt": "2026-05-01T00:00:00Z"
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2019-06-18T14:10:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.075,
+      "lng": 4.308,
+      "locationSource": "EXIF",
+      "region": "Den Haag",
+      "albums": [
+        "Wonen"
+      ],
+      "people": [],
+      "tags": [],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-020",
+      "type": "photo",
+      "n": 20,
+      "filename": "20_verhuisdozen_sleutels.jpg",
+      "title": "Sleuteloverdracht en verhuisdozen",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2019-06-18T16:24:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Wonen"
+      ],
+      "people": [
+        "Vader",
+        "Partner"
+      ],
+      "tags": [],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-021",
+      "type": "photo",
+      "n": 21,
+      "filename": "21_netwerkborrel_venue.jpg",
+      "title": "Netwerkborrel",
+      "originSource": "google_photos",
+      "sources": [
+        {
+          "key": "google_photos",
+          "label": "Google Photos",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-11-20T17:48:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Hilversum",
+      "country": "Nederland",
+      "lat": 52.2292,
+      "lng": 5.1669,
+      "locationSource": "EXIF",
+      "region": "Hilversum",
+      "albums": [
+        "Werk & events"
+      ],
+      "people": [
+        "Vader"
+      ],
+      "tags": [],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-022",
+      "type": "photo",
+      "n": 22,
+      "filename": "22_spreken_podium.jpg",
+      "title": "Spreken op podium",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-11-23T15:54:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Grote Kerk",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.0795,
+      "lng": 4.311,
+      "locationSource": "PROVIDER",
+      "region": "Den Haag",
+      "albums": [
+        "Werk & events"
+      ],
+      "people": [
+        "Vader"
+      ],
+      "tags": [],
+      "favorite": true,
+      "width": 3024,
+      "height": 4032,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-023",
+      "type": "photo",
+      "n": 23,
+      "filename": "23_kantooroverleg.jpg",
+      "title": "Kantooroverleg",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-01-17T10:28:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Hilversum",
+      "country": "Nederland",
+      "lat": 52.23,
+      "lng": 5.17,
+      "locationSource": "EXIF",
+      "region": "Hilversum",
+      "albums": [
+        "Werk"
+      ],
+      "people": [
+        "Vader",
+        "Collega 1",
+        "Collega 2"
+      ],
+      "tags": [],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-024",
+      "type": "photo",
+      "n": 24,
+      "filename": "24_boekpresentatie.jpg",
+      "title": "Boekpresentatie",
+      "originSource": "facebook",
+      "sources": [
+        {
+          "key": "facebook",
+          "label": "Facebook",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-10-02T16:42:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Hilversum",
+      "country": "Nederland",
+      "lat": 52.2292,
+      "lng": 5.1669,
+      "locationSource": "PROVIDER",
+      "region": "Hilversum",
+      "albums": [
+        "Werk & events"
+      ],
+      "people": [
+        "Vader"
+      ],
+      "tags": [],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-025",
+      "type": "photo",
+      "n": 25,
+      "filename": "25_familie_bbq_whatsapp.jpg",
+      "title": "Familie BBQ",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2024-07-12T18:57:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Gezin",
+        "Zomer"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2",
+        "Familie"
+      ],
+      "tags": [],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-026",
+      "type": "photo",
+      "n": 26,
+      "filename": "26_hond_op_bank.jpg",
+      "title": "Hond op de bank",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-01-08T21:13:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Dagelijks leven"
+      ],
+      "people": [],
+      "tags": [],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-027",
+      "type": "photo",
+      "n": 27,
+      "filename": "27_instagram_koffie.jpg",
+      "title": "Koffie in de stad",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-05-19T11:08:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Amsterdam",
+      "country": "Nederland",
+      "lat": 52.3676,
+      "lng": 4.9041,
+      "locationSource": "PROVIDER",
+      "region": "Amsterdam",
+      "albums": [
+        "Koffie & stad"
+      ],
+      "people": [],
+      "tags": [],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-028",
+      "type": "photo",
+      "n": 28,
+      "filename": "28_instagram_strand_zonsondergang.jpg",
+      "title": "Zonsondergang op het strand",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-08-03T20:51:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Scheveningen strand",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.1081,
+      "lng": 4.2756,
+      "locationSource": "PROVIDER",
+      "region": "Scheveningen",
+      "albums": [
+        "Strand",
+        "Zomer"
+      ],
+      "people": [],
+      "tags": [],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-029",
+      "type": "photo",
+      "n": 29,
+      "filename": "29_paspoort_tafel.jpg",
+      "title": "Paspoort op tafel",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-04-01T09:32:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.0705,
+      "lng": 4.3007,
+      "locationSource": "EXIF",
+      "region": "Den Haag",
+      "albums": [
+        "Documenten"
+      ],
+      "people": [],
+      "tags": [
+        "paspoort",
+        "document",
+        "identiteit"
+      ],
+      "favorite": false,
+      "width": 3024,
+      "height": 4032,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-030",
+      "type": "photo",
+      "n": 30,
+      "filename": "30_koopakte_contractmap.jpg",
+      "title": "Koopakte en contractmap",
+      "originSource": "google_photos",
+      "sources": [
+        {
+          "key": "google_photos",
+          "label": "Google Photos",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2019-06-18T17:12:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.075,
+      "lng": 4.308,
+      "locationSource": "EXIF",
+      "region": "Den Haag",
+      "albums": [
+        "Documenten",
+        "Wonen"
+      ],
+      "people": [],
+      "tags": [
+        "koopakte",
+        "huis",
+        "contract",
+        "document"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-031",
+      "type": "photo",
+      "n": 31,
+      "filename": "31_zwembad_zeezicht.jpg",
+      "title": "Zwembad met zeezicht",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-07-22T15:20:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Calheta",
+      "providerPlace": null,
+      "city": "Calheta",
+      "country": "Portugal",
+      "lat": 32.72,
+      "lng": -17.17,
+      "locationSource": "EXIF",
+      "region": "Madeira",
+      "albums": [
+        "Madeira 2026"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "zwembad",
+        "madeira",
+        "zomer"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-032",
+      "type": "photo",
+      "n": 32,
+      "filename": "32_kabelbaan_funchal.jpg",
+      "title": "Kabelbaan in Funchal",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-07-25T11:10:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Funchal",
+      "providerPlace": null,
+      "city": "Funchal",
+      "country": "Portugal",
+      "lat": 32.6496,
+      "lng": -16.9098,
+      "locationSource": "PROVIDER",
+      "region": "Madeira",
+      "albums": [
+        "Madeira 2026"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "kabelbaan",
+        "funchal"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-033",
+      "type": "photo",
+      "n": 33,
+      "filename": "33_markt_funchal.jpg",
+      "title": "Markt in Funchal",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-07-26T09:40:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Funchal",
+      "providerPlace": null,
+      "city": "Funchal",
+      "country": "Portugal",
+      "lat": 32.6479,
+      "lng": -16.9086,
+      "locationSource": "EXIF",
+      "region": "Madeira",
+      "albums": [
+        "Madeira 2026",
+        "Eten"
+      ],
+      "people": [
+        "Partner"
+      ],
+      "tags": [
+        "markt",
+        "fruit"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-034",
+      "type": "photo",
+      "n": 34,
+      "filename": "34_natuurbad_madeira.jpg",
+      "title": "Zwemmen in een natuurbad",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-07-28T13:05:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Porto Moniz",
+      "providerPlace": null,
+      "city": "Madeira",
+      "country": "Portugal",
+      "lat": null,
+      "lng": null,
+      "locationSource": "USER",
+      "region": "Madeira",
+      "albums": [
+        "Madeira 2026"
+      ],
+      "people": [
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "zwemmen",
+        "madeira"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-035",
+      "type": "photo",
+      "n": 35,
+      "filename": "35_zonsondergang_madeira.jpg",
+      "title": "Zonsondergang op Madeira",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-07-29T20:40:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Madeira",
+      "providerPlace": null,
+      "city": null,
+      "country": "Portugal",
+      "lat": 32.75,
+      "lng": -17.05,
+      "locationSource": "PROVIDER",
+      "region": "Madeira",
+      "albums": [
+        "Madeira 2026"
+      ],
+      "people": [],
+      "tags": [
+        "zonsondergang",
+        "madeira"
+      ],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-036",
+      "type": "photo",
+      "n": 36,
+      "filename": "36_boottocht_dolfijnen.jpg",
+      "title": "Boottocht met dolfijnen",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-07-30T10:15:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Funchal",
+      "providerPlace": null,
+      "city": "Funchal",
+      "country": "Portugal",
+      "lat": 32.63,
+      "lng": -16.92,
+      "locationSource": "EXIF",
+      "region": "Madeira",
+      "albums": [
+        "Madeira 2026",
+        "Natuur"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "boot",
+        "dolfijnen",
+        "zee"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-037",
+      "type": "photo",
+      "n": 37,
+      "filename": "37_grand_canyon.jpg",
+      "title": "Uitzicht over de Grand Canyon",
+      "originSource": "google_photos",
+      "sources": [
+        {
+          "key": "google_photos",
+          "label": "Google Photos",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-08-24T12:30:00-07:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Grand Canyon",
+      "providerPlace": null,
+      "city": null,
+      "country": "VS",
+      "lat": 36.1069,
+      "lng": -112.1129,
+      "locationSource": "EXIF",
+      "region": "Grand Canyon",
+      "albums": [
+        "VS Roadtrip"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "canyon",
+        "natuur"
+      ],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-038",
+      "type": "photo",
+      "n": 38,
+      "filename": "38_las_vegas_nacht.jpg",
+      "title": "Las Vegas bij nacht",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-08-25T22:05:00-07:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Las Vegas",
+      "providerPlace": null,
+      "city": "Las Vegas",
+      "country": "VS",
+      "lat": 36.1147,
+      "lng": -115.1728,
+      "locationSource": "EXIF",
+      "region": "Las Vegas",
+      "albums": [
+        "VS Roadtrip"
+      ],
+      "people": [
+        "Vader",
+        "Partner"
+      ],
+      "tags": [
+        "vegas",
+        "nacht"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-039",
+      "type": "photo",
+      "n": 39,
+      "filename": "39_route66_bord.jpg",
+      "title": "Route 66-bord",
+      "originSource": "google_photos",
+      "sources": [
+        {
+          "key": "google_photos",
+          "label": "Google Photos",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-08-27T14:50:00-07:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Route 66",
+      "providerPlace": null,
+      "city": null,
+      "country": "VS",
+      "lat": 35.02,
+      "lng": -114.36,
+      "locationSource": "EXIF",
+      "region": "Nevada",
+      "albums": [
+        "VS Roadtrip"
+      ],
+      "people": [],
+      "tags": [
+        "route66",
+        "weg"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-040",
+      "type": "photo",
+      "n": 40,
+      "filename": "40_motel_woestijn.jpg",
+      "title": "Motel langs de weg",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-08-27T18:20:00-07:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Nevada",
+      "providerPlace": null,
+      "city": null,
+      "country": "VS",
+      "lat": 36.2,
+      "lng": -115.2,
+      "locationSource": "EXIF",
+      "region": "Nevada",
+      "albums": [
+        "VS Roadtrip"
+      ],
+      "people": [],
+      "tags": [
+        "motel",
+        "roadtrip"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-041",
+      "type": "photo",
+      "n": 41,
+      "filename": "41_redwoods_bos.jpg",
+      "title": "Tussen de redwoods",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-08-29T11:00:00-07:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Redwood National Park",
+      "providerPlace": null,
+      "city": null,
+      "country": "VS",
+      "lat": 41.2132,
+      "lng": -124.0046,
+      "locationSource": "EXIF",
+      "region": "Californië",
+      "albums": [
+        "VS Roadtrip",
+        "Natuur"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "redwoods",
+        "bos"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-042",
+      "type": "photo",
+      "n": 42,
+      "filename": "42_diner_san_francisco.jpg",
+      "title": "Amerikaans diner",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-08-23T19:30:00-07:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "San Francisco",
+      "providerPlace": null,
+      "city": "San Francisco",
+      "country": "VS",
+      "lat": 37.7749,
+      "lng": -122.4194,
+      "locationSource": "PROVIDER",
+      "region": "San Francisco",
+      "albums": [
+        "VS Roadtrip",
+        "Eten"
+      ],
+      "people": [],
+      "tags": [
+        "diner",
+        "eten"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-043",
+      "type": "photo",
+      "n": 43,
+      "filename": "43_eiffeltoren.jpg",
+      "title": "Eiffeltoren",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-08-15T16:40:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Parijs",
+      "country": "Frankrijk",
+      "lat": 48.8584,
+      "lng": 2.2945,
+      "locationSource": "EXIF",
+      "region": "Parijs",
+      "albums": [
+        "Parijs"
+      ],
+      "people": [
+        "Vader",
+        "Partner"
+      ],
+      "tags": [
+        "eiffeltoren",
+        "parijs"
+      ],
+      "favorite": true,
+      "width": 3024,
+      "height": 4032,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-044",
+      "type": "photo",
+      "n": 44,
+      "filename": "44_louvre_piramide.jpg",
+      "title": "Louvre-piramide",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-08-15T11:20:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Parijs",
+      "country": "Frankrijk",
+      "lat": 48.8606,
+      "lng": 2.3376,
+      "locationSource": "PROVIDER",
+      "region": "Parijs",
+      "albums": [
+        "Parijs"
+      ],
+      "people": [],
+      "tags": [
+        "louvre",
+        "kunst"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-045",
+      "type": "photo",
+      "n": 45,
+      "filename": "45_croissant_koffie.jpg",
+      "title": "Croissant en koffie",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-08-16T08:50:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Parijs",
+      "country": "Frankrijk",
+      "lat": 48.8566,
+      "lng": 2.3522,
+      "locationSource": "PROVIDER",
+      "region": "Parijs",
+      "albums": [
+        "Parijs",
+        "Koffie & stad",
+        "Eten"
+      ],
+      "people": [],
+      "tags": [
+        "croissant",
+        "koffie"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-046",
+      "type": "photo",
+      "n": 46,
+      "filename": "46_seine_avond.jpg",
+      "title": "De Seine bij avond",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-08-16T21:10:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Parijs",
+      "country": "Frankrijk",
+      "lat": 48.8566,
+      "lng": 2.3522,
+      "locationSource": "EXIF",
+      "region": "Parijs",
+      "albums": [
+        "Parijs"
+      ],
+      "people": [
+        "Vader",
+        "Partner"
+      ],
+      "tags": [
+        "seine",
+        "avond"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-047",
+      "type": "photo",
+      "n": 47,
+      "filename": "47_sagrada_familia.jpg",
+      "title": "Sagrada Família",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2024-09-14T15:00:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Barcelona",
+      "country": "Spanje",
+      "lat": 41.4036,
+      "lng": 2.1744,
+      "locationSource": "EXIF",
+      "region": "Barcelona",
+      "albums": [
+        "Barcelona 2024"
+      ],
+      "people": [
+        "Vader",
+        "Partner"
+      ],
+      "tags": [
+        "sagrada",
+        "barcelona"
+      ],
+      "favorite": true,
+      "width": 3024,
+      "height": 4032,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-048",
+      "type": "photo",
+      "n": 48,
+      "filename": "48_park_guell.jpg",
+      "title": "Park Güell",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2024-09-15T12:30:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Barcelona",
+      "country": "Spanje",
+      "lat": 41.4145,
+      "lng": 2.1527,
+      "locationSource": "PROVIDER",
+      "region": "Barcelona",
+      "albums": [
+        "Barcelona 2024"
+      ],
+      "people": [],
+      "tags": [
+        "park",
+        "gaudi"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-049",
+      "type": "photo",
+      "n": 49,
+      "filename": "49_tapas_diner.jpg",
+      "title": "Tapas-diner",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2024-09-15T21:00:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Barcelona",
+      "providerPlace": null,
+      "city": "Barcelona",
+      "country": "Spanje",
+      "lat": null,
+      "lng": null,
+      "locationSource": "USER",
+      "region": "Barcelona",
+      "albums": [
+        "Barcelona 2024",
+        "Eten"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Vriend 1",
+        "Vriend 2"
+      ],
+      "tags": [
+        "tapas",
+        "eten"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-050",
+      "type": "photo",
+      "n": 50,
+      "filename": "50_strand_barceloneta.jpg",
+      "title": "Strand van Barceloneta",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2024-09-16T14:20:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Barceloneta",
+      "providerPlace": null,
+      "city": "Barcelona",
+      "country": "Spanje",
+      "lat": 41.3785,
+      "lng": 2.1925,
+      "locationSource": "PROVIDER",
+      "region": "Barcelona",
+      "albums": [
+        "Barcelona 2024",
+        "Strand"
+      ],
+      "people": [],
+      "tags": [
+        "strand",
+        "barcelona"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-051",
+      "type": "photo",
+      "n": 51,
+      "filename": "51_big_ben.jpg",
+      "title": "Big Ben",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-11-08T13:15:00+00:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Londen",
+      "country": "Verenigd Koninkrijk",
+      "lat": 51.5007,
+      "lng": -0.1246,
+      "locationSource": "EXIF",
+      "region": "Londen",
+      "albums": [
+        "Londen 2025"
+      ],
+      "people": [
+        "Vader",
+        "Partner"
+      ],
+      "tags": [
+        "bigben",
+        "londen"
+      ],
+      "favorite": false,
+      "width": 3024,
+      "height": 4032,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-052",
+      "type": "photo",
+      "n": 52,
+      "filename": "52_tower_bridge.jpg",
+      "title": "Tower Bridge",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-11-08T16:45:00+00:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Londen",
+      "country": "Verenigd Koninkrijk",
+      "lat": 51.5055,
+      "lng": -0.0754,
+      "locationSource": "PROVIDER",
+      "region": "Londen",
+      "albums": [
+        "Londen 2025"
+      ],
+      "people": [],
+      "tags": [
+        "towerbridge",
+        "londen"
+      ],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-053",
+      "type": "photo",
+      "n": 53,
+      "filename": "53_pub_londen.jpg",
+      "title": "Pub in Londen",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-11-09T19:30:00+00:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Londen",
+      "providerPlace": null,
+      "city": "Londen",
+      "country": "Verenigd Koninkrijk",
+      "lat": null,
+      "lng": null,
+      "locationSource": "USER",
+      "region": "Londen",
+      "albums": [
+        "Londen 2025",
+        "Eten"
+      ],
+      "people": [
+        "Vader",
+        "Vriend 1"
+      ],
+      "tags": [
+        "pub",
+        "londen"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-054",
+      "type": "photo",
+      "n": 54,
+      "filename": "54_fietsen_gracht.jpg",
+      "title": "Fietsen langs de gracht",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-05-03T16:10:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Den Haag",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.078,
+      "lng": 4.31,
+      "locationSource": "EXIF",
+      "region": "Den Haag",
+      "albums": [
+        "Dagelijks leven",
+        "Buiten"
+      ],
+      "people": [],
+      "tags": [
+        "fiets",
+        "gracht"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-055",
+      "type": "photo",
+      "n": 55,
+      "filename": "55_markt_plein.jpg",
+      "title": "Markt op het plein",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-05-10T10:30:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Dagelijks leven"
+      ],
+      "people": [
+        "Partner"
+      ],
+      "tags": [
+        "markt",
+        "stad"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-056",
+      "type": "photo",
+      "n": 56,
+      "filename": "56_herfst_bos.jpg",
+      "title": "Herfst in het bos",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-10-19T15:20:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Haagse Bos",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.09,
+      "lng": 4.32,
+      "locationSource": "EXIF",
+      "region": "Den Haag",
+      "albums": [
+        "Herfst",
+        "Natuur"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "herfst",
+        "bos"
+      ],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-057",
+      "type": "photo",
+      "n": 57,
+      "filename": "57_koken_keuken.jpg",
+      "title": "Koken in de keuken",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-01-28T18:40:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Thuis",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.0705,
+      "lng": 4.3007,
+      "locationSource": "USER",
+      "region": "Den Haag",
+      "albums": [
+        "Koken",
+        "Thuis"
+      ],
+      "people": [
+        "Partner"
+      ],
+      "tags": [
+        "koken",
+        "thuis"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-058",
+      "type": "photo",
+      "n": 58,
+      "filename": "58_kerstboom_thuis.jpg",
+      "title": "Kerstboom thuis",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-12-20T19:00:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Kerst",
+        "Thuis",
+        "Gezin"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2",
+        "Zus"
+      ],
+      "tags": [
+        "kerst",
+        "thuis"
+      ],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-059",
+      "type": "photo",
+      "n": 59,
+      "filename": "59_sinterklaas_cadeaus.jpg",
+      "title": "Sinterklaascadeaus",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-12-05T20:15:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Sinterklaas",
+        "Gezin"
+      ],
+      "people": [
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "sinterklaas",
+        "cadeaus"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-060",
+      "type": "photo",
+      "n": 60,
+      "filename": "60_regen_raam.jpg",
+      "title": "Regen op het raam",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-11-12T14:25:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Thuis",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.0705,
+      "lng": 4.3007,
+      "locationSource": "USER",
+      "region": "Den Haag",
+      "albums": [
+        "Dagelijks leven"
+      ],
+      "people": [],
+      "tags": [
+        "regen",
+        "thuis"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-061",
+      "type": "photo",
+      "n": 61,
+      "filename": "61_ontbijt_tuin.jpg",
+      "title": "Ontbijt in de tuin",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-06-14T09:10:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Thuis",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.0705,
+      "lng": 4.3007,
+      "locationSource": "USER",
+      "region": "Den Haag",
+      "albums": [
+        "Thuis",
+        "Eten"
+      ],
+      "people": [
+        "Partner"
+      ],
+      "tags": [
+        "ontbijt",
+        "tuin"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-062",
+      "type": "photo",
+      "n": 62,
+      "filename": "62_voetbaltraining.jpg",
+      "title": "Voetbaltraining",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-09-06T10:00:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Sport",
+        "Gezin"
+      ],
+      "people": [
+        "Zoon 1"
+      ],
+      "tags": [
+        "voetbal",
+        "sport"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-063",
+      "type": "photo",
+      "n": 63,
+      "filename": "63_verjaardagstaart.jpg",
+      "title": "Verjaardagstaart",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-02-11T17:30:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Verjaardag"
+      ],
+      "people": [
+        "Vader"
+      ],
+      "tags": [
+        "taart",
+        "verjaardag"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-064",
+      "type": "photo",
+      "n": 64,
+      "filename": "64_wandeling_park.jpg",
+      "title": "Wandeling in het park",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-04-20T15:45:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Zuiderpark",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.05,
+      "lng": 4.29,
+      "locationSource": "EXIF",
+      "region": "Den Haag",
+      "albums": [
+        "Samen",
+        "Dagelijks leven"
+      ],
+      "people": [
+        "Vader",
+        "Partner"
+      ],
+      "tags": [
+        "wandeling",
+        "park"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-065",
+      "type": "photo",
+      "n": 65,
+      "filename": "65_lezen_thuis.jpg",
+      "title": "Lezen op de bank",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-03-08T20:00:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Thuis",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.0705,
+      "lng": 4.3007,
+      "locationSource": "USER",
+      "region": "Den Haag",
+      "albums": [
+        "Dagelijks leven"
+      ],
+      "people": [],
+      "tags": [
+        "lezen",
+        "thuis"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-066",
+      "type": "photo",
+      "n": 66,
+      "filename": "66_concert_amsterdam.jpg",
+      "title": "Concert in Amsterdam",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-06-28T21:30:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Amsterdam",
+      "country": "Nederland",
+      "lat": 52.3676,
+      "lng": 4.9041,
+      "locationSource": "PROVIDER",
+      "region": "Amsterdam",
+      "albums": [
+        "Concert",
+        "Stedentrip"
+      ],
+      "people": [
+        "Vader",
+        "Vriend 1"
+      ],
+      "tags": [
+        "concert",
+        "muziek"
+      ],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-067",
+      "type": "photo",
+      "n": 67,
+      "filename": "67_museum_amsterdam.jpg",
+      "title": "Museumbezoek",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-03-15T13:00:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Amsterdam",
+      "country": "Nederland",
+      "lat": 52.36,
+      "lng": 4.885,
+      "locationSource": "EXIF",
+      "region": "Amsterdam",
+      "albums": [
+        "Stedentrip"
+      ],
+      "people": [
+        "Partner"
+      ],
+      "tags": [
+        "museum",
+        "kunst"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-068",
+      "type": "photo",
+      "n": 68,
+      "filename": "68_rondvaart_amsterdam.jpg",
+      "title": "Rondvaart door de grachten",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-07-05T15:40:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Amsterdam",
+      "country": "Nederland",
+      "lat": 52.3676,
+      "lng": 4.9041,
+      "locationSource": "PROVIDER",
+      "region": "Amsterdam",
+      "albums": [
+        "Stedentrip"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "rondvaart",
+        "gracht"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-069",
+      "type": "photo",
+      "n": 69,
+      "filename": "69_rotterdam_skyline.jpg",
+      "title": "Rotterdamse skyline",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-06-11T18:00:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Rotterdam",
+      "country": "Nederland",
+      "lat": 51.9244,
+      "lng": 4.4777,
+      "locationSource": "EXIF",
+      "region": "Rotterdam",
+      "albums": [
+        "Stedentrip"
+      ],
+      "people": [
+        "Vader",
+        "Partner"
+      ],
+      "tags": [
+        "rotterdam",
+        "skyline"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-070",
+      "type": "photo",
+      "n": 70,
+      "filename": "70_utrecht_gracht.jpg",
+      "title": "Utrechtse werf",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2024-08-30T16:20:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Utrecht",
+      "country": "Nederland",
+      "lat": 52.0907,
+      "lng": 5.1214,
+      "locationSource": "PROVIDER",
+      "region": "Utrecht",
+      "albums": [
+        "Stedentrip"
+      ],
+      "people": [],
+      "tags": [
+        "utrecht",
+        "gracht"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-071",
+      "type": "photo",
+      "n": 71,
+      "filename": "71_conferentie_zaal.jpg",
+      "title": "Conferentiezaal",
+      "originSource": "google_photos",
+      "sources": [
+        {
+          "key": "google_photos",
+          "label": "Google Photos",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-03-19T10:30:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Hilversum",
+      "country": "Nederland",
+      "lat": 52.2292,
+      "lng": 5.1669,
+      "locationSource": "EXIF",
+      "region": "Hilversum",
+      "albums": [
+        "Werk & events"
+      ],
+      "people": [
+        "Vader"
+      ],
+      "tags": [
+        "conferentie",
+        "werk"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-072",
+      "type": "photo",
+      "n": 72,
+      "filename": "72_workshop_team.jpg",
+      "title": "Workshop met het team",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-02-05T14:00:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Hilversum",
+      "country": "Nederland",
+      "lat": 52.23,
+      "lng": 5.17,
+      "locationSource": "EXIF",
+      "region": "Hilversum",
+      "albums": [
+        "Werk"
+      ],
+      "people": [
+        "Vader",
+        "Collega 1",
+        "Collega 2"
+      ],
+      "tags": [
+        "workshop",
+        "team"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-073",
+      "type": "photo",
+      "n": 73,
+      "filename": "73_award_uitreiking.jpg",
+      "title": "Award-uitreiking",
+      "originSource": "facebook",
+      "sources": [
+        {
+          "key": "facebook",
+          "label": "Facebook",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-12-11T20:30:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Hilversum",
+      "country": "Nederland",
+      "lat": 52.2292,
+      "lng": 5.1669,
+      "locationSource": "PROVIDER",
+      "region": "Hilversum",
+      "albums": [
+        "Werk & events"
+      ],
+      "people": [
+        "Vader"
+      ],
+      "tags": [
+        "award",
+        "prijs"
+      ],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-074",
+      "type": "photo",
+      "n": 74,
+      "filename": "74_team_lunch.jpg",
+      "title": "Teamlunch",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-01-22T12:30:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Hilversum",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Werk"
+      ],
+      "people": [
+        "Vader",
+        "Collega 1",
+        "Collega 2"
+      ],
+      "tags": [
+        "lunch",
+        "team"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-075",
+      "type": "photo",
+      "n": 75,
+      "filename": "75_interview_locatie.jpg",
+      "title": "Interview op locatie",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-09-18T11:00:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Den Haag",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.08,
+      "lng": 4.31,
+      "locationSource": "PROVIDER",
+      "region": "Den Haag",
+      "albums": [
+        "Werk & events"
+      ],
+      "people": [
+        "Vader"
+      ],
+      "tags": [
+        "interview",
+        "media"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-076",
+      "type": "photo",
+      "n": 76,
+      "filename": "76_beursstand.jpg",
+      "title": "Beursstand",
+      "originSource": "google_photos",
+      "sources": [
+        {
+          "key": "google_photos",
+          "label": "Google Photos",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-04-11T13:20:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Utrecht",
+      "country": "Nederland",
+      "lat": 52.0907,
+      "lng": 5.1214,
+      "locationSource": "EXIF",
+      "region": "Utrecht",
+      "albums": [
+        "Werk & events"
+      ],
+      "people": [
+        "Vader"
+      ],
+      "tags": [
+        "beurs",
+        "stand"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-077",
+      "type": "photo",
+      "n": 77,
+      "filename": "77_podcast_opname.jpg",
+      "title": "Podcast-opname",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-05-27T15:00:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Hilversum",
+      "country": "Nederland",
+      "lat": 52.23,
+      "lng": 5.17,
+      "locationSource": "EXIF",
+      "region": "Hilversum",
+      "albums": [
+        "Werk"
+      ],
+      "people": [
+        "Vader",
+        "Vriend 2"
+      ],
+      "tags": [
+        "podcast",
+        "opname"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-078",
+      "type": "photo",
+      "n": 78,
+      "filename": "78_netwerklunch.jpg",
+      "title": "Netwerklunch",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-10-30T12:45:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Werk & events"
+      ],
+      "people": [
+        "Vader"
+      ],
+      "tags": [
+        "netwerk",
+        "lunch"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-079",
+      "type": "photo",
+      "n": 79,
+      "filename": "79_caravan_1982.jpg",
+      "title": "Vakantie met de caravan",
+      "originSource": "manual_upload",
+      "sources": [
+        {
+          "key": "manual_upload",
+          "label": "Handmatig toegevoegd",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "1982-01-01",
+      "datePrecision": "YEAR",
+      "place": null,
+      "providerPlace": null,
+      "city": null,
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Familiearchief"
+      ],
+      "people": [
+        "Oma",
+        "Opa"
+      ],
+      "tags": [
+        "caravan",
+        "vakantie",
+        "archief"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-080",
+      "type": "photo",
+      "n": 80,
+      "filename": "80_communie_1990.jpg",
+      "title": "Communiefoto",
+      "originSource": "manual_upload",
+      "sources": [
+        {
+          "key": "manual_upload",
+          "label": "Handmatig toegevoegd",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "1990-01-01",
+      "datePrecision": "YEAR",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Familiearchief"
+      ],
+      "people": [],
+      "tags": [
+        "communie",
+        "archief"
+      ],
+      "favorite": false,
+      "width": 3024,
+      "height": 4032,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-081",
+      "type": "photo",
+      "n": 81,
+      "filename": "81_opa_oma_1975.jpg",
+      "title": "Opa en oma",
+      "originSource": "manual_upload",
+      "sources": [
+        {
+          "key": "manual_upload",
+          "label": "Handmatig toegevoegd",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "1975-01-01",
+      "datePrecision": "YEAR",
+      "place": null,
+      "providerPlace": null,
+      "city": null,
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Familiearchief"
+      ],
+      "people": [
+        "Oma",
+        "Opa"
+      ],
+      "tags": [
+        "portret",
+        "archief"
+      ],
+      "favorite": true,
+      "width": 3024,
+      "height": 4032,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-082",
+      "type": "photo",
+      "n": 82,
+      "filename": "82_baby_1988.jpg",
+      "title": "Babyfoto",
+      "originSource": "manual_upload",
+      "sources": [
+        {
+          "key": "manual_upload",
+          "label": "Handmatig toegevoegd",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "1988-01-01",
+      "datePrecision": "YEAR",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Familiearchief"
+      ],
+      "people": [],
+      "tags": [
+        "baby",
+        "archief"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-083",
+      "type": "photo",
+      "n": 83,
+      "filename": "83_schoolklas_1992.jpg",
+      "title": "Schoolklas",
+      "originSource": "manual_upload",
+      "sources": [
+        {
+          "key": "manual_upload",
+          "label": "Handmatig toegevoegd",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "1992-01-01",
+      "datePrecision": "YEAR",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Familiearchief",
+        "Schooltijd"
+      ],
+      "people": [],
+      "tags": [
+        "school",
+        "klas",
+        "archief"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-084",
+      "type": "photo",
+      "n": 84,
+      "filename": "84_bruiloft_1994.jpg",
+      "title": "Bruiloftsfeest",
+      "originSource": "manual_upload",
+      "sources": [
+        {
+          "key": "manual_upload",
+          "label": "Handmatig toegevoegd",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "1994-01-01",
+      "datePrecision": "YEAR",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Familiearchief",
+        "Trouwen"
+      ],
+      "people": [],
+      "tags": [
+        "bruiloft",
+        "feest",
+        "archief"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-085",
+      "type": "photo",
+      "n": 85,
+      "filename": "85_strandvakantie_1996.jpg",
+      "title": "Strandvakantie",
+      "originSource": "manual_upload",
+      "sources": [
+        {
+          "key": "manual_upload",
+          "label": "Handmatig toegevoegd",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "1996-01-01",
+      "datePrecision": "YEAR",
+      "place": null,
+      "providerPlace": null,
+      "city": null,
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Familiearchief",
+        "Strand"
+      ],
+      "people": [],
+      "tags": [
+        "strand",
+        "vakantie",
+        "archief"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-086",
+      "type": "photo",
+      "n": 86,
+      "filename": "86_kerst_1985.jpg",
+      "title": "Kerst vroeger",
+      "originSource": "manual_upload",
+      "sources": [
+        {
+          "key": "manual_upload",
+          "label": "Handmatig toegevoegd",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "1985-12-01",
+      "datePrecision": "MONTH",
+      "place": null,
+      "providerPlace": null,
+      "city": null,
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Familiearchief",
+        "Kerst"
+      ],
+      "people": [],
+      "tags": [
+        "kerst",
+        "archief"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-087",
+      "type": "photo",
+      "n": 87,
+      "filename": "87_hond_park.jpg",
+      "title": "Hond in het park",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-05-18T16:30:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Dagelijks leven"
+      ],
+      "people": [],
+      "tags": [
+        "hond",
+        "park"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-088",
+      "type": "photo",
+      "n": 88,
+      "filename": "88_hardlopen_zonsopkomst.jpg",
+      "title": "Hardlopen bij zonsopkomst",
+      "originSource": "apple_photos",
+      "sources": [
+        {
+          "key": "apple_photos",
+          "label": "Apple Foto's",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-06-02T06:20:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Scheveningen",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.1081,
+      "lng": 4.2756,
+      "locationSource": "EXIF",
+      "region": "Scheveningen",
+      "albums": [
+        "Sport"
+      ],
+      "people": [
+        "Vader"
+      ],
+      "tags": [
+        "hardlopen",
+        "ochtend"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-089",
+      "type": "photo",
+      "n": 89,
+      "filename": "89_picknick_gras.jpg",
+      "title": "Picknick in het gras",
+      "originSource": "instagram",
+      "sources": [
+        {
+          "key": "instagram",
+          "label": "Instagram",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2026-07-06T13:00:00+02:00",
+      "datePrecision": "EXACT_TIME",
+      "place": "Zuiderpark",
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": 52.05,
+      "lng": 4.29,
+      "locationSource": "PROVIDER",
+      "region": "Den Haag",
+      "albums": [
+        "Samen",
+        "Zomer"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Vriend 1",
+        "Vriend 2"
+      ],
+      "tags": [
+        "picknick",
+        "zomer"
+      ],
+      "favorite": false,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    },
+    {
+      "id": "demo-photo-090",
+      "type": "photo",
+      "n": 90,
+      "filename": "90_nieuwjaar_vuurwerk.jpg",
+      "title": "Nieuwjaar met vuurwerk",
+      "originSource": "whatsapp",
+      "sources": [
+        {
+          "key": "whatsapp",
+          "label": "WhatsApp",
+          "primary": true,
+          "sourceDeletedAt": null
+        }
+      ],
+      "versions": [],
+      "capturedAt": "2025-12-31T23:59:00+01:00",
+      "datePrecision": "EXACT_TIME",
+      "place": null,
+      "providerPlace": null,
+      "city": "Den Haag",
+      "country": "Nederland",
+      "lat": null,
+      "lng": null,
+      "locationSource": "UNKNOWN",
+      "region": null,
+      "albums": [
+        "Winter"
+      ],
+      "people": [
+        "Vader",
+        "Partner",
+        "Zoon 1",
+        "Zoon 2"
+      ],
+      "tags": [
+        "vuurwerk",
+        "nieuwjaar"
+      ],
+      "favorite": true,
+      "width": 4032,
+      "height": 3024,
+      "hasUserOverride": false,
+      "is_demo": true
+    }
+  ]
+}

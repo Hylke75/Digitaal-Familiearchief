@@ -1,0 +1,205 @@
+{
+  "count": 13,
+  "memories": [
+    {
+      "id": "demo-memory-001",
+      "title": "Trouwdag familie",
+      "date": "1964-01-01",
+      "datePrecision": "YEAR",
+      "place": "Den Haag",
+      "story": "De trouwdag van de grootouders — het begin van het familiearchief.",
+      "photoIds": [
+        "demo-photo-017"
+      ],
+      "documentIds": [],
+      "externalReference": null,
+      "is_demo": true
+    },
+    {
+      "id": "demo-memory-002",
+      "title": "Zomer in de tuin",
+      "date": "1978-01-01",
+      "datePrecision": "YEAR",
+      "place": "Den Haag",
+      "story": "Een warme zomer in de achtertuin, vastgelegd op een ingescande foto.",
+      "photoIds": [
+        "demo-photo-016"
+      ],
+      "documentIds": [],
+      "externalReference": null,
+      "is_demo": true
+    },
+    {
+      "id": "demo-memory-003",
+      "title": "Schooltijd",
+      "date": "1985-01-01",
+      "datePrecision": "YEAR",
+      "place": "Den Haag",
+      "story": "Een klassieke schoolfoto uit de jaren tachtig.",
+      "photoIds": [
+        "demo-photo-018"
+      ],
+      "documentIds": [],
+      "externalReference": null,
+      "is_demo": true
+    },
+    {
+      "id": "demo-memory-004",
+      "title": "Nieuwe woning",
+      "date": "2019-06-18",
+      "datePrecision": "DATE",
+      "place": "Den Haag",
+      "story": "De sleuteloverdracht van het nieuwe huis — foto’s en de bijbehorende papieren bij elkaar.",
+      "photoIds": [
+        "demo-photo-019",
+        "demo-photo-020",
+        "demo-photo-030"
+      ],
+      "documentIds": [
+        "demo-doc-001",
+        "demo-doc-002",
+        "demo-doc-004"
+      ],
+      "externalReference": null,
+      "is_demo": true
+    },
+    {
+      "id": "demo-memory-005",
+      "title": "Familie BBQ",
+      "date": "2024-07-12",
+      "datePrecision": "DATE",
+      "place": "Den Haag",
+      "story": "Een zomerse barbecue met de hele familie.",
+      "photoIds": [
+        "demo-photo-025"
+      ],
+      "documentIds": [],
+      "externalReference": null,
+      "is_demo": true
+    },
+    {
+      "id": "demo-memory-006",
+      "title": "Roadtrip Verenigde Staten",
+      "date": "2025-08-01",
+      "datePrecision": "MONTH",
+      "place": "Verenigde Staten",
+      "story": "Een roadtrip langs de westkust: Golden Gate, de woestijn en Yosemite.",
+      "photoIds": [
+        "demo-photo-013",
+        "demo-photo-014",
+        "demo-photo-015"
+      ],
+      "documentIds": [],
+      "externalReference": null,
+      "is_demo": true
+    },
+    {
+      "id": "demo-memory-007",
+      "title": "Verjaardag",
+      "date": "2025-09-11",
+      "datePrecision": "DATE",
+      "place": "Den Haag",
+      "story": "Een verjaardagsdiner thuis met het gezin.",
+      "photoIds": [
+        "demo-photo-004"
+      ],
+      "documentIds": [],
+      "externalReference": null,
+      "is_demo": true
+    },
+    {
+      "id": "demo-memory-008",
+      "title": "Madeira",
+      "date": "2026-07-01",
+      "datePrecision": "MONTH",
+      "place": "Madeira",
+      "story": "Een week Madeira: tennis, uitzichten, levada-wandelingen en dineren in Funchal.",
+      "photoIds": [
+        "demo-photo-006",
+        "demo-photo-007",
+        "demo-photo-008",
+        "demo-photo-009",
+        "demo-photo-010"
+      ],
+      "documentIds": [],
+      "externalReference": null,
+      "is_demo": true
+    },
+    {
+      "id": "demo-memory-009",
+      "title": "Parijs",
+      "date": "2026-08-14",
+      "datePrecision": "MONTH",
+      "place": "Parijs",
+      "story": "Een stedentrip naar Parijs.",
+      "photoIds": [
+        "demo-photo-011",
+        "demo-photo-012"
+      ],
+      "documentIds": [],
+      "externalReference": null,
+      "is_demo": true
+    },
+    {
+      "id": "demo-memory-010",
+      "title": "Avond op Scheveningen",
+      "date": "2026-08-03",
+      "datePrecision": "DATE",
+      "place": "Scheveningen",
+      "story": "Zonsondergang op het strand van Scheveningen.",
+      "photoIds": [
+        "demo-photo-028"
+      ],
+      "documentIds": [],
+      "externalReference": null,
+      "is_demo": true
+    },
+    {
+      "id": "demo-memory-011",
+      "title": "Boekpresentatie",
+      "date": "2026-10-02",
+      "datePrecision": "MONTH",
+      "place": "Hilversum",
+      "story": "De presentatie van een nieuw boek.",
+      "photoIds": [
+        "demo-photo-024"
+      ],
+      "documentIds": [],
+      "externalReference": null,
+      "is_demo": true
+    },
+    {
+      "id": "demo-memory-012",
+      "title": "Spreken op evenement",
+      "date": "2026-11-23",
+      "datePrecision": "MONTH",
+      "place": "Den Haag",
+      "story": "Een lezing op een evenement in de Grote Kerk.",
+      "photoIds": [
+        "demo-photo-022"
+      ],
+      "documentIds": [],
+      "externalReference": null,
+      "is_demo": true
+    },
+    {
+      "id": "demo-memory-013",
+      "title": "Mijn eerste televisieoptreden",
+      "date": "2000-01-01",
+      "datePrecision": "YEAR",
+      "place": null,
+      "story": "Een demonstratie van hoe een extern archieffragment straks aan je herinneringen kan worden gekoppeld.",
+      "photoIds": [],
+      "documentIds": [],
+      "externalReference": {
+        "provider": "Beeld & Geluid",
+        "programme": "Demo-programma",
+        "date": "2000",
+        "fragmentStart": "17:28",
+        "fragmentEnd": "19:12",
+        "status": "DEMO"
+      },
+      "is_demo": true
+    }
+  ]
+}

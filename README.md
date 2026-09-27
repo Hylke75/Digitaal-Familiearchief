@@ -56,6 +56,23 @@ cp .env.example apps/web/.env.local
 pnpm dev          # start the web app on http://localhost:3000
 ```
 
+## Bewora demo
+
+A complete, working demo archive driven by seeded data (file-backed — no
+database, production untouched):
+
+```bash
+pnpm install
+pnpm seed:demo     # generates /data/demo/*.json + placeholder images (idempotent)
+pnpm dev
+# then open http://localhost:3000/demo  (leave via /demo?exit=1)
+```
+
+It demonstrates photos across sources, timeline, places, albums, people,
+provenance/deduplication, documents (categories, folders, sources) and "Mijn
+leven". See [`docs/DEMO_ARCHIVE.md`](./docs/DEMO_ARCHIVE.md) and
+[`docs/DEMO_SEED.md`](./docs/DEMO_SEED.md).
+
 ## Scripts (run from the repo root)
 
 | Command | Description |

@@ -1,0 +1,493 @@
+{
+  "count": 24,
+  "categories": [
+    "Woning",
+    "Financieel",
+    "Verzekeringen",
+    "Contracten",
+    "Belasting",
+    "Opleiding",
+    "Overig"
+  ],
+  "documents": [
+    {
+      "id": "demo-doc-001",
+      "type": "document",
+      "title": "Koopakte woning.pdf",
+      "filename": "Koopakte woning.pdf",
+      "placeholder": "001_koopakte_woning.pdf",
+      "category": "Woning",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Privé/Huis/Hypotheek",
+      "documentDate": "2019-06-18",
+      "modifiedAt": "2019-06-18T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 103000,
+      "tags": [
+        "koopakte",
+        "huis",
+        "notaris"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-002",
+      "type": "document",
+      "title": "Hypotheekofferte.pdf",
+      "filename": "Hypotheekofferte.pdf",
+      "placeholder": "002_hypotheekofferte.pdf",
+      "category": "Financieel",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Privé/Huis/Hypotheek",
+      "documentDate": "2019-05-20",
+      "modifiedAt": "2019-05-20T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 116000,
+      "tags": [
+        "hypotheek",
+        "huis"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-003",
+      "type": "document",
+      "title": "Notaris afrekening.pdf",
+      "filename": "Notaris afrekening.pdf",
+      "placeholder": "003_notaris_afrekening.pdf",
+      "category": "Woning",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Privé/Huis/Hypotheek",
+      "documentDate": "2019-06-18",
+      "modifiedAt": "2019-06-18T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 129000,
+      "tags": [
+        "notaris",
+        "huis"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-004",
+      "type": "document",
+      "title": "Taxatierapport.pdf",
+      "filename": "Taxatierapport.pdf",
+      "placeholder": "004_taxatierapport.pdf",
+      "category": "Woning",
+      "source": "onedrive",
+      "sourceLabel": "OneDrive",
+      "folder": "Documenten/Financieel",
+      "documentDate": "2019-05-10",
+      "modifiedAt": "2019-05-10T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 142000,
+      "tags": [
+        "taxatie",
+        "huis"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-005",
+      "type": "document",
+      "title": "WOZ beschikking 2026.pdf",
+      "filename": "WOZ beschikking 2026.pdf",
+      "placeholder": "005_woz_beschikking_2026.pdf",
+      "category": "Belasting",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Privé/Belastingen",
+      "documentDate": "2026-02-28",
+      "modifiedAt": "2026-02-28T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 155000,
+      "tags": [
+        "woz",
+        "gemeente"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-006",
+      "type": "document",
+      "title": "Opstalverzekering.pdf",
+      "filename": "Opstalverzekering.pdf",
+      "placeholder": "006_opstalverzekering.pdf",
+      "category": "Verzekeringen",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Privé/Huis/Verzekeringen",
+      "documentDate": "2019-07-01",
+      "modifiedAt": "2019-07-01T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 168000,
+      "tags": [
+        "verzekering",
+        "huis"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-007",
+      "type": "document",
+      "title": "Inboedelverzekering.pdf",
+      "filename": "Inboedelverzekering.pdf",
+      "placeholder": "007_inboedelverzekering.pdf",
+      "category": "Verzekeringen",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Privé/Huis/Verzekeringen",
+      "documentDate": "2019-07-01",
+      "modifiedAt": "2019-07-01T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 181000,
+      "tags": [
+        "verzekering",
+        "inboedel"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-008",
+      "type": "document",
+      "title": "Jaaropgave 2025.pdf",
+      "filename": "Jaaropgave 2025.pdf",
+      "placeholder": "008_jaaropgave_2025.pdf",
+      "category": "Financieel",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Privé/Belastingen",
+      "documentDate": "2026-01-15",
+      "modifiedAt": "2026-01-15T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 194000,
+      "tags": [
+        "jaaropgave",
+        "inkomen"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-009",
+      "type": "document",
+      "title": "Belastingaangifte 2025.pdf",
+      "filename": "Belastingaangifte 2025.pdf",
+      "placeholder": "009_belastingaangifte_2025.pdf",
+      "category": "Belasting",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Privé/Belastingen",
+      "documentDate": "2026-04-30",
+      "modifiedAt": "2026-04-30T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 207000,
+      "tags": [
+        "belasting",
+        "aangifte"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-010",
+      "type": "document",
+      "title": "Bankoverzicht jaar 2025.pdf",
+      "filename": "Bankoverzicht jaar 2025.pdf",
+      "placeholder": "010_bankoverzicht_jaar_2025.pdf",
+      "category": "Financieel",
+      "source": "onedrive",
+      "sourceLabel": "OneDrive",
+      "folder": "Documenten/Financieel",
+      "documentDate": "2026-01-05",
+      "modifiedAt": "2026-01-05T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 220000,
+      "tags": [
+        "bank",
+        "overzicht"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-011",
+      "type": "document",
+      "title": "Arbeidsovereenkomst.pdf",
+      "filename": "Arbeidsovereenkomst.pdf",
+      "placeholder": "011_arbeidsovereenkomst.pdf",
+      "category": "Contracten",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Werk",
+      "documentDate": "2015-08-24",
+      "modifiedAt": "2015-08-24T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 233000,
+      "tags": [
+        "werk",
+        "contract"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-012",
+      "type": "document",
+      "title": "Pensioenoverzicht.pdf",
+      "filename": "Pensioenoverzicht.pdf",
+      "placeholder": "012_pensioenoverzicht.pdf",
+      "category": "Financieel",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Werk",
+      "documentDate": "2025-11-30",
+      "modifiedAt": "2025-11-30T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 246000,
+      "tags": [
+        "pensioen"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-013",
+      "type": "document",
+      "title": "Diploma.pdf",
+      "filename": "Diploma.pdf",
+      "placeholder": "013_diploma.pdf",
+      "category": "Opleiding",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Privé/Opleiding",
+      "documentDate": "2009-06-30",
+      "modifiedAt": "2009-06-30T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 259000,
+      "tags": [
+        "diploma",
+        "opleiding"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-014",
+      "type": "document",
+      "title": "Cursuscertificaat.pdf",
+      "filename": "Cursuscertificaat.pdf",
+      "placeholder": "014_cursuscertificaat.pdf",
+      "category": "Opleiding",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Privé/Opleiding",
+      "documentDate": "2022-03-18",
+      "modifiedAt": "2022-03-18T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 272000,
+      "tags": [
+        "cursus",
+        "certificaat"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-015",
+      "type": "document",
+      "title": "Energiecontract.pdf",
+      "filename": "Energiecontract.pdf",
+      "placeholder": "015_energiecontract.pdf",
+      "category": "Contracten",
+      "source": "onedrive",
+      "sourceLabel": "OneDrive",
+      "folder": "Documenten/Contracten",
+      "documentDate": "2023-09-01",
+      "modifiedAt": "2023-09-01T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 285000,
+      "tags": [
+        "energie",
+        "contract"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-016",
+      "type": "document",
+      "title": "Internetcontract.pdf",
+      "filename": "Internetcontract.pdf",
+      "placeholder": "016_internetcontract.pdf",
+      "category": "Contracten",
+      "source": "onedrive",
+      "sourceLabel": "OneDrive",
+      "folder": "Documenten/Contracten",
+      "documentDate": "2024-02-14",
+      "modifiedAt": "2024-02-14T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 298000,
+      "tags": [
+        "internet",
+        "contract"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-017",
+      "type": "document",
+      "title": "Reisverzekering.pdf",
+      "filename": "Reisverzekering.pdf",
+      "placeholder": "017_reisverzekering.pdf",
+      "category": "Verzekeringen",
+      "source": "onedrive",
+      "sourceLabel": "OneDrive",
+      "folder": "Documenten/Persoonlijk",
+      "documentDate": "2026-06-20",
+      "modifiedAt": "2026-06-20T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 311000,
+      "tags": [
+        "reis",
+        "verzekering"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-018",
+      "type": "document",
+      "title": "Autoverzekering.pdf",
+      "filename": "Autoverzekering.pdf",
+      "placeholder": "018_autoverzekering.pdf",
+      "category": "Verzekeringen",
+      "source": "dropbox",
+      "sourceLabel": "Dropbox",
+      "folder": "Persoonlijk/Administratie",
+      "documentDate": "2025-01-11",
+      "modifiedAt": "2025-01-11T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 324000,
+      "tags": [
+        "auto",
+        "verzekering"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-019",
+      "type": "document",
+      "title": "Factuur verbouwing.pdf",
+      "filename": "Factuur verbouwing.pdf",
+      "placeholder": "019_factuur_verbouwing.pdf",
+      "category": "Woning",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Privé/Huis/Verbouwing",
+      "documentDate": "2021-05-06",
+      "modifiedAt": "2021-05-06T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 337000,
+      "tags": [
+        "verbouwing",
+        "factuur"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-020",
+      "type": "document",
+      "title": "Garantiebewijs keuken.pdf",
+      "filename": "Garantiebewijs keuken.pdf",
+      "placeholder": "020_garantiebewijs_keuken.pdf",
+      "category": "Woning",
+      "source": "google_drive",
+      "sourceLabel": "Google Drive",
+      "folder": "Mijn Drive/Privé/Huis/Verbouwing",
+      "documentDate": "2021-05-20",
+      "modifiedAt": "2021-05-20T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 350000,
+      "tags": [
+        "garantie",
+        "keuken"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-021",
+      "type": "document",
+      "title": "Gemeentelijke belasting.pdf",
+      "filename": "Gemeentelijke belasting.pdf",
+      "placeholder": "021_gemeentelijke_belasting.pdf",
+      "category": "Belasting",
+      "source": "dropbox",
+      "sourceLabel": "Dropbox",
+      "folder": "Persoonlijk/Administratie",
+      "documentDate": "2026-03-01",
+      "modifiedAt": "2026-03-01T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 363000,
+      "tags": [
+        "gemeente",
+        "belasting"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-022",
+      "type": "document",
+      "title": "Schooldocument.pdf",
+      "filename": "Schooldocument.pdf",
+      "placeholder": "022_schooldocument.pdf",
+      "category": "Opleiding",
+      "source": "dropbox",
+      "sourceLabel": "Dropbox",
+      "folder": "Persoonlijk/Huis",
+      "documentDate": "2018-09-03",
+      "modifiedAt": "2018-09-03T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 376000,
+      "tags": [
+        "school",
+        "opleiding"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-023",
+      "type": "document",
+      "title": "Leasecontract.pdf",
+      "filename": "Leasecontract.pdf",
+      "placeholder": "023_leasecontract.pdf",
+      "category": "Contracten",
+      "source": "onedrive",
+      "sourceLabel": "OneDrive",
+      "folder": "Documenten/Contracten",
+      "documentDate": "2024-07-01",
+      "modifiedAt": "2024-07-01T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 389000,
+      "tags": [
+        "lease",
+        "contract"
+      ],
+      "is_demo": true
+    },
+    {
+      "id": "demo-doc-024",
+      "type": "document",
+      "title": "Overig document.pdf",
+      "filename": "Overig document.pdf",
+      "placeholder": "024_overig_document.pdf",
+      "category": "Overig",
+      "source": "manual_upload",
+      "sourceLabel": "Handmatig toegevoegd",
+      "folder": null,
+      "documentDate": "2026-08-01",
+      "modifiedAt": "2026-08-01T09:00:00Z",
+      "mimeType": "application/pdf",
+      "fileSize": 402000,
+      "tags": [
+        "overig"
+      ],
+      "is_demo": true
+    }
+  ]
+}
