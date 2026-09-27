@@ -564,6 +564,7 @@ const nl = {
     folderItems: '{count, plural, one {# item} other {# items}}',
     emptyFolder: 'Deze map is leeg',
     emptyFolderBody: 'Er staan hier geen documenten of submappen.',
+    up: 'Omhoog',
   },
   handwriting: {
     title: 'Handschrift lezen',

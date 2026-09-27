@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { getFormatter, getTranslations } from 'next-intl/server';
-import { ChevronRight, FileText, Folder, House } from 'lucide-react';
+import { ArrowUp, ChevronRight, FileText, Folder, House } from 'lucide-react';
 import { PageHeader } from '@/components/app-shell/PageHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ButtonLink } from '@/components/ui/Button';
+import { SourceLogo } from '@/components/marketing/SourceLogo';
 import { listDocumentCards } from '@/lib/archive/documents';
 import {
   breadcrumbs,
@@ -19,6 +20,22 @@ export const metadata = { title: 'Documenten' };
 
 const folderHref = (path: string[]) =>
   path.length ? `/documenten?pad=${encodeURIComponent(encodePath(path))}` : '/documenten';
+
+/** Bronlabel (afzender) → connector-sleutel voor het bronlogo. */
+const SOURCE_KEY: Record<string, string> = {
+  'google drive': 'google_drive',
+  onedrive: 'onedrive',
+  dropbox: 'dropbox',
+  'google photos': 'google_photos',
+  "google foto's": 'google_photos',
+  "apple foto's": 'apple_photos',
+  instagram: 'instagram',
+  facebook: 'facebook',
+  whatsapp: 'whatsapp',
+  tiktok: 'tiktok',
+};
+const sourceKey = (label: string | null): string | null =>
+  label ? (SOURCE_KEY[label.trim().toLowerCase()] ?? null) : null;
 
 /**
  * Documenten als mappenboom, net als Google Drive: mappen om in te klikken,
@@ -45,8 +62,11 @@ export default async function DocumentsPage({ searchParams }: { searchParams: { 
   }
 
   const current = decodePath(searchParams.pad);
-  const { folders, files } = folderView(cards, current);
+  // Bronlabel meegeven zodat elke map het logo van zijn dominante bron toont.
+  const treeCards = cards.map((c) => ({ ...c, source: c.sender }));
+  const { folders, files } = folderView(treeCards, current);
   const crumbs = breadcrumbs(current);
+  const parentHref = folderHref(current.slice(0, -1));
 
   return (
     <div>
@@ -57,6 +77,17 @@ export default async function DocumentsPage({ searchParams }: { searchParams: { 
 
       {/* Kruimelpad */}
       <nav aria-label="Mappad" className="text-small mb-5 flex flex-wrap items-center gap-1">
+        {current.length > 0 ? (
+          <Link
+            href={parentHref}
+            aria-label={t('documents.up')}
+            title={t('documents.up')}
+            className="border-border text-ink-soft hover:bg-warm mr-1 inline-flex items-center gap-1.5 rounded-md border px-2 py-1"
+          >
+            <ArrowUp className="h-4 w-4" aria-hidden="true" />
+            {t('documents.up')}
+          </Link>
+        ) : null}
         <Link
           href="/documenten"
           className={`hover:bg-warm inline-flex items-center gap-1.5 rounded-md px-2 py-1 ${
@@ -92,22 +123,32 @@ export default async function DocumentsPage({ searchParams }: { searchParams: { 
           {/* Mappen */}
           {folders.length > 0 ? (
             <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {folders.map((folder: SubFolder) => (
-                <li key={folder.name}>
-                  <Link
-                    href={folderHref(folder.path)}
-                    className="border-border rounded-card hover:border-forest/40 hover:bg-warm flex items-center gap-3 border p-4 transition-colors"
-                  >
-                    <Folder className="text-forest h-8 w-8 shrink-0" aria-hidden="true" />
-                    <span className="min-w-0">
-                      <span className="text-ink block truncate font-medium">{folder.name}</span>
-                      <span className="text-small text-ink-soft block">
-                        {t('documents.folderItems', { count: folder.count })}
+              {folders.map((folder: SubFolder) => {
+                const key = sourceKey(folder.source);
+                return (
+                  <li key={folder.name}>
+                    <Link
+                      href={folderHref(folder.path)}
+                      className="border-border rounded-card hover:border-forest/40 hover:bg-warm flex items-center gap-3 border p-4 transition-colors"
+                    >
+                      <Folder className="text-forest h-8 w-8 shrink-0" aria-hidden="true" />
+                      <span className="min-w-0 flex-1">
+                        <span className="text-ink block truncate font-medium">{folder.name}</span>
+                        <span className="text-small text-ink-soft block">
+                          {t('documents.folderItems', { count: folder.count })}
+                        </span>
                       </span>
-                    </span>
-                  </Link>
-                </li>
-              ))}
+                      {key ? (
+                        <SourceLogo
+                          connectorKey={key}
+                          fallback={folder.source ?? ''}
+                          className="h-5 w-5 shrink-0 opacity-80"
+                        />
+                      ) : null}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           ) : null}
 
