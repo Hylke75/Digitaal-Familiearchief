@@ -26,6 +26,36 @@ const THUMBABLE = new Set([
   'image/tiff',
 ]);
 
+// A derivative that fails is recorded on the item (metadata_json.derivative_failed)
+// so the per-minute cron doesn't download the same original again every tick —
+// that loop once caused terabytes of storage egress. After MAX_DERIVATIVE_ATTEMPTS
+// the item is left without a preview until someone clears the marker.
+const MAX_DERIVATIVE_ATTEMPTS = 3;
+
+type DerivativeKind = 'thumb' | 'poster';
+
+/** PostgREST filter: no recorded failures for this kind, or fewer than the max
+ * (single-digit counts, so the text comparison is safe). */
+function notExhausted(kind: DerivativeKind): string {
+  const path = `metadata_json->derivative_failed->>${kind}`;
+  return `${path}.is.null,${path}.lt.${MAX_DERIVATIVE_ATTEMPTS}`;
+}
+
+async function markDerivativeFailed(
+  admin: Admin,
+  item: { id: string; metadata_json: unknown },
+  kind: DerivativeKind,
+): Promise<void> {
+  const meta = (item.metadata_json ?? {}) as Record<string, unknown>;
+  const failed = (meta.derivative_failed ?? {}) as Record<string, unknown>;
+  const attempts = (typeof failed[kind] === 'number' ? (failed[kind] as number) : 0) + 1;
+  const merged = { ...meta, derivative_failed: { ...failed, [kind]: attempts } };
+  await admin
+    .from('archive_items')
+    .update({ metadata_json: merged as never })
+    .eq('id', item.id);
+}
+
 /**
  * Generate persisted 600px webp thumbnails for a bounded batch of photo items
  * that don't have one yet (docs/ARCHIVE_EXPERIENCE_AUDIT.md §8.2). Runs under the
@@ -35,8 +65,10 @@ const THUMBABLE = new Set([
 export async function generateThumbnailBatch(admin: Admin, limit = 12): Promise<number> {
   const { data: candidates } = await admin
     .from('archive_items')
-    .select('id, owner_id, storage_key, mime_type')
+    .select('id, owner_id, storage_key, mime_type, metadata_json')
     .eq('type', 'photo')
+    .in('mime_type', [...THUMBABLE])
+    .or(notExhausted('thumb'))
     .order('archived_at', { ascending: false })
     .limit(limit * 4);
   if (!candidates || candidates.length === 0) return 0;
@@ -57,7 +89,10 @@ export async function generateThumbnailBatch(admin: Admin, limit = 12): Promise<
   for (const item of todo) {
     try {
       const { data: blob } = await admin.storage.from(BUCKET).download(item.storage_key);
-      if (!blob) continue;
+      if (!blob) {
+        await markDerivativeFailed(admin, item, 'thumb');
+        continue;
+      }
       const input = Buffer.from(await blob.arrayBuffer());
       const { data: out, info } = await sharp(input, { failOn: 'none' })
         .rotate() // honour EXIF orientation
@@ -69,7 +104,10 @@ export async function generateThumbnailBatch(admin: Admin, limit = 12): Promise<
       const { error: upErr } = await admin.storage
         .from(BUCKET)
         .upload(key, out, { contentType: 'image/webp', upsert: true });
-      if (upErr) continue;
+      if (upErr) {
+        await markDerivativeFailed(admin, item, 'thumb');
+        continue;
+      }
 
       await admin.from('archive_derivatives').upsert(
         {
@@ -86,7 +124,8 @@ export async function generateThumbnailBatch(admin: Admin, limit = 12): Promise<
       );
       made += 1;
     } catch {
-      // Corrupt/undecodable image → skip; a later tick may retry. Never throws.
+      // Corrupt/undecodable image → record it so a later tick retries only a few times.
+      await markDerivativeFailed(admin, item, 'thumb').catch(() => {});
     }
   }
   return made;
@@ -140,8 +179,9 @@ export async function generateVideoPosterBatch(admin: Admin, limit = 4): Promise
   if (!ffmpegPath) return 0;
   const { data: candidates } = await admin
     .from('archive_items')
-    .select('id, owner_id, storage_key')
+    .select('id, owner_id, storage_key, metadata_json')
     .eq('type', 'video')
+    .or(notExhausted('poster'))
     .order('archived_at', { ascending: false })
     .limit(limit * 4);
   if (!candidates || candidates.length === 0) return 0;
@@ -159,9 +199,15 @@ export async function generateVideoPosterBatch(admin: Admin, limit = 4): Promise
   for (const item of todo) {
     try {
       const { data: blob } = await admin.storage.from(BUCKET).download(item.storage_key);
-      if (!blob) continue;
+      if (!blob) {
+        await markDerivativeFailed(admin, item, 'poster');
+        continue;
+      }
       const frame = await extractVideoFrame(new Uint8Array(await blob.arrayBuffer()));
-      if (!frame) continue;
+      if (!frame) {
+        await markDerivativeFailed(admin, item, 'poster');
+        continue;
+      }
       const { data: out, info } = await sharp(frame, { failOn: 'none' })
         .resize(600, 600, { fit: 'inside', withoutEnlargement: true })
         .webp({ quality: 60 })
@@ -171,7 +217,10 @@ export async function generateVideoPosterBatch(admin: Admin, limit = 4): Promise
       const { error: upErr } = await admin.storage
         .from(BUCKET)
         .upload(key, out, { contentType: 'image/webp', upsert: true });
-      if (upErr) continue;
+      if (upErr) {
+        await markDerivativeFailed(admin, item, 'poster');
+        continue;
+      }
 
       await admin.from('archive_derivatives').upsert(
         {
@@ -188,7 +237,8 @@ export async function generateVideoPosterBatch(admin: Admin, limit = 4): Promise
       );
       made += 1;
     } catch {
-      // Undecodable video → skip. Never throws.
+      // Undecodable video → record it so a later tick retries only a few times.
+      await markDerivativeFailed(admin, item, 'poster').catch(() => {});
     }
   }
   return made;

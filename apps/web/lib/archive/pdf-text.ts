@@ -54,8 +54,8 @@ export async function extractDocumentTextBatch(
   for (const d of todo) {
     try {
       const { data: blob } = await admin.storage.from(BUCKET).download(d.storage_key);
-      if (!blob) continue;
-      const text = await extractPdfText(new Uint8Array(await blob.arrayBuffer()));
+      // A missing original gets empty text too, so it is not downloaded again every tick.
+      const text = blob ? await extractPdfText(new Uint8Array(await blob.arrayBuffer())) : '';
       const merged = { ...((d.metadata_json ?? {}) as Record<string, unknown>), text };
       await admin
         .from('archive_items')
